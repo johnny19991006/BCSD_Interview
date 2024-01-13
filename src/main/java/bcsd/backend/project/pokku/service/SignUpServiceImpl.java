@@ -19,7 +19,6 @@ public class SignUpServiceImpl implements SignUpService{
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
 
     @Override
     public boolean register(SignUpRequest request) throws Exception{
