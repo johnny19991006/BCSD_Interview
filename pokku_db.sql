@@ -15,6 +15,14 @@ CREATE TABLE `user_info`(
 	PRIMARY KEY(`user_id`)
 )DEFAULT CHARSET = UTF8;
 
+CREATE TABLE `authority`(
+    `auth_id` INT AUTO_INCREMENT,
+    `user_id` VARCHAR(16) NOT NULL,
+    `auth_name` VARCHAR(16) NOT NULL,
+    PRIMARY KEY (`auth_id`),
+    FOREIGN KEY (`user_id`) REFERENCES `user_info`(`user_id`)
+)DEFAULT CHARSET = UTF8;
+
 CREATE TABLE `user_info_instagram`(
 	`user_id` VARCHAR(16) NOT NULL,
 	`user_instagram` VARCHAR(128) NOT NULL,
