@@ -62,6 +62,9 @@ public class UserInfo {
     @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private PortfolioProject portfolioProject;
 
+    @OneToOne(mappedBy = "userInfo", cascade = CascadeType.ALL)
+    private Authority authority;
+
     @OneToMany(mappedBy = "userInfo", cascade = CascadeType.ALL)
     private List<UserPortfolioSkillsBackend> userPortfolioSkillsBackendList = new ArrayList<>();
 
