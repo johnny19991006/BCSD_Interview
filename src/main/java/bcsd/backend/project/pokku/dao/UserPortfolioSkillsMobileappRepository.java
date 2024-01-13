@@ -1,9 +1,0 @@
-package bcsd.backend.project.pokku.dao;
-
-import bcsd.backend.project.pokku.domain.UserPortfolioSkillsMobileapp;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-
-@Repository
-public interface UserPortfolioSkillsMobileappRepository extends JpaRepository<UserPortfolioSkillsMobileapp, Long> {
-}
