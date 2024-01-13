@@ -15,14 +15,14 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignInResponse {
-    private String id;
-    private String password;
+    private String userId;
+    private String userPassword;
     private List<Authority> roles = new ArrayList<>();
     private String token;
 
     public SignInResponse(UserInfo user){
-        this.id = user.getUserId();
-        this.password = user.getUserPassword();
+        this.userId = user.getUserId();
+        this.userPassword = user.getUserPassword();
         this.roles = user.getAuthorities();
     }
 }
