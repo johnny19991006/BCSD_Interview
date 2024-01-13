@@ -46,6 +46,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/sign-up").permitAll()
+                                .requestMatchers("/sign-in").permitAll()
                                 .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
