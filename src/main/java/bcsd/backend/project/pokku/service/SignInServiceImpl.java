@@ -16,9 +16,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SignInServiceImpl implements SignInService{
 
-    private UserInfoRepository userInfoRepository;
-    private PasswordEncoder passwordEncoder;
-    private JwtProvider jwtProvider;
+    private final UserInfoRepository userInfoRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Override
     public SignInResponse login(SignInRequest request) throws Exception{
