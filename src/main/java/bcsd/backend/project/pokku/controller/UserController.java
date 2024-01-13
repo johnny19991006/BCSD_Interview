@@ -32,11 +32,11 @@ public class UserController {
 
     @PutMapping(value = "/{id}")
     public ResponseEntity<Boolean> updateUser(@RequestBody UserRequest request, @RequestParam(name = "id") String id) throws Exception{
-        return new ResponseEntity<>(userService.UpdateUsers(request), HttpStatus.OK);
+        return new ResponseEntity<>(userService.UpdateUsers(request, id), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Boolean> deleteUser(@RequestBody UserRequest request, @RequestParam(name = "id") String id) throws Exception{
-        return new ResponseEntity<>(userService.DeleteUsers(request), HttpStatus.OK);
+        return new ResponseEntity<>(userService.DeleteUsers(request, id), HttpStatus.OK);
     }
 }
