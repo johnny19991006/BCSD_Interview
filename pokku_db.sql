@@ -9,7 +9,7 @@ CREATE TABLE `user_info`(
 	`user_tel` VARCHAR(12) NOT NULL,
 	`user_email` VARCHAR(50) NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
-	`user_password` VARCHAR(20) NOT NULL,
+	`user_password` VARCHAR(255) NOT NULL,
 	`user_nickname` VARCHAR(16) NOT NULL,
 	`user_education` VARCHAR(50) NOT NULL,
 	PRIMARY KEY(`user_id`)
