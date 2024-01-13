@@ -1,5 +1,6 @@
 package bcsd.backend.project.pokku.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,8 +20,12 @@ public class Authority {
     @Column(name = "auth_name")
     private String AuthName;
 
-    @Column(name = "user_id")
-    @OneToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     private UserInfo userInfo;
+
+    public void setUsers(UserInfo user){
+        this.userInfo = user;
+    }
 }
