@@ -22,7 +22,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtProvider {
@@ -69,7 +68,6 @@ public class JwtProvider {
     public boolean validateToken(String token){
         try {
             if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
-                log.info("인증 오류 1");
                 return false;
             } else {
                 token = token.split(" ")[1].trim();
@@ -78,7 +76,6 @@ public class JwtProvider {
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
         } catch (Exception e){
-            log.info("인증 오류 2");
             return false;
         }
     }
