@@ -17,28 +17,28 @@ public class UserInfo {
 
     @Id
     @Column(name = "user_id")
-    private String UserId;
+    private String userId;
 
     @Column(name = "user_name")
-    private String UserName;
+    private String userName;
 
     @Column(name = "user_birth")
-    private String UserBirth;
+    private String userBirth;
 
     @Column(name = "user_tel")
-    private String UserTel;
+    private String userTel;
 
     @Column(name = "user_email")
-    private String UserEmail;
+    private String userEmail;
 
     @Column(name = "user_password")
-    private String UserPassword;
+    private String userPassword;
 
     @Column(name = "user_nickname")
-    private String UserNickname;
+    private String userNickname;
 
     @Column(name = "user_education")
-    private String UserEducation;
+    private String userEducation;
 
     @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @Builder.Default

@@ -15,26 +15,26 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SignUpResponse {
-    private String UserName;
-    private String UserBirth;
-    private String UserTel;
-    private String UserEmail;
-    private String UserId;
-    private String UserPassword;
-    private String UserNickname;
-    private String UserEducation;
+    private String userName;
+    private String userBirth;
+    private String userTel;
+    private String userEmail;
+    private String userId;
+    private String userPassword;
+    private String userNickname;
+    private String userEducation;
     private String token;
     private List<Authority> authorities = new ArrayList<>();
 
     public SignUpResponse(UserInfo user){
-        this.UserName = user.getUserName();
-        this.UserBirth = user.getUserBirth();
-        this.UserTel = user.getUserTel();
-        this.UserEmail = user.getUserEmail();
-        this.UserId = user.getUserId();
-        this.UserPassword = user.getUserPassword();
-        this.UserNickname = user.getUserNickname();
-        this.UserEducation = user.getUserEducation();
+        this.userName = user.getUserName();
+        this.userBirth = user.getUserBirth();
+        this.userTel = user.getUserTel();
+        this.userEmail = user.getUserEmail();
+        this.userId = user.getUserId();
+        this.userPassword = user.getUserPassword();
+        this.userNickname = user.getUserNickname();
+        this.userEducation = user.getUserEducation();
         this.authorities = user.getAuthorities();
     }
 }

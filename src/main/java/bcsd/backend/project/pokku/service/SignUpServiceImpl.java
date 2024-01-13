@@ -24,14 +24,14 @@ public class SignUpServiceImpl implements SignUpService{
     public boolean register(SignUpRequest request) throws Exception{
         try {
             UserInfo userInfo = UserInfo.builder()
-                    .UserId(request.getUserId())
-                    .UserPassword(passwordEncoder.encode(request.getUserPassword()))
-                    .UserName(request.getUserName())
-                    .UserNickname(request.getUserNickname())
-                    .UserBirth(request.getUserBirth())
-                    .UserEmail(request.getUserEmail())
-                    .UserTel(request.getUserTel())
-                    .UserEducation(request.getUserEducation())
+                    .userId(request.getUserId())
+                    .userPassword(passwordEncoder.encode(request.getUserPassword()))
+                    .userName(request.getUserName())
+                    .userNickname(request.getUserNickname())
+                    .userBirth(request.getUserBirth())
+                    .userEmail(request.getUserEmail())
+                    .userTel(request.getUserTel())
+                    .userEducation(request.getUserEducation())
                     .build();
 
             userInfo.setRoles(Collections.singletonList(Authority.builder()
