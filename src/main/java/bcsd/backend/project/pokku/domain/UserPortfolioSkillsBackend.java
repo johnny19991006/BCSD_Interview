@@ -17,8 +17,6 @@ public class UserPortfolioSkillsBackend {
     @Column(name = "user_portfolio_skills_backend_id")
     private Long UserPortfolioSkillsBackendId;
 
-
-
     @ManyToOne
     @JoinColumn(name = "skills_backend_id", referencedColumnName = "skills_backend_id")
     private SkillsBackend skillsBackendId;
