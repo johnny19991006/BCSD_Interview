@@ -26,14 +26,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponse findUsers(UserRequest request) throws Exception{
 
-        if(!jwtProvider.validateToken(request.getToken())) {
-            throw new BadCredentialsException("유효하지 않은 토큰입니다.");
-        }
-
-        if(!request.getUserId().equals(jwtProvider.getAccount(request.getToken()))){
-            throw new BadCredentialsException("사용자가 일치하지 않습니다.");
-        }
-
         UserInfo userInfo = userInfoRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
 
@@ -42,12 +34,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean DeleteUsers(UserRequest request) throws Exception{
-        if(!jwtProvider.validateToken(request.getToken())) {
-            throw new BadCredentialsException("유효하지 않은 토큰입니다.");
-        }
-        if(!request.getUserId().equals(jwtProvider.getAccount(request.getToken()))){
-            throw new BadCredentialsException("사용자가 일치하지 않습니다.");
-        }
+
         try {
             userInfoRepository.deleteById(request.getUserId());
         } catch (Exception e) {
@@ -59,14 +46,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean UpdateUsers(UserRequest request) throws Exception{
-
-        if(!jwtProvider.validateToken(request.getToken())) {
-            throw new BadCredentialsException("유효하지 않은 토큰입니다.");
-        }
-
-        if(!request.getUserId().equals(jwtProvider.getAccount(request.getToken()))){
-            throw new BadCredentialsException("사용자가 일치하지 않습니다.");
-        }
 
         try {
             UserInfo userInfo = UserInfo.builder()
