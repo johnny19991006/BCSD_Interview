@@ -40,7 +40,7 @@ public class UserInfo {
     @Column(name = "user_education")
     private String userEducation;
 
-    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Authority> authorities = new ArrayList();
 

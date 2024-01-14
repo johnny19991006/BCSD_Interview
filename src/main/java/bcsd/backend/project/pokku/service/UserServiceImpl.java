@@ -1,29 +1,47 @@
 package bcsd.backend.project.pokku.service;
 
-import bcsd.backend.project.pokku.dao.AuthorityRepository;
 import bcsd.backend.project.pokku.dao.UserInfoRepository;
-import bcsd.backend.project.pokku.domain.Authority;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.dto.SignUpRequest;
+import bcsd.backend.project.pokku.dto.UserRequest;
+import bcsd.backend.project.pokku.dto.UserResponse;
 import bcsd.backend.project.pokku.security.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.Collections;
 
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SignUpServiceImpl implements SignUpService{
+public class UserServiceImpl implements UserService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
-    private final AuthorityRepository authorityRepository;
+    private final JwtProvider jwtProvider;
 
     @Override
-    public boolean register(SignUpRequest request) throws Exception{
+    public UserResponse findUsers(UserRequest request) throws Exception{
+        UserInfo userInfo = userInfoRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+
+        return new UserResponse(userInfo);
+    }
+
+    @Override
+    public boolean DeleteUsers(UserRequest request) throws Exception{
+
+        try {
+            userInfoRepository.deleteById(request.getUserId());
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            throw new Exception("잘못된 요청입니다.");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean UpdateUsers(UserRequest request) throws Exception{
         try {
             UserInfo userInfo = UserInfo.builder()
                     .userId(request.getUserId())
@@ -36,13 +54,7 @@ public class SignUpServiceImpl implements SignUpService{
                     .userEducation(request.getUserEducation())
                     .build();
 
-            userInfo.setRoles(Collections.singletonList(Authority.builder()
-                    .AuthName("ROLE_User")
-                    .build()));
-
             userInfoRepository.save(userInfo);
-            authorityRepository.save(Authority.builder().AuthName("ROLE_User").userInfo(userInfo).build());
-
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new Exception("잘못된 요청입니다.");
