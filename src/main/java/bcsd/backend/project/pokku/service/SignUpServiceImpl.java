@@ -35,13 +35,13 @@ public class SignUpServiceImpl implements SignUpService{
                     .userTel(request.getUserTel())
                     .userEducation(request.getUserEducation())
                     .build();
-            Authority auth = Authority.builder()
+
+            userInfo.setRoles(Collections.singletonList(Authority.builder()
                     .AuthName("ROLE_User")
-                    .build();
-            userInfo.setRoles(Collections.singletonList(auth));
+                    .build()));
 
             userInfoRepository.save(userInfo);
-            authorityRepository.save(auth);
+            authorityRepository.save(Authority.builder().AuthName("ROLE_User").userInfo(userInfo).build());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
