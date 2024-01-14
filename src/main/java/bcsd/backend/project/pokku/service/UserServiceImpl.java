@@ -37,20 +37,11 @@ public class UserServiceImpl implements UserService {
         UserInfo userInfo = userInfoRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
 
-        return UserResponse.builder()
-                .userId(userInfo.getUserId())
-                .userPassword(userInfo.getUserPassword())
-                .userName(userInfo.getUserName())
-                .userTel(userInfo.getUserTel())
-                .userEducation(userInfo.getUserEducation())
-                .userNickname(userInfo.getUserNickname())
-                .userBirth(userInfo.getUserBirth())
-                .userEmail(userInfo.getUserEmail())
-                .build();
+        return new UserResponse(userInfo);
     }
 
     @Override
-    public boolean DeleteUsers(UserRequest request, String id) throws Exception{
+    public boolean DeleteUsers(UserRequest request) throws Exception{
         if(!jwtProvider.validateToken(request.getToken())) {
             throw new BadCredentialsException("유효하지 않은 토큰입니다.");
         }
@@ -67,7 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean UpdateUsers(UserRequest request, String id) throws Exception{
+    public boolean UpdateUsers(UserRequest request) throws Exception{
 
         if(!jwtProvider.validateToken(request.getToken())) {
             throw new BadCredentialsException("유효하지 않은 토큰입니다.");
