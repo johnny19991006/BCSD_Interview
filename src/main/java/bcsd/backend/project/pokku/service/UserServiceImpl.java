@@ -25,14 +25,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponse findUsers(UserRequest request) throws Exception{
+
+        if(!jwtProvider.validateToken(request.getToken())) {
+            throw new BadCredentialsException("유효하지 않은 토큰입니다.");
+        }
+
+        if(!request.getUserId().equals(jwtProvider.getAccount(request.getToken()))){
+            throw new BadCredentialsException("사용자가 일치하지 않습니다.");
+        }
+
         UserInfo userInfo = userInfoRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
-        if(!passwordEncoder.matches(request.getUserPassword(), userInfo.getUserPassword())){
-            throw new BadCredentialsException("잘못된 계정 정보 입니다.");
-        }
-        if(!jwtProvider.validateToken(request.getToken())) {
-            throw new BadCredentialsException("유효하지 않은 토큰 입니다.");
-        }
+
         return UserResponse.builder()
                 .userId(userInfo.getUserId())
                 .userPassword(userInfo.getUserPassword())
@@ -43,36 +47,18 @@ public class UserServiceImpl implements UserService {
                 .userBirth(userInfo.getUserBirth())
                 .userEmail(userInfo.getUserEmail())
                 .build();
-
     }
 
     @Override
-    public boolean DeleteUsers(UserRequest request) throws Exception{
-        UserInfo user = userInfoRepository.findById(request.getUserId())
-                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
-        if(!passwordEncoder.matches(request.getUserPassword(), user.getUserPassword())){
-            throw new BadCredentialsException("잘못된 계정 정보 입니다.");
-        }
+    public boolean DeleteUsers(UserRequest request, String id) throws Exception{
         if(!jwtProvider.validateToken(request.getToken())) {
-            throw new BadCredentialsException("유효하지 않은 토큰 입니다.");
+            throw new BadCredentialsException("유효하지 않은 토큰입니다.");
+        }
+        if(!request.getUserId().equals(jwtProvider.getAccount(request.getToken()))){
+            throw new BadCredentialsException("사용자가 일치하지 않습니다.");
         }
         try {
-            UserInfo userInfo = UserInfo.builder()
-                    .userId(request.getUserId())
-                    .userPassword(passwordEncoder.encode(request.getUserPassword()))
-                    .userName(request.getUserName())
-                    .userNickname(request.getUserNickname())
-                    .userBirth(request.getUserBirth())
-                    .userEmail(request.getUserEmail())
-                    .userTel(request.getUserTel())
-                    .userEducation(request.getUserEducation())
-                    .build();
-
-            userInfo.setRoles(Collections.singletonList(Authority.builder()
-                    .AuthName("ROLE_User")
-                    .build()));
-
-            userInfoRepository.delete(userInfo);
+            userInfoRepository.deleteById(request.getUserId());
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new Exception("잘못된 요청입니다.");
@@ -81,15 +67,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean UpdateUsers(UserRequest request) throws Exception{
-        UserInfo user = userInfoRepository.findById(request.getUserId())
-                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
-        if(!passwordEncoder.matches(request.getUserPassword(), user.getUserPassword())){
-            throw new BadCredentialsException("잘못된 계정 정보 입니다.");
-        }
+    public boolean UpdateUsers(UserRequest request, String id) throws Exception{
+
         if(!jwtProvider.validateToken(request.getToken())) {
-            throw new BadCredentialsException("유효하지 않은 토큰 입니다.");
+            throw new BadCredentialsException("유효하지 않은 토큰입니다.");
         }
+
+        if(!request.getUserId().equals(jwtProvider.getAccount(request.getToken()))){
+            throw new BadCredentialsException("사용자가 일치하지 않습니다.");
+        }
+
         try {
             UserInfo userInfo = UserInfo.builder()
                     .userId(request.getUserId())

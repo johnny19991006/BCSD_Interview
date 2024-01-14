@@ -8,6 +8,6 @@ import java.util.List;
 
 public interface UserService {
     public UserResponse findUsers(UserRequest request) throws Exception;
-    public boolean DeleteUsers(UserRequest request) throws Exception;
-    public boolean UpdateUsers(UserRequest request) throws Exception;
+    public boolean DeleteUsers(UserRequest request, String id) throws Exception;
+    public boolean UpdateUsers(UserRequest request, String id) throws Exception;
 }
