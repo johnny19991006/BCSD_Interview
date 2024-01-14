@@ -23,20 +23,18 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<UserResponse> findUser(@RequestParam(name = "id") String id) throws Exception{
-        UserRequest request = new UserRequest();
-        request.setUserId(id);
+    @PostMapping(value = "/")
+    public ResponseEntity<UserResponse> findUser(@RequestBody UserRequest request) throws Exception{
         return new ResponseEntity<>(userService.findUsers(request), HttpStatus.OK);
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<Boolean> updateUser(@RequestBody UserRequest request, @RequestParam(name = "id") String id) throws Exception{
-        return new ResponseEntity<>(userService.UpdateUsers(request, id), HttpStatus.OK);
+    @PutMapping(value = "/")
+    public ResponseEntity<Boolean> updateUser(@RequestBody UserRequest request) throws Exception{
+        return new ResponseEntity<>(userService.UpdateUsers(request), HttpStatus.OK);
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Boolean> deleteUser(@RequestBody UserRequest request, @RequestParam(name = "id") String id) throws Exception{
-        return new ResponseEntity<>(userService.DeleteUsers(request, id), HttpStatus.OK);
+    @DeleteMapping(value = "/")
+    public ResponseEntity<Boolean> deleteUser(@RequestBody UserRequest request) throws Exception{
+        return new ResponseEntity<>(userService.DeleteUsers(request), HttpStatus.OK);
     }
 }
