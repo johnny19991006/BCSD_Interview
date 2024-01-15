@@ -83,6 +83,25 @@ localhost:8080/user, POST
 }
 ```
 
+###### 6-1 개인정보 공개 설정
+```text
+localhost:8080/about, POST
+
+{
+    "userId": ""
+}
+```
+```text
+localhost:8080/about, PUT
+
+{
+    "userId": "",
+    "userNameVisible": true or false,
+    "userTelVisible": true or false,
+    "userEmailVisible": true or false,
+    "userEducationVisible": true or false
+}
+```
 #### 1-2 Admin 권한
 
 ```text
