@@ -2,9 +2,9 @@ package bcsd.backend.project.pokku.service;
 
 import bcsd.backend.project.pokku.dao.UserInfoRepository;
 import bcsd.backend.project.pokku.domain.UserInfo;
+import bcsd.backend.project.pokku.dto.UserDFRequest;
 import bcsd.backend.project.pokku.dto.UserRequest;
 import bcsd.backend.project.pokku.dto.UserResponse;
-import bcsd.backend.project.pokku.security.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -18,10 +18,9 @@ public class UserServiceImpl implements UserService {
 
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
 
     @Override
-    public UserResponse findUsers(UserRequest request) throws Exception{
+    public UserResponse findUsers(UserDFRequest request) throws Exception{
         UserInfo userInfo = userInfoRepository.findById(request.getUserId())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
 
@@ -29,7 +28,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean DeleteUsers(UserRequest request) throws Exception{
+    public boolean DeleteUsers(UserDFRequest request) throws Exception{
 
         try {
             userInfoRepository.deleteById(request.getUserId());
