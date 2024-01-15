@@ -21,23 +21,23 @@ public class PortfolioAboutServiceImpl implements PortfolioAboutService{
     @Override
     public boolean updatePortfolioAbout(PortfolioAboutRequest request) throws Exception{
         try {
-            portfolioAboutRepository.save(PortfolioAbout.builder()
-                            .userInfo(UserInfo.builder().userId(request.getUserId()).build())
-                            .userEducationVisible(request.getUserEducationVisible())
-                            .userNameVisible(request.getUserNameVisible())
-                            .userTelVisible(request.getUserTelVisible())
-                            .userEmailVisible(request.getUserEmailVisible())
-                            .build());
+            portfolioAboutRepository.updateById(UserInfo.builder()
+                            .userId(request.getUserId())
+                            .build(),
+                    request.getUserEducationVisible(),
+                    request.getUserEmailVisible(),
+                    request.getUserNameVisible(),
+                    request.getUserTelVisible());
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
+            throw new Exception("Wrong" + e.getMessage());
         }
         return true;
     }
 
     @Override
     public PortfolioAboutResponse findPortfolioAbout(PortfolioAboutRequest request) throws Exception{
-        PortfolioAbout portfolioAbout = portfolioAboutRepository.findByUserId(request.getUserId())
+        PortfolioAbout portfolioAbout = portfolioAboutRepository.findByUserId(UserInfo.builder().userId(request.getUserId()).build())
                 .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
 
         return new PortfolioAboutResponse(portfolioAbout);
