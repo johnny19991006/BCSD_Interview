@@ -1,11 +1,12 @@
 package bcsd.backend.project.pokku.service;
 
 import bcsd.backend.project.pokku.dao.AuthorityRepository;
+import bcsd.backend.project.pokku.dao.PortfolioAboutRepository;
 import bcsd.backend.project.pokku.dao.UserInfoRepository;
 import bcsd.backend.project.pokku.domain.Authority;
+import bcsd.backend.project.pokku.domain.PortfolioAbout;
 import bcsd.backend.project.pokku.domain.UserInfo;
 import bcsd.backend.project.pokku.dto.SignUpRequest;
-import bcsd.backend.project.pokku.security.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,6 +22,7 @@ public class SignUpServiceImpl implements SignUpService{
     private final UserInfoRepository userInfoRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
+    private final PortfolioAboutRepository portfolioAboutRepository;
 
     @Override
     public boolean register(SignUpRequest request) throws Exception{
@@ -41,7 +43,17 @@ public class SignUpServiceImpl implements SignUpService{
                     .build()));
 
             userInfoRepository.save(userInfo);
-            authorityRepository.save(Authority.builder().AuthName("ROLE_User").userInfo(userInfo).build());
+            authorityRepository.save(Authority.builder()
+                    .AuthName("ROLE_User")
+                    .userInfo(userInfo)
+                    .build());
+            portfolioAboutRepository.save(PortfolioAbout.builder()
+                    .userNameVisible(Boolean.FALSE)
+                    .userEducationVisible(Boolean.FALSE)
+                    .userEmailVisible(Boolean.FALSE)
+                    .userTelVisible(Boolean.FALSE)
+                    .userInfo(userInfo)
+                    .build());
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
