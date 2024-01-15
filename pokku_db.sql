@@ -64,12 +64,15 @@ CREATE TABLE `portfolio_about`(
 CREATE TABLE `skills_frontend`(
 	`skills_frontend_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_frontend_id`)
+	PRIMARY KEY(`skills_frontend_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_frontend`(
-	`skills_frontend_id` INT AUTO_INCREMENT,
+    `user_portfolio_skills_frontend_id` INT AUTO_INCREMENT,
+	`skills_frontend_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_frontend_id`),
 	FOREIGN KEY(`skills_frontend_id`) REFERENCES `skills_frontend`(`skills_frontend_id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
 )DEFAULT CHARSET = UTF8;
@@ -77,12 +80,15 @@ CREATE TABLE `user_portfolio_skills_frontend`(
 CREATE TABLE `skills_backend`(
 	`skills_backend_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_backend_id`)
+	PRIMARY KEY(`skills_backend_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_backend`(
-	`skills_backend_id` INT AUTO_INCREMENT,
+	`user_portfolio_skills_backend_id` INT AUTO_INCREMENT,
+	`skills_backend_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_backend_id`),
 	FOREIGN KEY(`skills_backend_id`) REFERENCES `skills_backend`(`skills_backend_id`),
     FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
 )DEFAULT CHARSET = UTF8;
@@ -90,12 +96,15 @@ CREATE TABLE `user_portfolio_skills_backend`(
 CREATE TABLE `skills_mobileapp`(
 	`skills_mobileapp_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_mobileapp_id`)
+	PRIMARY KEY(`skills_mobileapp_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_mobileapp`(
-	`skills_mobileapp_id` INT AUTO_INCREMENT,
+	`user_portfolio_skills_mobileapp_id` INT AUTO_INCREMENT,
+	`skills_mobileapp_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_mobileapp_id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
    	FOREIGN KEY(`skills_mobileapp_id`) REFERENCES `skills_mobileapp`(`skills_mobileapp_id`)
 )DEFAULT CHARSET = UTF8;
@@ -103,12 +112,15 @@ CREATE TABLE `user_portfolio_skills_mobileapp`(
 CREATE TABLE `skills_deployment`(
 	`skills_deployment_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_deployment_id`)
+	PRIMARY KEY(`skills_deployment_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_deployment`(
-	`skills_deployment_id` INT AUTO_INCREMENT,
+	`user_portfolio_skills_deployment_id` INT AUTO_INCREMENT,
+	`skills_deployment_id` INT NOT NULL,
     `user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_deployment_id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
 	FOREIGN KEY(`skills_deployment_id`) REFERENCES `skills_deployment`(`skills_deployment_id`)
 )DEFAULT CHARSET = UTF8;
@@ -116,12 +128,15 @@ CREATE TABLE `user_portfolio_skills_deployment`(
 CREATE TABLE `skills_versioncontrol`(
 	`skills_versioncontrol_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_versioncontrol_id`)
+	PRIMARY KEY(`skills_versioncontrol_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_versioncontrol`(
-	`skills_versioncontrol_id` INT AUTO_INCREMENT,
+	`user_portfolio_skills_versioncontrol_id` INT AUTO_INCREMENT,
+	`skills_versioncontrol_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_versioncontrol_id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
 	FOREIGN KEY(`skills_versioncontrol_id`) REFERENCES `skills_versioncontrol`(`skills_versioncontrol_id`)
 )DEFAULT CHARSET = UTF8;
@@ -129,12 +144,15 @@ CREATE TABLE `user_portfolio_skills_versioncontrol`(
 CREATE TABLE `skills_communication`(
 	`skills_communication_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_communication_id`)
+	PRIMARY KEY(`skills_communication_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_communication`(
-	`skills_communication_id` INT AUTO_INCREMENT,
+	`user_portfolio_skills_communication_id` INT AUTO_INCREMENT,
+	`skills_communication_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_communication_id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
     FOREIGN KEY(`skills_communication_id`) REFERENCES `skills_communication`(`skills_communication_id`)
 )DEFAULT CHARSET = UTF8;
@@ -142,12 +160,15 @@ CREATE TABLE `user_portfolio_skills_communication`(
 CREATE TABLE `skills_certification`(
 	`skills_certification_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
-	PRIMARY KEY(`skills_certification_id`)
+	PRIMARY KEY(`skills_certification_id`),
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`image_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_certification`(
-	`skills_certification_id` INT AUTO_INCREMENT,
+    `user_portfolio_skills_certification_id` INT AUTO_INCREMENT,
+	`skills_certification_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
+	PRIMARY KEY(`user_portfolio_skills_certification_id`),
 	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
     FOREIGN KEY(`skills_certification_id`) REFERENCES `skills_certification`(`skills_certification_id`)
 )DEFAULT CHARSET = UTF8;
