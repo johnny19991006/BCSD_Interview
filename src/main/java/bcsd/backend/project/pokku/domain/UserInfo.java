@@ -44,6 +44,9 @@ public class UserInfo {
     @Builder.Default
     private List<Authority> authorities = new ArrayList();
 
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private PortfolioAbout portfolioAbout;
+
     public void setRoles(List<Authority> role) {
         this.authorities = role;
         role.forEach(o -> o.setUsers(this));
