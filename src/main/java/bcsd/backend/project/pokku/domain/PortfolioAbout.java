@@ -19,16 +19,16 @@ public class PortfolioAbout {
     private Long portfolioAboutId;
 
     @Column(name = "user_name_visible")
-    private Long userNameVisible;
+    private Boolean userNameVisible;
 
     @Column(name = "user_tel_visible")
-    private Long userTelVisible;
+    private Boolean userTelVisible;
 
     @Column(name = "user_email_Visible")
-    private Long userEmailVisible;
+    private Boolean userEmailVisible;
 
     @Column(name = "user_education_visible")
-    private Long userEducationVisible;
+    private Boolean userEducationVisible;
 
     @JoinColumn(name = "user_id")
     @OneToOne(fetch = FetchType.LAZY)
