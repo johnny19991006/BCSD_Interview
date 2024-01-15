@@ -9,15 +9,78 @@
 2. 로그인
 3. 회원정보 수정
 4. 회원 탈퇴
-5. 포트폴리오 작성
-    5-1 개인정보 공개 설정
-    5-2 github, blog, instagram 작성
-    5-3 개발 분야별 사용 가능한 기술스택 작성
-    5-4 아카이빙 작성
-    5-5 커리어 작성
-    5-6 프로젝트 작성
-6. 다른 유저 검색
-7. 즐겨찾기 추가
+5. 회원 정보 열람
+6. 포트폴리오 작성
+    6-1 개인정보 공개 설정
+    6-2 github, blog, instagram 작성
+    6-3 개발 분야별 사용 가능한 기술스택 작성
+    6-4 아카이빙 작성
+    6-5 커리어 작성
+    6-6 프로젝트 작성
+7. 다른 유저 검색
+8. 즐겨찾기 추가
+```
+#### 1-1 User권한 api 사용법
+###### 1.회원가입
+```text
+localhost:8080/sign-up, POST
+
+{
+    "userName": "",
+    "userBirth": "",
+    "userTel": "",
+    "userEmail": "",
+    "userId": "",
+    "userPassword": "",
+    "userNickname": "",
+    "userEducation": ""
+}
+```
+
+###### 2. 로그인
+```text
+localhost:8080/sign-in, POST
+
+{
+    "userId": "",
+    "userPassword": ""
+}
+```
+###### 3. 회원정보 수정
+```text
+localhost:8080/user, PUT
+
+{
+    "userName": "",
+    "userBirth": "",
+    "userTel": "",
+    "userEmail": "",
+    "userId": "",
+    "userPassword": "",
+    "userNickname": "",
+    "userEducation": "",
+    "token": ""
+}
+```
+
+###### 4. 회원 탈퇴
+```text
+localhost:8080/user, DELETE
+
+{
+    "userId": "",
+    "token": ""
+}
+```
+
+###### 5. 회원 정보 열람
+```text
+localhost:8080/user, POST
+
+{
+    "userId": "",
+    "token": ""
+}
 ```
 
 #### 1-2 Admin 권한
