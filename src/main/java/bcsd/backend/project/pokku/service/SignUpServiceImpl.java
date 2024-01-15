@@ -42,13 +42,6 @@ public class SignUpServiceImpl implements SignUpService{
                     .AuthName("ROLE_User")
                     .build()));
 
-            userInfo.setPortfolioAbout(PortfolioAbout.builder()
-                    .userNameVisible(Boolean.FALSE)
-                    .userEducationVisible(Boolean.FALSE)
-                    .userEmailVisible(Boolean.FALSE)
-                    .userTelVisible(Boolean.FALSE)
-                    .build());
-
             userInfoRepository.save(userInfo);
             authorityRepository.save(Authority.builder()
                     .AuthName("ROLE_User")
