@@ -133,9 +133,29 @@ localhost:8080/sns, PUT
     "userInstagram": ""
 }
 ```
+
+###### 6-e image 불러오기
+
+```text
+localhost:8080/download-img, POST
+
+{
+    "imageName": ["이름", "쓰기", "여러개", ...]
+}
+
+```
 #### 1-2 Admin 권한
 
 ```text
 1. 개발 분야별 사용 가능한 기술스택 이미지 추가 및 삭제
 2. 일반 사용자 삭제
+```
+#### 1-2 Admin권한 api 사용법
+
+###### 1.이미지 업로드
+```text
+localhost:8080/upload-img, POST, form-data
+
+var formData = new FormData();
+formData.append('image', file, 'name', '파일이름(확장자 제외)');
 ```
