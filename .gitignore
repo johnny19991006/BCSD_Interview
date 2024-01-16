@@ -8,6 +8,7 @@ build/
 /src/main/java/bcsd/backend/project/pokku/DBConnection/**
 /src/main/resources/application.yml
 /src/main/resources/application.properties
+/images/**
 
 ### STS ###
 .apt_generated
