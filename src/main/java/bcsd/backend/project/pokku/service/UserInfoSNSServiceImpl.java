@@ -8,9 +8,11 @@ import bcsd.backend.project.pokku.domain.UserInfoBlog;
 import bcsd.backend.project.pokku.domain.UserInfoGithub;
 import bcsd.backend.project.pokku.domain.UserInfoInstagram;
 import bcsd.backend.project.pokku.dto.UserInfoSNSRequest;
+import bcsd.backend.project.pokku.dto.UserInfoSNSResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.apache.catalina.User;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -21,6 +23,23 @@ public class UserInfoSNSServiceImpl implements UserInfoSNSService{
     private final UserInfoBlogRepository userInfoBlogRepository;
     private final UserInfoInstagramRepository userInfoInstagramRepository;
     private final UserInfoGithubRepository userInfoGithubRepository;
+
+    @Override
+    public UserInfoSNSResponse findSNS(UserInfoSNSRequest request) throws Exception{
+        UserInfoGithub userInfoGithub = userInfoGithubRepository.findByUserId(UserInfo.builder().userId(request.getUserId()).build())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+        UserInfoInstagram userInfoInstagram = userInfoInstagramRepository.findByUserId(UserInfo.builder().userId(request.getUserId()).build())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+        UserInfoBlog userInfoBlog = userInfoBlogRepository.findByUserId(UserInfo.builder().userId(request.getUserId()).build())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+
+        return UserInfoSNSResponse.builder()
+                .userId(request.getUserId())
+                .userInstagram(userInfoInstagram.getUserInstagram())
+                .userBlog(userInfoBlog.getUserBlog())
+                .userGithub(userInfoGithub.getUserGithub())
+                .build();
+    }
 
     @Override
     public boolean UpdateSNS(UserInfoSNSRequest request) throws Exception{
