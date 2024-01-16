@@ -114,6 +114,25 @@ localhost:8080/about, PUT
     "userEducationVisible": true or false
 }
 ```
+
+###### 6-2 github, blog, instagram 작성
+```text
+localhost:8080/sns, POST
+{
+    "userId": ""
+}
+```
+
+```text
+localhost:8080/sns, PUT
+
+{
+    "userId": "",
+    "userGithub": "",
+    "userBlog": "",
+    "userInstagram": ""
+}
+```
 #### 1-2 Admin 권한
 
 ```text
