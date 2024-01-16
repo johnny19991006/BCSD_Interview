@@ -1,0 +1,31 @@
+package bcsd.backend.project.pokku.controller;
+
+import bcsd.backend.project.pokku.dto.UserInfoSNSRequest;
+import bcsd.backend.project.pokku.dto.UserRequest;
+import bcsd.backend.project.pokku.service.SignUpServiceImpl;
+import bcsd.backend.project.pokku.service.UserInfoSNSServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+@RequestMapping(value = "/sns")
+public class UserInfoSNSController {
+
+    private UserInfoSNSServiceImpl userInfoSNSService;
+
+    @Autowired
+    public void setSignService(UserInfoSNSServiceImpl ssi){
+        this.userInfoSNSService = ssi;
+    }
+
+    @PutMapping
+    public ResponseEntity<Boolean> updateUser(@RequestBody UserInfoSNSRequest request) throws Exception{
+        return new ResponseEntity<>(userInfoSNSService.UpdateSNS(request), HttpStatus.OK);
+    }
+
+}
