@@ -13,6 +13,11 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Base64;
+import java.util.List;
 
 @Service
 @Transactional
@@ -65,9 +70,15 @@ public class ImageServiceImpl implements ImageService {
         return true;
     }
 
-//    @Override
-//    public ImageDownloadResponse download(ImageDownloadRequest request) throws Exception{
-//
-//    }
+    @Override
+    public ImageDownloadResponse download(ImageDownloadRequest request) throws Exception{
+        List<Image> images = imageRepository.findAllById(request.getImageName());
+        List<String> res = new ArrayList<>();
+        for (Image img: images) {
+            byte[] imageBytes = Files.readAllBytes(Paths.get(new File("").getAbsolutePath() + File.separator + img.getImageUrl()));
+            res.add(Base64.getEncoder().encodeToString(imageBytes));
+        }
+        return new ImageDownloadResponse(res);
+    }
 
 }

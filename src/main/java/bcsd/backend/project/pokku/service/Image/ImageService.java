@@ -6,5 +6,5 @@ import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
 
 public interface ImageService {
     public Boolean upload(ImageUploadRequest request) throws Exception;
-//    public ImageDownloadResponse download(ImageDownloadRequest request) throws Exception;
+    public ImageDownloadResponse download(ImageDownloadRequest request) throws Exception;
 }
