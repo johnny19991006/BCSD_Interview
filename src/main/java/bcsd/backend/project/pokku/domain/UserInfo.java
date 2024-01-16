@@ -47,6 +47,15 @@ public class UserInfo {
     @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private PortfolioAbout portfolioAbout;
 
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private UserInfoGithub userInfoGithub;
+
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private UserInfoInstagram userInfoInstagram;
+
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private UserInfoBlog userInfoBlog;
+
     public void setRoles(List<Authority> role) {
         this.authorities = role;
         role.forEach(o -> o.setUsers(this));
