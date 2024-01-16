@@ -1,9 +1,9 @@
 package bcsd.backend.project.pokku.controller;
 
-import bcsd.backend.project.pokku.dto.UserDFRequest;
-import bcsd.backend.project.pokku.dto.UserRequest;
-import bcsd.backend.project.pokku.dto.UserResponse;
-import bcsd.backend.project.pokku.service.UserServiceImpl;
+import bcsd.backend.project.pokku.dto.User.UserDFRequest;
+import bcsd.backend.project.pokku.dto.User.UserRequest;
+import bcsd.backend.project.pokku.dto.User.UserResponse;
+import bcsd.backend.project.pokku.service.User.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,9 +1,9 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.SignIn;
 
 import bcsd.backend.project.pokku.dao.UserInfoRepository;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.dto.SignInRequest;
-import bcsd.backend.project.pokku.dto.SignInResponse;
+import bcsd.backend.project.pokku.dto.SignIn.SignInRequest;
+import bcsd.backend.project.pokku.dto.SignIn.SignInResponse;
 import bcsd.backend.project.pokku.security.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

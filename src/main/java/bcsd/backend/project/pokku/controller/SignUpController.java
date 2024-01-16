@@ -1,7 +1,7 @@
 package bcsd.backend.project.pokku.controller;
 
-import bcsd.backend.project.pokku.dto.SignUpRequest;
-import bcsd.backend.project.pokku.service.SignUpServiceImpl;
+import bcsd.backend.project.pokku.dto.SignUp.SignUpRequest;
+import bcsd.backend.project.pokku.service.SignUp.SignUpServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

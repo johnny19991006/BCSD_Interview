@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.dto;
+package bcsd.backend.project.pokku.dto.SignIn;
 
 import lombok.Getter;
 import lombok.Setter;

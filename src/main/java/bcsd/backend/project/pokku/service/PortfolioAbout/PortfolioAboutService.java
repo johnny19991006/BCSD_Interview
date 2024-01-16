@@ -1,7 +1,7 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.PortfolioAbout;
 
-import bcsd.backend.project.pokku.dto.PortfolioAboutRequest;
-import bcsd.backend.project.pokku.dto.PortfolioAboutResponse;
+import bcsd.backend.project.pokku.dto.PortfolioAbout.PortfolioAboutRequest;
+import bcsd.backend.project.pokku.dto.PortfolioAbout.PortfolioAboutResponse;
 
 public interface PortfolioAboutService {
 

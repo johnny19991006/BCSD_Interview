@@ -1,10 +1,8 @@
 package bcsd.backend.project.pokku.controller;
 
-import bcsd.backend.project.pokku.dto.UserInfoSNSRequest;
-import bcsd.backend.project.pokku.dto.UserInfoSNSResponse;
-import bcsd.backend.project.pokku.dto.UserRequest;
-import bcsd.backend.project.pokku.service.SignUpServiceImpl;
-import bcsd.backend.project.pokku.service.UserInfoSNSServiceImpl;
+import bcsd.backend.project.pokku.dto.UserInfoSNS.UserInfoSNSRequest;
+import bcsd.backend.project.pokku.dto.UserInfoSNS.UserInfoSNSResponse;
+import bcsd.backend.project.pokku.service.UserInfoSNS.UserInfoSNSServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.dto;
+package bcsd.backend.project.pokku.dto.PortfolioAbout;
 
 import bcsd.backend.project.pokku.domain.PortfolioAbout;
 import lombok.*;

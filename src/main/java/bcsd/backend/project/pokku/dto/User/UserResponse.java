@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.dto;
+package bcsd.backend.project.pokku.dto.User;
 
 import bcsd.backend.project.pokku.domain.UserInfo;
 import lombok.AllArgsConstructor;

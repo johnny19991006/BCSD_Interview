@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.UserInfoSNS;
 
 import bcsd.backend.project.pokku.dao.UserInfoBlogRepository;
 import bcsd.backend.project.pokku.dao.UserInfoGithubRepository;
@@ -7,11 +7,10 @@ import bcsd.backend.project.pokku.domain.UserInfo;
 import bcsd.backend.project.pokku.domain.UserInfoBlog;
 import bcsd.backend.project.pokku.domain.UserInfoGithub;
 import bcsd.backend.project.pokku.domain.UserInfoInstagram;
-import bcsd.backend.project.pokku.dto.UserInfoSNSRequest;
-import bcsd.backend.project.pokku.dto.UserInfoSNSResponse;
+import bcsd.backend.project.pokku.dto.UserInfoSNS.UserInfoSNSRequest;
+import bcsd.backend.project.pokku.dto.UserInfoSNS.UserInfoSNSResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 

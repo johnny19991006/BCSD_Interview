@@ -1,8 +1,8 @@
 package bcsd.backend.project.pokku.controller;
 
-import bcsd.backend.project.pokku.dto.SignInRequest;
-import bcsd.backend.project.pokku.dto.SignInResponse;
-import bcsd.backend.project.pokku.service.SignInServiceImpl;
+import bcsd.backend.project.pokku.dto.SignIn.SignInRequest;
+import bcsd.backend.project.pokku.dto.SignIn.SignInResponse;
+import bcsd.backend.project.pokku.service.SignIn.SignInServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

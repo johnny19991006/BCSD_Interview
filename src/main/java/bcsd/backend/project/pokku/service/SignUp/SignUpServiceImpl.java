@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.SignUp;
 
 import bcsd.backend.project.pokku.dao.AuthorityRepository;
 import bcsd.backend.project.pokku.dao.PortfolioAboutRepository;
@@ -6,7 +6,7 @@ import bcsd.backend.project.pokku.dao.UserInfoRepository;
 import bcsd.backend.project.pokku.domain.Authority;
 import bcsd.backend.project.pokku.domain.PortfolioAbout;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.dto.SignUpRequest;
+import bcsd.backend.project.pokku.dto.SignUp.SignUpRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

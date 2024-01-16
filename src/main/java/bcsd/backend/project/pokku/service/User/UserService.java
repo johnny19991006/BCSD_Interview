@@ -1,10 +1,8 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.User;
 
-import bcsd.backend.project.pokku.dto.UserDFRequest;
-import bcsd.backend.project.pokku.dto.UserRequest;
-import bcsd.backend.project.pokku.dto.UserResponse;
-
-import java.util.List;
+import bcsd.backend.project.pokku.dto.User.UserDFRequest;
+import bcsd.backend.project.pokku.dto.User.UserRequest;
+import bcsd.backend.project.pokku.dto.User.UserResponse;
 
 public interface UserService {
     public UserResponse findUsers(UserDFRequest request) throws Exception;

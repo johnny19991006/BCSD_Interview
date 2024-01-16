@@ -1,10 +1,8 @@
 package bcsd.backend.project.pokku.controller;
 
-import bcsd.backend.project.pokku.dto.PortfolioAboutRequest;
-import bcsd.backend.project.pokku.dto.PortfolioAboutResponse;
-import bcsd.backend.project.pokku.dto.SignInRequest;
-import bcsd.backend.project.pokku.dto.SignInResponse;
-import bcsd.backend.project.pokku.service.PortfolioAboutServiceImpl;
+import bcsd.backend.project.pokku.dto.PortfolioAbout.PortfolioAboutRequest;
+import bcsd.backend.project.pokku.dto.PortfolioAbout.PortfolioAboutResponse;
+import bcsd.backend.project.pokku.service.PortfolioAbout.PortfolioAboutServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

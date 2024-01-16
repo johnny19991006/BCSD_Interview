@@ -1,11 +1,10 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.PortfolioAbout;
 
 import bcsd.backend.project.pokku.dao.PortfolioAboutRepository;
 import bcsd.backend.project.pokku.domain.PortfolioAbout;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.dto.PortfolioAboutRequest;
-import bcsd.backend.project.pokku.dto.PortfolioAboutResponse;
-import bcsd.backend.project.pokku.dto.UserResponse;
+import bcsd.backend.project.pokku.dto.PortfolioAbout.PortfolioAboutRequest;
+import bcsd.backend.project.pokku.dto.PortfolioAbout.PortfolioAboutResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;

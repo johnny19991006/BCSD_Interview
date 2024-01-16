@@ -1,11 +1,11 @@
-package bcsd.backend.project.pokku.dto;
+package bcsd.backend.project.pokku.dto.User;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class SignUpRequest {
+public class UserRequest {
     private String userName;
     private String userBirth;
     private String userTel;
@@ -14,4 +14,5 @@ public class SignUpRequest {
     private String userPassword;
     private String userNickname;
     private String userEducation;
+    private String token;
 }
