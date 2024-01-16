@@ -6,7 +6,7 @@ USE `pokku`;
 CREATE TABLE `user_info`(
 	`user_name` VARCHAR(10) NOT NULL,
 	`user_birth` DATE NOT NULL,
-	`user_tel` VARCHAR(12) NOT NULL,
+	`user_tel` VARCHAR(14) NOT NULL,
 	`user_email` VARCHAR(50) NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	`user_password` VARCHAR(255) NOT NULL,
