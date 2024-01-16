@@ -14,7 +14,7 @@ public class UserInfoBlog {
 
     @Id
     @Column(name = "user_blog")
-    private String userGithub;
+    private String userBlog;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

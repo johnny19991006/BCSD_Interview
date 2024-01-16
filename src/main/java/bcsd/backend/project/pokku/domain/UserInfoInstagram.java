@@ -14,7 +14,7 @@ public class UserInfoInstagram {
 
     @Id
     @Column(name = "user_instagram")
-    private String userGithub;
+    private String userInstagram;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
