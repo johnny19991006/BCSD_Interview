@@ -27,7 +27,7 @@ public class Post{
     @Column(nullable = true)
     private String filePath;
 
-    @ManyToOne(fetch = LAZY) // 지연 로딩 관련 엔티티의 데이터를 다 로드 안해서 성능 최적화 및 트래픽 감소
+    @ManyToOne(fetch = LAZY) // 지연 로딩 // 관련 entity의 데이터를 다 로드 안해서 성능 최적화 및 트래픽 감소
     @JoinColumn(name = "author_id", referencedColumnName = "user_id")
     private User author;
 
