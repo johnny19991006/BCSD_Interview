@@ -5,8 +5,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-
 import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "Post")
