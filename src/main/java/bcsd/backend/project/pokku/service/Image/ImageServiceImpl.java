@@ -31,6 +31,7 @@ public class ImageServiceImpl implements ImageService {
     private final SkillsMobileappRepository skillsMobileappRepository;
     private final SkillsDeploymentRepository skillsDeploymentRepository;
     private final SkillsVersioncontrolRepository skillsVersioncontrolRepository;
+    private final SkillsCommunicationRepository skillsCommunicationRepository;
 
     @Override
     public Boolean upload(ImageUploadRequest request) throws Exception {
@@ -89,7 +90,9 @@ public class ImageServiceImpl implements ImageService {
                             .image(img)
                             .build());
                 }else if(request.getCategory().equals("communication")){
-
+                    skillsCommunicationRepository.save(SkillsCommunication.builder()
+                            .image(img)
+                            .build());
                 }else if(request.getCategory().equals("certification")){
 
                 }
