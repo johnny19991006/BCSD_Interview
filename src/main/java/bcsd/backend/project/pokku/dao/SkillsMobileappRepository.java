@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface SkillsMobileappRepository extends JpaRepository<SkillsMobileapp, Long> {
 
     @Query("SELECT s FROM SkillsMobileapp s WHERE s.image = :skill_name")
-    Optional<PortfolioAbout> findBySkillName(@Param("skill_name") Image image);
+    Optional<SkillsMobileapp> findBySkillName(@Param("skill_name") Image image);
 
 }

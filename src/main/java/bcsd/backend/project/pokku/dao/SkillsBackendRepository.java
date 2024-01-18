@@ -12,6 +12,6 @@ import java.util.Optional;
 public interface SkillsBackendRepository extends JpaRepository<SkillsBackend, Long> {
 
     @Query("SELECT s FROM SkillsBackend s WHERE s.image = :skill_name")
-    Optional<PortfolioAbout> findBySkillName(@Param("skill_name") Image image);
+    Optional<SkillsBackend> findBySkillName(@Param("skill_name") Image image);
 
 }
