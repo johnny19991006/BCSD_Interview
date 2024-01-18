@@ -1,10 +1,15 @@
 package com.forum.forum_site.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "Post")
@@ -39,6 +44,12 @@ public class Post{
     @Column(nullable = false)
     private LocalDateTime created_at;
 
-    @Column(nullable = false)
-    private LocalDateTime updated_at;
+    @Builder
+    public Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
+
+    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 }
