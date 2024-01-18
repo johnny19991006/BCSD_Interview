@@ -22,5 +22,8 @@ public class Image {
     @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private SkillsFrontend skillsFrontend;
 
+    @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private SkillsBackend skillsBackend;
+
 
 }
