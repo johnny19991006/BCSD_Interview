@@ -3,9 +3,11 @@ package bcsd.backend.project.pokku.service.Image;
 import bcsd.backend.project.pokku.dao.ImageRepository;
 import bcsd.backend.project.pokku.dao.SkillsBackendRepository;
 import bcsd.backend.project.pokku.dao.SkillsFrontendRepository;
+import bcsd.backend.project.pokku.dao.SkillsMobileappRepository;
 import bcsd.backend.project.pokku.domain.Image;
 import bcsd.backend.project.pokku.domain.SkillsBackend;
 import bcsd.backend.project.pokku.domain.SkillsFrontend;
+import bcsd.backend.project.pokku.domain.SkillsMobileapp;
 import bcsd.backend.project.pokku.dto.Image.ImageDownloadRequest;
 import bcsd.backend.project.pokku.dto.Image.ImageDownloadResponse;
 import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
@@ -32,6 +34,7 @@ public class ImageServiceImpl implements ImageService {
     private final ImageRepository imageRepository;
     private final SkillsFrontendRepository skillsFrontendRepository;
     private final SkillsBackendRepository skillsBackendRepository;
+    private final SkillsMobileappRepository skillsMobileappRepository;
 
     @Override
     public Boolean upload(ImageUploadRequest request) throws Exception {
@@ -78,7 +81,9 @@ public class ImageServiceImpl implements ImageService {
                             .image(img)
                             .build());
                 }else if(request.getCategory().equals("mobileapp")){
-
+                    skillsMobileappRepository.save(SkillsMobileapp.builder()
+                            .image(img)
+                            .build());
                 }else if(request.getCategory().equals("deployment")){
 
                 }else if(request.getCategory().equals("versioncontrol")){
