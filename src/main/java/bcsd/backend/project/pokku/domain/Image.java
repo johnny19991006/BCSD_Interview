@@ -31,5 +31,8 @@ public class Image {
     @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private SkillsDeployment skillsDeployment;
 
+    @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private SkillsVersioncontrol skillsVersioncontrol;
+
 
 }
