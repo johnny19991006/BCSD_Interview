@@ -39,12 +39,14 @@ public class SignUpServiceImpl implements SignUpService{
                     .build();
 
             userInfo.setRoles(Collections.singletonList(Authority.builder()
-                    .AuthName("ROLE_User")
+//                    .AuthName("ROLE_User")
+                            .AuthName("ROLE_Admin")
                     .build()));
 
             userInfoRepository.save(userInfo);
             authorityRepository.save(Authority.builder()
-                    .AuthName("ROLE_User")
+//                    .AuthName("ROLE_User")
+                    .AuthName("ROLE_Admin")
                     .userInfo(userInfo)
                     .build());
             portfolioAboutRepository.save(PortfolioAbout.builder()
