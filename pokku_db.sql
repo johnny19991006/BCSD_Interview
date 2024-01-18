@@ -45,9 +45,9 @@ CREATE TABLE `user_info_blog`(
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `image`(
-	`image_name` VARCHAR(32) NOT NULL,
+	`skill_name` VARCHAR(32) NOT NULL,
 	`image_url` VARCHAR(256) NOT NULL,
-	PRIMARY KEY(`image_name`)
+	PRIMARY KEY(`skill_name`)
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `portfolio_about`(
