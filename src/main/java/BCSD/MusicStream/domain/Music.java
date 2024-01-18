@@ -19,7 +19,7 @@ public class Music {
     private String singer_name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
-    private User user;
+    private Users user;
     private LocalTime music_time;
     @Builder
     Music(Integer music_id, String music_name, Integer category_id, String singer_name, LocalTime music_time) {

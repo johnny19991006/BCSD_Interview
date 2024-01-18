@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -18,24 +16,25 @@ import java.util.stream.Collectors;
 @Entity
 @Builder
 @EqualsAndHashCode(of = "user_id")
-public class User implements UserDetails {
+public class Users implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer user_id;
     private String user_name;
+    @Column(name = "user_email")
     private String user_email;
+    @Column(name = "user_pw")
     private String user_pw;
     private LocalDate birth_date;
-    private Integer authority_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "authority_id")
+    private Authority authority;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    private List<String> roles = new ArrayList<>();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        Collection<SimpleGrantedAuthority> list = new ArrayList<>();
+        list.add(new SimpleGrantedAuthority(authority.getAuthority_type()));
+        return list;
     }
     @Override
     public String getPassword() {

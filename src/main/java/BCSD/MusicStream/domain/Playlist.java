@@ -14,7 +14,7 @@ public class Playlist {
     private String playlist_name;
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "User")
-    private User user;
+    private Users user;
     private String playlist_musics;
     @Builder
     Playlist(Integer playlist_id, String playlist_name, Integer user_id, String playlist_musics) {

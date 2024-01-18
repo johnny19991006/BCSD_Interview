@@ -1,5 +1,5 @@
 package BCSD.MusicStream.provider;
-import BCSD.MusicStream.dto.JwtToken;
+import BCSD.MusicStream.dto.JwtTokenDTO;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -29,7 +29,7 @@ public class JwtTokenProvider {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
-    public JwtToken generateToken(Authentication authentication) {
+    public JwtTokenDTO generateToken(Authentication authentication) {
         String authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.joining(","));
         long now = (new Date()).getTime();
         Date accessTokenExpiresln = new Date(now + TOKEN_EXPIRATION_TIME);
@@ -46,7 +46,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
 
-        return JwtToken.builder()
+        return JwtTokenDTO.builder()
                 .grantType("Bearer")
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)

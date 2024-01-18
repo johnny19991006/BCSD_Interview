@@ -1,5 +1,7 @@
 package BCSD.MusicStream.service;
 
-public interface UserService {
+import BCSD.MusicStream.dto.JwtTokenDTO;
 
+public interface UserService {
+    public JwtTokenDTO signIn(String userEmail, String password);
 }
