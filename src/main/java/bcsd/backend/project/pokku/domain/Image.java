@@ -37,4 +37,6 @@ public class Image {
     @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private SkillsCommunication skillsCommunication;
 
+    @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private SkillsCertification skillsCertification;
 }
