@@ -157,5 +157,5 @@ localhost:8080/download-img, POST
 localhost:8080/upload-img, POST, form-data
 
 var formData = new FormData();
-formData.append('image', file, 'name', '파일이름(확장자 제외)');
+formData.append('image', file, 'name', '파일이름(확장자 제외)', 'category', '{frontend, backend, deployment, versioncontrol, communication, certification} 중 택 1');
 ```
