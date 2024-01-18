@@ -32,6 +32,7 @@ public class ImageServiceImpl implements ImageService {
     private final SkillsDeploymentRepository skillsDeploymentRepository;
     private final SkillsVersioncontrolRepository skillsVersioncontrolRepository;
     private final SkillsCommunicationRepository skillsCommunicationRepository;
+    private final SkillsCertificationRepository skillsCertificationRepository;
 
     @Override
     public Boolean upload(ImageUploadRequest request) throws Exception {
@@ -94,7 +95,9 @@ public class ImageServiceImpl implements ImageService {
                             .image(img)
                             .build());
                 }else if(request.getCategory().equals("certification")){
-
+                    skillsCertificationRepository.save(SkillsCertification.builder()
+                            .image(img)
+                            .build());
                 }
 
                 File destination = new File(absolutePath + File.separator + path + originalFileExtension);
