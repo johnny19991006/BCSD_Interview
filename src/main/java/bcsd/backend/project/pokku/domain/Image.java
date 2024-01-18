@@ -1,9 +1,6 @@
 package bcsd.backend.project.pokku.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
@@ -16,9 +13,14 @@ import lombok.*;
 public class Image {
 
     @Id
-    @Column(name = "image_name")
-    private String imageName;
+    @Column(name = "skill_name")
+    private String skillName;
 
     @Column(name = "image_url")
     private String imageUrl;
+
+    @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private SkillsFrontend skillsFrontend;
+
+
 }
