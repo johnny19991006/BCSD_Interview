@@ -1,7 +1,9 @@
 package bcsd.backend.project.pokku.service.Image;
 
 import bcsd.backend.project.pokku.dao.ImageRepository;
+import bcsd.backend.project.pokku.dao.SkillsFrontendRepository;
 import bcsd.backend.project.pokku.domain.Image;
+import bcsd.backend.project.pokku.domain.SkillsFrontend;
 import bcsd.backend.project.pokku.dto.Image.ImageDownloadRequest;
 import bcsd.backend.project.pokku.dto.Image.ImageDownloadResponse;
 import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
@@ -26,6 +28,7 @@ import java.util.List;
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
+    private final SkillsFrontendRepository skillsFrontendRepository;
 
     @Override
     public Boolean upload(ImageUploadRequest request) throws Exception {
@@ -55,12 +58,35 @@ public class ImageServiceImpl implements ImageService {
                         return false;
                     }
                 }
-                File destination = new File(absolutePath + File.separator + path + originalFileExtension);
-                request.getImage().transferTo(destination);
-                imageRepository.save(Image.builder()
-                            .imageName(request.getName())
-                            .imageUrl(path + originalFileExtension)
+
+                Image img = Image.builder()
+                        .skillName(request.getName())
+                        .imageUrl(path + originalFileExtension)
+                        .build();
+
+                imageRepository.save(img);
+
+                if(request.getCategory().equals("backend")){
+
+                }else if(request.getCategory().equals("frontend")){
+                    skillsFrontendRepository.save(SkillsFrontend.builder()
+                            .image(img)
                             .build());
+                    File destination = new File(absolutePath + File.separator + path + originalFileExtension);
+                    request.getImage().transferTo(destination);
+                }else if(request.getCategory().equals("mobileapp")){
+
+                }else if(request.getCategory().equals("deployment")){
+
+                }else if(request.getCategory().equals("versioncontrol")){
+
+                }else if(request.getCategory().equals("communication")){
+
+                }else if(request.getCategory().equals("certification")){
+
+                }
+
+
             }
 
         } catch (Exception e) {
