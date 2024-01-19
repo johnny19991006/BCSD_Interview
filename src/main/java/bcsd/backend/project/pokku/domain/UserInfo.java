@@ -56,6 +56,9 @@ public class UserInfo {
     @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private UserInfoBlog userInfoBlog;
 
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsFrontend> userPortfolioSkillsFrontendList = new ArrayList<>();
+
     public void setRoles(List<Authority> role) {
         this.authorities = role;
         role.forEach(o -> o.setUsers(this));
