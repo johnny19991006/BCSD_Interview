@@ -26,14 +26,12 @@ public class Users implements UserDetails {
     @Column(name = "user_pw")
     private String user_pw;
     private LocalDate birth_date;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "authority_id")
-    private Authority authority;
+    private Boolean authority_type;
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<SimpleGrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority(authority.getAuthority_type()));
+        list.add(new SimpleGrantedAuthority(authority_type.toString()));
         return list;
     }
     @Override

@@ -31,9 +31,10 @@ public class SecurityConfig {
                 .and()
                 .authorizeHttpRequests()
                 // 해당 API에 대해서는 모든 요청을 허가
+                .requestMatchers("/user/sign-up").permitAll()
                 .requestMatchers("/user/sign-in").permitAll()
                 // USER 권한이 있어야 요청할 수 있음
-                .requestMatchers("/user/test").hasRole("Admin")
+                .requestMatchers("/user/test").hasRole("false")
                 // 이 밖에 모든 요청에 대해서 인증을 필요로 한다는 설정
                 .anyRequest().authenticated()
                 .and()

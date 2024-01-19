@@ -1,20 +1,29 @@
 package BCSD.MusicStream.service;
 
+import BCSD.MusicStream.domain.Users;
 import BCSD.MusicStream.dto.JwtTokenDTO;
+import BCSD.MusicStream.dto.SignUpDTO;
+import BCSD.MusicStream.dto.UserDTO;
 import BCSD.MusicStream.provider.JwtTokenProvider;
 import BCSD.MusicStream.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
+@RequiredArgsConstructor
+//@AllArgsConstructor
 public class UserServiceImpl implements UserService{
+    private final UserRepository userRepository;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -34,5 +43,28 @@ public class UserServiceImpl implements UserService{
         JwtTokenDTO jwtToken = jwtTokenProvider.generateToken(authentication);
 
         return jwtToken;
+    }
+
+    @Override
+    public void signUp(SignUpDTO signUpDTO) {
+        Users users = new Users(null,
+                signUpDTO.getUser_name(),
+                signUpDTO.getUser_email(),
+                signUpDTO.getUser_pw(),
+                signUpDTO.getBirth_date(),
+                signUpDTO.getAuthority_type());
+        userRepository.save(users);
+    }
+    @Override
+    public Boolean existsByUserEmail(String userEmail) {
+        return userRepository.findByUserEmail(userEmail).isPresent();
+    }
+    @Override
+    public void deleteUserByUserEmail(String userEmail) {
+        try {
+            userRepository.deleteUserByUserEmail(userEmail);
+        } catch (EmptyResultDataAccessException ex) {
+            throw new EntityNotFoundException("No user found with email: " + userEmail);
+        }
     }
 }
