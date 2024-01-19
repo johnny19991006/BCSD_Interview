@@ -3,6 +3,9 @@ package bcsd.backend.project.pokku.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Builder
 @Getter
@@ -20,4 +23,8 @@ public class SkillsVersioncontrol {
     @JoinColumn(name = "skill_name")
     @OneToOne(fetch = FetchType.LAZY)
     private Image image;
+
+    @OneToMany(mappedBy = "skillsVersioncontrol", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsVersioncontrol> userPortfolioSkillsVersioncontrolList = new ArrayList<>();
+
 }
