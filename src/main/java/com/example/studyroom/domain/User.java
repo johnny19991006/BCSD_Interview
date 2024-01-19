@@ -22,16 +22,12 @@ public class User {
     @NotNull
     private String name;
 
-    /*@Column(name = "seat_id")
-    private int seatId;*/
-
     @Column
     @NotNull
     private String password;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "school_id")
     private Seat seat;
 
     public User() {
