@@ -23,16 +23,16 @@ public class Room {
     @Column
     private int seats;
 
-    @Column
-    private int used_seats;
+    @Column(name = "used_seats")
+    private int usedSeats;
 
-    @Column
-    private int remain_seats;
+    @Column(name = "remain_seats")
+    private int remainSeats;
 
     public Room() {
     }
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
     private List<Seat> seatList = new ArrayList<>();
 }
