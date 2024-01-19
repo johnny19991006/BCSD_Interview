@@ -30,6 +30,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final UserPortfolioSkillsVersioncontrolRepository userPortfolioSkillsVersioncontrolRepository;
     private final SkillsVersioncontrolRepository skillsVersioncontrolRepository;
 
+    private final UserPortfolioSkillsCommunicationRepository userPortfolioSkillsCommunicationRepository;
+    private final SkillsCommunicationRepository skillsCommunicationRepository;
+
     @Override
     public Boolean addSkills(PortfolioRequest request) throws Exception{
 
@@ -103,6 +106,20 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(request.getUserId()).build())
                         .build());
             }
+        }else if(request.getCategory().equals("communication")){
+            skillsCommunicationRepository.findById(request.getSkillsId())
+                    .orElseThrow(() -> new Exception("존재하지 않는 skills_communication_id 입니다."));
+
+            Optional<Long> exists = userPortfolioSkillsCommunicationRepository.findEntityCnt(
+                    UserInfo.builder().userId(request.getUserId()).build(),
+                    SkillsCommunication.builder().skillsCommunicationId(request.getSkillsId()).build());
+
+            if(exists.get() == 0) {
+                userPortfolioSkillsCommunicationRepository.save(UserPortfolioSkillsCommunication.builder()
+                        .skillsCommunication(SkillsCommunication.builder().skillsCommunicationId(request.getSkillsId()).build())
+                        .userInfo(UserInfo.builder().userId(request.getUserId()).build())
+                        .build());
+            }
         }
 
         return true;
@@ -149,6 +166,14 @@ public class PortfolioServiceImpl implements PortfolioService {
                     .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
 
             userPortfolioSkillsVersioncontrolRepository.deleteById(exists.getUserPortfolioSkillsVersioncontrolId());
+
+        }else if(request.getCategory().equals("communication")) {
+            UserPortfolioSkillsCommunication exists = userPortfolioSkillsCommunicationRepository.findEntity(
+                            UserInfo.builder().userId(request.getUserId()).build(),
+                            SkillsCommunication.builder().skillsCommunicationId(request.getSkillsId()).build())
+                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+
+            userPortfolioSkillsCommunicationRepository.deleteById(exists.getUserPortfolioSkillsCommunicationId());
 
         }
 
