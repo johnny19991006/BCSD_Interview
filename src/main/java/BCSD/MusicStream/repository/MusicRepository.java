@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MusicRepository extends JpaRepository<Music, Long> {
-    @Query("select music from Music music join fetch music.user user where music.music_name = ?1")    //This is using a named query method
-    List<Music> findMusicByMusicName(String musicName);
+    @Query("SELECT music FROM Music music JOIN FETCH music.user user WHERE music.music_name LIKE %?1% OR music.singer_name LIKE %?1%")
+    List<Music> findMusicByMusicNameOrSingerName(String targetText);
+
 }
