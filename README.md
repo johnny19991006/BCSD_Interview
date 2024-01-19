@@ -144,6 +144,31 @@ localhost:8080/download-img, POST
 }
 
 ```
+
+###### 6-3 개발 분야별 사용 가능한 기술스택 작성
+
+```text
+localhost:8080/portfolio, POST
+
+{
+    "userId": "",
+    "category": "{frontend, backend, deployment, communication, certification, versioncontrol, mobileapp} 중 하나 작성"
+    "skillsId": n
+}
+
+```
+
+```text
+localhost:8080/portfolio, DELETE
+
+{
+    "userId": "",
+    "category": "{frontend, backend, deployment, communication, certification, versioncontrol, mobileapp} 중 하나 작성"
+    "skillsId": n
+}
+
+```
+
 #### 1-2 Admin 권한
 
 ```text
