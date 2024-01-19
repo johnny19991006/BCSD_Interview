@@ -27,6 +27,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     private final UserPortfolioSkillsMobileappRepository userPortfolioSkillsMobileappRepository;
     private final SkillsMobileappRepository skillsMobileappRepository;
 
+    private final UserPortfolioSkillsVersioncontrolRepository userPortfolioSkillsVersioncontrolRepository;
+    private final SkillsVersioncontrolRepository skillsVersioncontrolRepository;
+
     @Override
     public Boolean addSkills(PortfolioRequest request) throws Exception{
 
@@ -60,7 +63,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
         }else if(request.getCategory().equals("deployment")){
             skillsDeploymentRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_backend_id 입니다."));
+                    .orElseThrow(() -> new Exception("존재하지 않는 skills_deployment_id 입니다."));
 
             Optional<Long> exists = userPortfolioSkillsDeploymentRepository.findEntityCnt(
                     UserInfo.builder().userId(request.getUserId()).build(),
@@ -74,7 +77,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             }
         }else if(request.getCategory().equals("mobileapp")){
             skillsMobileappRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_backend_id 입니다."));
+                    .orElseThrow(() -> new Exception("존재하지 않는 skills_mobileapp_id 입니다."));
 
             Optional<Long> exists = userPortfolioSkillsMobileappRepository.findEntityCnt(
                     UserInfo.builder().userId(request.getUserId()).build(),
@@ -83,6 +86,20 @@ public class PortfolioServiceImpl implements PortfolioService {
             if(exists.get() == 0) {
                 userPortfolioSkillsMobileappRepository.save(UserPortfolioSkillsMobileapp.builder()
                         .skillsMobileapp(SkillsMobileapp.builder().skillsMobileappId(request.getSkillsId()).build())
+                        .userInfo(UserInfo.builder().userId(request.getUserId()).build())
+                        .build());
+            }
+        }else if(request.getCategory().equals("versioncontrol")){
+            skillsVersioncontrolRepository.findById(request.getSkillsId())
+                    .orElseThrow(() -> new Exception("존재하지 않는 skills_versioncontrol_id 입니다."));
+
+            Optional<Long> exists = userPortfolioSkillsVersioncontrolRepository.findEntityCnt(
+                    UserInfo.builder().userId(request.getUserId()).build(),
+                    SkillsVersioncontrol.builder().skillsVersioncontrolId(request.getSkillsId()).build());
+
+            if(exists.get() == 0) {
+                userPortfolioSkillsVersioncontrolRepository.save(UserPortfolioSkillsVersioncontrol.builder()
+                        .skillsVersioncontrol(SkillsVersioncontrol.builder().skillsVersioncontrolId(request.getSkillsId()).build())
                         .userInfo(UserInfo.builder().userId(request.getUserId()).build())
                         .build());
             }
@@ -124,6 +141,14 @@ public class PortfolioServiceImpl implements PortfolioService {
                     .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
 
             userPortfolioSkillsMobileappRepository.deleteById(exists.getUserPortfolioSkillsMobileappId());
+
+        }else if(request.getCategory().equals("versioncontrol")) {
+            UserPortfolioSkillsVersioncontrol exists = userPortfolioSkillsVersioncontrolRepository.findEntity(
+                            UserInfo.builder().userId(request.getUserId()).build(),
+                            SkillsVersioncontrol.builder().skillsVersioncontrolId(request.getSkillsId()).build())
+                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+
+            userPortfolioSkillsVersioncontrolRepository.deleteById(exists.getUserPortfolioSkillsVersioncontrolId());
 
         }
 
