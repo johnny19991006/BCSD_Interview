@@ -3,6 +3,9 @@ package bcsd.backend.project.pokku.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Builder
 @Getter
@@ -20,4 +23,8 @@ public class SkillsBackend {
     @JoinColumn(name = "skill_name")
     @OneToOne(fetch = FetchType.LAZY)
     private Image image;
+
+    @OneToMany(mappedBy = "skillsBackend", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsBackend> userPortfolioSkillsBackendList = new ArrayList<>();
+
 }
