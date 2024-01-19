@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageUploadRequest {
     private MultipartFile image;
     private String name;
+    private String category;
     public MultipartFile getImage() {
         return image;
     }

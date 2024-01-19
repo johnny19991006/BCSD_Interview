@@ -1,7 +1,7 @@
 package bcsd.backend.project.pokku.service.Image;
 
-import bcsd.backend.project.pokku.dao.ImageRepository;
-import bcsd.backend.project.pokku.domain.Image;
+import bcsd.backend.project.pokku.dao.*;
+import bcsd.backend.project.pokku.domain.*;
 import bcsd.backend.project.pokku.dto.Image.ImageDownloadRequest;
 import bcsd.backend.project.pokku.dto.Image.ImageDownloadResponse;
 import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
@@ -26,6 +26,13 @@ import java.util.List;
 public class ImageServiceImpl implements ImageService {
 
     private final ImageRepository imageRepository;
+    private final SkillsFrontendRepository skillsFrontendRepository;
+    private final SkillsBackendRepository skillsBackendRepository;
+    private final SkillsMobileappRepository skillsMobileappRepository;
+    private final SkillsDeploymentRepository skillsDeploymentRepository;
+    private final SkillsVersioncontrolRepository skillsVersioncontrolRepository;
+    private final SkillsCommunicationRepository skillsCommunicationRepository;
+    private final SkillsCertificationRepository skillsCertificationRepository;
 
     @Override
     public Boolean upload(ImageUploadRequest request) throws Exception {
@@ -55,12 +62,47 @@ public class ImageServiceImpl implements ImageService {
                         return false;
                     }
                 }
+
+                Image img = Image.builder()
+                        .skillName(request.getName())
+                        .imageUrl(path + originalFileExtension)
+                        .build();
+
+                imageRepository.save(img);
+
+                if(request.getCategory().equals("backend")){
+                    skillsBackendRepository.save(SkillsBackend.builder()
+                            .image(img)
+                            .build());
+                }else if(request.getCategory().equals("frontend")){
+                    skillsFrontendRepository.save(SkillsFrontend.builder()
+                            .image(img)
+                            .build());
+                }else if(request.getCategory().equals("mobileapp")){
+                    skillsMobileappRepository.save(SkillsMobileapp.builder()
+                            .image(img)
+                            .build());
+                }else if(request.getCategory().equals("deployment")){
+                    skillsDeploymentRepository.save(SkillsDeployment.builder()
+                            .image(img)
+                            .build());
+                }else if(request.getCategory().equals("versioncontrol")){
+                    skillsVersioncontrolRepository.save(SkillsVersioncontrol.builder()
+                            .image(img)
+                            .build());
+                }else if(request.getCategory().equals("communication")){
+                    skillsCommunicationRepository.save(SkillsCommunication.builder()
+                            .image(img)
+                            .build());
+                }else if(request.getCategory().equals("certification")){
+                    skillsCertificationRepository.save(SkillsCertification.builder()
+                            .image(img)
+                            .build());
+                }
+
                 File destination = new File(absolutePath + File.separator + path + originalFileExtension);
                 request.getImage().transferTo(destination);
-                imageRepository.save(Image.builder()
-                            .imageName(request.getName())
-                            .imageUrl(path + originalFileExtension)
-                            .build());
+
             }
 
         } catch (Exception e) {

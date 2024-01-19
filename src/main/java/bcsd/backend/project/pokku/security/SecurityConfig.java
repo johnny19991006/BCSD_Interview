@@ -52,6 +52,7 @@ public class SecurityConfig {
                                 .requestMatchers("/sns/**").hasRole("User")
                                 .requestMatchers("/upload-img/**").hasRole("Admin")
                                 .requestMatchers("/download-img/**").hasAnyRole("User", "Admin")
+                                .requestMatchers("/portfolio").hasAnyRole("User", "Admin")
                                 .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)

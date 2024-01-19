@@ -1,0 +1,18 @@
+package bcsd.backend.project.pokku.dao;
+
+import bcsd.backend.project.pokku.domain.*;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+public interface UserPortfolioSkillsCommunicationRepository extends JpaRepository<UserPortfolioSkillsCommunication, Long> {
+    @Query("SELECT count(p) FROM UserPortfolioSkillsCommunication p WHERE p.userInfo = :user_id and p.skillsCommunication = :skills_communication_id")
+    Optional<Long> findEntityCnt(@Param("user_id") UserInfo user, @Param("skills_communication_id") SkillsCommunication skillsCommunication);
+
+    @Query("SELECT p FROM UserPortfolioSkillsCommunication p WHERE p.userInfo = :user_id and p.skillsCommunication = :skills_communication_id")
+    Optional<UserPortfolioSkillsCommunication> findEntity(@Param("user_id") UserInfo user, @Param("skills_communication_id") SkillsCommunication skillsCommunication);
+}
+
