@@ -7,5 +7,6 @@ import lombok.Setter;
 @Setter
 public class PortfolioRequest {
     private String userId;
-    private Long skillsFrontendId;
+    private String category;
+    private Long skillsId;
 }
