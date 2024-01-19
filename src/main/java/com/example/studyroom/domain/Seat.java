@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -23,11 +24,11 @@ public class Seat {
     @Column(name = "is_used")
     private boolean isUsed;
 
-    @Column(name = "user_id")
-    private int userId;
+    @Column(name = "school_id", insertable = false, updatable = false)
+    private int schoolId;
 
-    @Column
-    private int room_id;
+    @Column(name = "room_id", insertable = false, updatable = false)
+    private int roomId;
 
     @Column(name = "start_time")
     @CreationTimestamp
