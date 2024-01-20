@@ -1,8 +1,9 @@
 package BCSD.MusicStream.service;
 
-import BCSD.MusicStream.domain.Iyrics;
-import BCSD.MusicStream.domain.Music;
+import BCSD.MusicStream.domain.*;
+import BCSD.MusicStream.dto.AddMusicDTO;
 import BCSD.MusicStream.dto.MusicDTO;
+import BCSD.MusicStream.repository.LikeRepository;
 import BCSD.MusicStream.repository.MusicRepository;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class MusicServiceImpl implements MusicService{
-
+    private final LikeRepository likeRepository;
     private final MusicRepository musicRepository;
     private final String MUSIC_FILE_PATH = "http://localhost:8080/music/musicMP3/";
     private final String MUSIC_ICON_PATH = "http://localhost:8080/music/musicIcon/";
@@ -48,8 +49,20 @@ public class MusicServiceImpl implements MusicService{
     }
 
     @Override
-    public void addMusic(MusicDTO musicDTO) {
+    public void addMusic(AddMusicDTO addMusicDTO) {
+//        Music music = Music.builder()
+//                .music_id(null)
+//                .music_name(addMusicDTO.getMusicName())
+//                .music_time(addMusicDTO.getMusicTime())
+//                .category(new Category())
 
+//        Users users = new Users(null,
+//                signUpDTO.getUser_name(),
+//                signUpDTO.getUser_email(),
+//                signUpDTO.getUser_pw(),
+//                signUpDTO.getBirth_date(),
+//                signUpDTO.getAuthority_type());
+//        userRepository.save(users);
     }
 
     @Override

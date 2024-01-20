@@ -1,29 +1,22 @@
 package BCSD.MusicStream.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Entity
+@Builder
 public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer like_id;
-    Integer user_id;
-    Integer music_id;
+    private Integer like_id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private Users user;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "music_id")
+    private Music music;
     boolean is_like;
-    @Builder
-    Like(Integer like_id, Integer user_id, Integer music_id, boolean is_like) {
-        this.like_id = like_id;
-        this.user_id = user_id;
-        this.music_id = music_id;
-        this.is_like = is_like;
-    }
-
 }
