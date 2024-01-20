@@ -11,7 +11,8 @@ import lombok.*;
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer playlist_id;
+    @Column(name = "playlist_id")
+    private Integer id;
     private String playlist_name;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

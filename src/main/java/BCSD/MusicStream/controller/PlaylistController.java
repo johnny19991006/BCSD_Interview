@@ -20,8 +20,9 @@ public class PlaylistController {
     public void modefiedPlaylistName(@RequestBody ModefiedPlaylistDTO modefiedPlaylistDTO) {
         playlistService.modefiedPlaylistName(modefiedPlaylistDTO);
     }
-    @DeleteMapping
-    public void deletePlaylist(@PathVariable Integer playlistId) {
-        playlistService.removePlaylist(playlistId);
+    @DeleteMapping("/{playlistId}")
+    public void deletePlaylist(@PathVariable String playlistId) {
+        System.out.println(playlistId);
+        playlistService.removePlaylist(Integer.parseInt(playlistId));
     }
 }

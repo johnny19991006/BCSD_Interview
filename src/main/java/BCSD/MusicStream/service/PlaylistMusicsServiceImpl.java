@@ -43,7 +43,7 @@ public class PlaylistMusicsServiceImpl implements PlaylistMusicsService {
     }
 
     @Override
-    public List<Music> findAllMusicByPlaylistId(Integer playlistId) {
-        return playlistMusicRepository.findAllByPlaylistId(playlistId);
+    public List<PlaylistMusics> findAllMusicByPlaylistId(Integer playlistId) {
+        return playlistMusicRepository.findAllByPlaylist_id(playlistId);
     }
 }
