@@ -1,20 +1,17 @@
-package bcsd.backend.project.pokku.dto;
+package bcsd.backend.project.pokku.dto.User;
 
-import bcsd.backend.project.pokku.domain.Authority;
 import bcsd.backend.project.pokku.domain.UserInfo;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter
-@Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpResponse {
+public class UserResponse {
+
     private String userName;
     private String userBirth;
     private String userTel;
@@ -23,10 +20,8 @@ public class SignUpResponse {
     private String userPassword;
     private String userNickname;
     private String userEducation;
-    private String token;
-    private List<Authority> authorities = new ArrayList<>();
 
-    public SignUpResponse(UserInfo user){
+    public UserResponse(UserInfo user){
         this.userName = user.getUserName();
         this.userBirth = user.getUserBirth();
         this.userTel = user.getUserTel();
@@ -35,6 +30,5 @@ public class SignUpResponse {
         this.userPassword = user.getUserPassword();
         this.userNickname = user.getUserNickname();
         this.userEducation = user.getUserEducation();
-        this.authorities = user.getAuthorities();
     }
 }

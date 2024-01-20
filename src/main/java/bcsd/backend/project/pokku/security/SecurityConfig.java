@@ -46,6 +46,14 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
                                 .requestMatchers("/sign-up").permitAll()
+                                .requestMatchers("/sign-in").permitAll()
+                                .requestMatchers("/user/**").hasAnyRole("User", "Admin")
+                                .requestMatchers("/about/**").hasAnyRole("User", "Admin")
+                                .requestMatchers("/sns/**").hasAnyRole("User", "Admin")
+                                .requestMatchers("/upload-img/**").hasRole("Admin")
+                                .requestMatchers("/download-img/**").hasAnyRole("User", "Admin")
+                                .requestMatchers("/portfolio").hasAnyRole("User", "Admin")
+                                .requestMatchers("/archiving").hasAnyRole("User", "Admin")
                                 .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)

@@ -40,9 +40,45 @@ public class UserInfo {
     @Column(name = "user_education")
     private String userEducation;
 
-    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @Builder.Default
     private List<Authority> authorities = new ArrayList();
+
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private PortfolioAbout portfolioAbout;
+
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private UserInfoGithub userInfoGithub;
+
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private UserInfoInstagram userInfoInstagram;
+
+    @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private UserInfoBlog userInfoBlog;
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsFrontend> userPortfolioSkillsFrontendList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsBackend> userPortfolioSkillsBackendList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsDeployment> userPortfolioSkillsDeploymentList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsMobileapp> userPortfolioSkillsMobileappsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsVersioncontrol> userPortfolioSkillsVersioncontrolsList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsCommunication> userPortfolioSkillsCommunicationList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<UserPortfolioSkillsCertification> userPortfolioSkillsCertifications = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    private List<PortfolioArchiving> portfolioArchivingList = new ArrayList<>();
 
     public void setRoles(List<Authority> role) {
         this.authorities = role;
