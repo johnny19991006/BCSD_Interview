@@ -57,11 +57,12 @@ public class Post{
 
     public void confirmAuthor(User author) {
         this.author = author;
-        if (author != null) {
-            author.addPost(this);
-        }
+        author.addPost(this);
     }
 
+    public void updateTitle(String title) { this.title = title; }
+
+    public void updateContent(String content) { this.content = content; }
     public void updateFilePath(String filePath) {
         this.filePath = filePath;
     }
