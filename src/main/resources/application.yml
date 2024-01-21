@@ -1,0 +1,38 @@
+# 데이터 소스
+# 데이터베이스에 접근하기 위한 드라이버, URL, 사용자 이름, 암호 등을 포함, 개발자는 데이터 소스를 사용하여
+#데이터베이스와의 연결을 설정하고, 커넥션 풀에서 커넥션을 가져올 수 있다.
+spring:
+  datasource:
+    hikari:
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+      jdbc-url: jdbc:log4jdbc:mysql://localhost:3306/bookProject?serverTimezone=Asia/Seoul&characterEncoding=utf8
+      username: root
+      password: grumpy1319!
+      connection-test-query: SELECT NOW() FROM dual
+
+
+  # 정적 파일 변경 실시간 반영
+  devtools:
+    restart:
+      enabled: 'false'
+    livereload:
+      enabled: 'true'
+
+  # 타임리프 캐싱 OFF
+  thymeleaf:
+    cache: 'false'
+
+  # JPA 설정
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: 'false'
+    show-sql: 'true'
+    open-in-view: 'false'
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: 'true'
+        use_sql_comments: 'true'
+        default_batch_fetch_size: '100'
