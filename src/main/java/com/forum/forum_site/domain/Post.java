@@ -17,7 +17,7 @@ import static jakarta.persistence.FetchType.LAZY;
 @NoArgsConstructor
 @Entity
 public class Post{
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 데이터베이스에 위임
     private Integer post_id;
 
     @Column(length = 40, nullable = false)
@@ -30,7 +30,9 @@ public class Post{
     @Column(nullable = true)
     private String filePath;
 
-    @ManyToOne(fetch = LAZY) // 지연 로딩 // 관련 entity의 데이터를 다 로드 안해서 성능 최적화 및 트래픽 감소
+    // 익명 게시를 위해 optional = true 추가
+    // 지연 로딩 // 관련 entity의 데이터를 다 로드 안해서 성능 최적화 및 트래픽 감소
+    @ManyToOne(fetch = LAZY, optional = true)
     @JoinColumn(name = "author_id", referencedColumnName = "user_id")
     private User author;
 
@@ -39,10 +41,10 @@ public class Post{
     private Board board;
 
     @Column(nullable = false)
-    private Integer likes_count;
+    private Integer likes_count = 0;
 
     @Column(nullable = false)
-    private LocalDateTime created_at;
+    private LocalDateTime created_at = LocalDateTime.now();
 
     @Builder
     public Post(String title, String content) {
@@ -52,4 +54,15 @@ public class Post{
 
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
+
+    public void confirmAuthor(User author) {
+        this.author = author;
+        if (author != null) {
+            author.addPost(this);
+        }
+    }
+
+    public void updateFilePath(String filePath) {
+        this.filePath = filePath;
+    }
 }
