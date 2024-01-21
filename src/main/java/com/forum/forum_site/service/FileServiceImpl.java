@@ -2,12 +2,14 @@ package com.forum.forum_site.service;
 
 import com.forum.forum_site.exception.FileException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+@Service
 public class FileServiceImpl implements FileService{
 
     // application.properties 파일에 있는 file.dir의 내용을 가져옴
