@@ -25,12 +25,12 @@ public class PortfolioCareerController {
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> addArchiving(@RequestBody PortfolioCareerRequest request) throws Exception{
+    public ResponseEntity<Boolean> addCareer(@RequestBody PortfolioCareerRequest request) throws Exception{
         return new ResponseEntity<>(portfolioArchivingService.addCareer(request), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public ResponseEntity<Boolean> deleteArchiving(@RequestBody PortfolioCareerRequest request) throws Exception{
+    public ResponseEntity<Boolean> deleteCareer(@RequestBody PortfolioCareerRequest request) throws Exception{
         return new ResponseEntity<>(portfolioArchivingService.deleteCareer(request), HttpStatus.OK);
     }
 }
