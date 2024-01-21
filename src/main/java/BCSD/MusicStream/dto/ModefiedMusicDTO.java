@@ -1,7 +1,5 @@
 package BCSD.MusicStream.dto;
 
-import BCSD.MusicStream.domain.Category;
-import BCSD.MusicStream.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +10,8 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @Builder
-public class AddMusicDTO {
+public class ModefiedMusicDTO {
+    private Integer musicId;
     private String musicName;
     private Integer categoryId;
     private String singerName;
