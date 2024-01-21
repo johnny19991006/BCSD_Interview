@@ -4,17 +4,16 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 
 @Getter
-public class FileException extends RuntimeException {
-
+public class PostException extends RuntimeException{
     private final int errorCode;
     private final HttpStatus httpStatus;
     private final String errorMessage;
 
     // 파일 예외 유형을 정의하는 열거형을 내부 클래스로 정의
     public enum Type {
-        FILE_CAN_NOT_SAVE(10000, HttpStatus.BAD_REQUEST, "파일 저장에 실패했습니다."),
-        FILE_CAN_NOT_DELETE(10001, HttpStatus.BAD_REQUEST, "파일 삭제에 실패했습니다."),
-        FILE_CAN_NOT_UPLOAD(10002, HttpStatus.BAD_REQUEST, "파일 업로드에 실패했습니다.");
+        POST_NOT_POUND(700, HttpStatus.NOT_FOUND, "찾으시는 포스트가 없습니다"),
+        NOT_AUTHORITY_UPDATE_POST(701, HttpStatus.FORBIDDEN, "포스트를 업데이트할 권한이 없습니다."),
+        NOT_AUTHORITY_DELETE_POST(702, HttpStatus.FORBIDDEN, "포스트를 삭제할 권한이 없습니다.");
 
         private final int errorCode;
         private final HttpStatus httpStatus;
@@ -28,7 +27,7 @@ public class FileException extends RuntimeException {
     }
 
     // 파일 예외 생성자
-    public FileException(Type type) {
+    public PostException(PostException.Type type) {
         super(type.errorMessage);
         this.errorCode = type.errorCode;
         this.httpStatus = type.httpStatus;
