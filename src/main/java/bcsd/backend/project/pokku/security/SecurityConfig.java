@@ -55,6 +55,7 @@ public class SecurityConfig {
                                 .requestMatchers("/portfolio").hasAnyRole("User", "Admin")
                                 .requestMatchers("/archiving").hasAnyRole("User", "Admin")
                                 .requestMatchers("/career").hasAnyRole("User", "Admin")
+                                .requestMatchers("/project").hasAnyRole("User", "Admin")
                                 .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
