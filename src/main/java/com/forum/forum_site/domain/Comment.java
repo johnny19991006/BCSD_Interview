@@ -17,13 +17,11 @@ public class Comment {
     private Integer comment_id;
 
     @ManyToOne(fetch = LAZY)
-    @Column(nullable = false)
-    @JoinColumn(name = "post_id")
+    @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
     @ManyToOne(fetch = LAZY)
-    @Column(nullable = false)
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id" , nullable = false)
     private User author;
 
     @ManyToOne(fetch = LAZY)
