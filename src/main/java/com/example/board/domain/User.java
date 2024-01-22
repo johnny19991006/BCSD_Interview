@@ -39,10 +39,11 @@ public class User {
     @ManyToOne
     @JoinColumn(name = "usertype_id")
     private Usertype userType;
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
 
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
-
-    @OneToMany(mappedBy = "user")
-    private List<Board> comments;
 }

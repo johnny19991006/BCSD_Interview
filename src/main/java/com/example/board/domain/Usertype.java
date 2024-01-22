@@ -1,5 +1,6 @@
 package com.example.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,13 +17,14 @@ import java.util.List;
 @Table(name = "usertypes")
 public class Usertype {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "usertype_id")
-    private int userTypeId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer userTypeId;
 
     @Column(name = "type_name", unique = true, length = 20)
     private String typeName;
 
     @OneToMany(mappedBy = "userType")
+    @JsonIgnore
     private List<User> users;
 }

@@ -1,10 +1,9 @@
 package com.example.board.controller;
 
 import com.example.board.domain.User;
+import com.example.board.dto.UserDTO;
 import com.example.board.service.UserService;
-import com.example.board.service.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -14,32 +13,40 @@ import java.util.List;
 @RequestMapping("/users")
 public class UserController {
     private final UserService userService;
-
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
     @PostMapping
-    public User insertUser(User user) throws SQLException {
+    public User insertUser(@RequestBody User user) throws SQLException {
         return userService.insertUser(user);
     }
-
     @GetMapping
     public List<User> getAllUsers() throws SQLException {
         return userService.getAllUsers();
     }
-    @GetMapping("/{userId}")
-    public User getUserByUserId(@PathVariable Long userId) throws SQLException {
+    @GetMapping("/{userId}/admin")
+    public User getUserByUserId(@PathVariable Integer userId) throws SQLException {
         return userService.getUserByUserId(userId);
     }
-
-    @PutMapping("/{userId}")
-    public void updateUserPw(@PathVariable Long userId, User user) throws SQLException {
-        userService.updateUserPw(userId, user);
+    @GetMapping("/{userId}/general")
+    public UserDTO getUserSimpleInfoByUserId(@PathVariable Integer userId) throws SQLException {
+        return userService.getUserSimpleInfoByUserId(userId);
     }
-
+    @PutMapping("/{userId}/password") //DTO 사용하는 방식도 있음
+    public void updateUserPw(@PathVariable Integer userId, @RequestBody String newPw) throws SQLException {
+        userService.updateUserPw(userId, newPw);
+    }
+    @PutMapping("/{userId}/nickname")
+    public void updateUserNn(@PathVariable Integer userId, @RequestBody String newNn) throws SQLException {
+        userService.updateUserNn(userId, newNn);
+    }
+    @PutMapping("/{userId}/type")
+    public void updateUsertype(@PathVariable Integer userId, @RequestBody Integer newTypeNum) throws SQLException {
+        userService.updateUsertype(userId, newTypeNum);
+    }
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Long userId) throws SQLException {
+    public void deleteUser(@PathVariable Integer userId) throws SQLException {
         userService.deleteUser(userId);
     }
 }

@@ -1,5 +1,6 @@
 package com.example.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,7 +22,4 @@ public class Hashtag {
 
     @Column(name = "hashtag_name", unique = true, length = 20)
     private String hashtagName;
-
-    @OneToMany(mappedBy = "hashtag", cascade = CascadeType.ALL)
-    private List<BoardHasHashtag> boardHashtags;
 }
