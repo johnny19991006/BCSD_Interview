@@ -20,18 +20,18 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserResponse> findUser(@PathVariable String userId) throws Exception{
+    public ResponseEntity<UserResponse> findUser(@PathVariable(name = "id") String userId) throws Exception{
 
         return new ResponseEntity<>(userService.findUsers(userId), HttpStatus.OK);
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Boolean> updateUser(@PathVariable String userId, @RequestBody UserRequest request) throws Exception{
+    public ResponseEntity<Boolean> updateUser(@PathVariable(name = "id") String userId, @RequestBody UserRequest request) throws Exception{
         return new ResponseEntity<>(userService.UpdateUsers(userId, request), HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Boolean> deleteUser(@PathVariable String userId) throws Exception{
+    public ResponseEntity<Boolean> deleteUser(@PathVariable(name = "id") String userId) throws Exception{
 
         return new ResponseEntity<>(userService.DeleteUsers(userId), HttpStatus.OK);
     }
