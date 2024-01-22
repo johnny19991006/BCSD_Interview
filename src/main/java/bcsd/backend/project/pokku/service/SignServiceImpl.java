@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.service.SignUp;
+package bcsd.backend.project.pokku.service;
 
 import bcsd.backend.project.pokku.dao.AuthorityRepository;
 import bcsd.backend.project.pokku.dao.PortfolioAboutRepository;
@@ -6,9 +6,14 @@ import bcsd.backend.project.pokku.dao.UserInfoRepository;
 import bcsd.backend.project.pokku.domain.Authority;
 import bcsd.backend.project.pokku.domain.PortfolioAbout;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.dto.SignUp.SignUpRequest;
+import bcsd.backend.project.pokku.dto.Sign.SignInRequest;
+import bcsd.backend.project.pokku.dto.Sign.SignInResponse;
+import bcsd.backend.project.pokku.dto.Sign.SignOutRequest;
+import bcsd.backend.project.pokku.dto.Sign.SignUpRequest;
+import bcsd.backend.project.pokku.security.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +22,29 @@ import java.util.Collections;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SignUpServiceImpl implements SignUpService{
+public class SignServiceImpl implements SignService{
 
-    private final UserInfoRepository userInfoRepository;
-    private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
     private final PortfolioAboutRepository portfolioAboutRepository;
+    private final UserInfoRepository userInfoRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
+
+    @Override
+    public SignInResponse login(SignInRequest request) throws Exception{
+        UserInfo userInfo = userInfoRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+        if(!passwordEncoder.matches(request.getUserPassword(), userInfo.getUserPassword())){
+            throw new BadCredentialsException("잘못된 계정 정보 입니다.");
+        }
+
+        return SignInResponse.builder()
+                .userId(userInfo.getUserId())
+                .userPassword(userInfo.getUserPassword())
+                .roles(userInfo.getAuthorities())
+                .token(jwtProvider.createToken(userInfo.getUserId(), userInfo.getAuthorities()))
+                .build();
+    }
 
     @Override
     public boolean register(SignUpRequest request) throws Exception{
@@ -40,7 +62,7 @@ public class SignUpServiceImpl implements SignUpService{
 
             userInfo.setRoles(Collections.singletonList(Authority.builder()
 //                    .AuthName("ROLE_User")
-                            .AuthName("ROLE_Admin")
+                    .AuthName("ROLE_Admin")
                     .build()));
 
             userInfoRepository.save(userInfo);
@@ -62,5 +84,14 @@ public class SignUpServiceImpl implements SignUpService{
             throw new Exception("잘못된 요청입니다.");
         }
         return true;
+    }
+
+    @Override
+    public boolean logout(SignOutRequest request) throws Exception{
+        userInfoRepository.findById(request.getUserId())
+                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+        return jwtProvider.invalidateToken(request.getToken(), request.getUserId());
+
+
     }
 }
