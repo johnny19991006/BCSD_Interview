@@ -1,11 +1,9 @@
 package com.example.studyroom.controller;
 
 import com.example.studyroom.domain.Seat;
-import com.example.studyroom.dto.ChangeSeatDTO;
 import com.example.studyroom.dto.ChoiceSeatDTO;
 import com.example.studyroom.dto.InsertSeatDTO;
 import com.example.studyroom.service.SeatService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +18,13 @@ public class SeatController {
     }
 
     @PostMapping("")
-    public Seat insertSeat(@RequestBody InsertSeatDTO insertSeatDTO){
+    public Seat insertSeat(@RequestBody InsertSeatDTO insertSeatDTO) {
         return seatService.insertSeat(insertSeatDTO);
+    }
+
+    @PatchMapping("/")
+    public Seat choiceSeat(@RequestBody ChoiceSeatDTO choiceSeatDTO) {
+        return seatService.choiceSeat(choiceSeatDTO);
     }
 
     @GetMapping("")
@@ -35,7 +38,7 @@ public class SeatController {
     }
 
     @DeleteMapping("/{seatId}")
-    public void deleteSeat( @PathVariable int seatId) {
+    public void deleteSeat(@PathVariable int seatId) {
         seatService.deleteSeat(seatId);
     }
 }
