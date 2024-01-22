@@ -3,6 +3,7 @@ package com.forum.forum_site.service;
 import com.forum.forum_site.domain.User;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserService {
 
@@ -19,6 +20,8 @@ public interface UserService {
     // 유저 삭제
     void deleteUser(Integer id);
 
+    void joinUser(Map<String, String> user);
 
+    String loginUser(Map<String, String> user);
 
 }

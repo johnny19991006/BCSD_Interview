@@ -2,23 +2,26 @@ package com.forum.forum_site.service;
 
 import com.forum.forum_site.domain.User;
 import com.forum.forum_site.repository.UserRepository;
+import com.forum.forum_site.security.JwtTokenProvider;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
-
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepo = userRepository;
-    }
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -60,5 +63,25 @@ public class UserServiceImpl implements UserService {
         updateUser.ifPresent(selectUser -> {
             userRepo.delete(selectUser);
         });
+    }
+
+    @Override
+    public void joinUser(Map<String, String> user) {
+        userRepo.save(User.builder()
+                .email(user.get("email"))
+                .password(passwordEncoder.encode(user.get("password")))
+                .username(user.get("username"))
+                .roles(Collections.singletonList("ROLE_USER"))
+                .build());
+    }
+
+    @Override
+    public String loginUser(Map<String, String> user) {
+        User member = userRepo.findByUsername(user.get("username"))
+                .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 User 입니다."));
+        if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
+            throw new IllegalArgumentException("잘못된 비밀번호입니다.");
+        }
+        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
     }
 }
