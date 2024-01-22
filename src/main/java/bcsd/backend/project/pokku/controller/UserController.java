@@ -1,6 +1,5 @@
 package bcsd.backend.project.pokku.controller;
 
-import bcsd.backend.project.pokku.dto.User.UserDFRequest;
 import bcsd.backend.project.pokku.dto.User.UserRequest;
 import bcsd.backend.project.pokku.dto.User.UserResponse;
 import bcsd.backend.project.pokku.service.User.UserServiceImpl;
@@ -16,24 +15,24 @@ public class UserController {
     private UserServiceImpl userService;
 
     @Autowired
-    public void setSignService(UserServiceImpl userService){
+    public void setUserService(UserServiceImpl userService){
         this.userService = userService;
     }
 
-    @PostMapping
-    public ResponseEntity<UserResponse> findUser(@RequestBody UserDFRequest request) throws Exception{
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<UserResponse> findUser(@PathVariable String userId) throws Exception{
 
-        return new ResponseEntity<>(userService.findUsers(request), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findUsers(userId), HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<Boolean> updateUser(@RequestBody UserRequest request) throws Exception{
-        return new ResponseEntity<>(userService.UpdateUsers(request), HttpStatus.OK);
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<Boolean> updateUser(@PathVariable String userId, @RequestBody UserRequest request) throws Exception{
+        return new ResponseEntity<>(userService.UpdateUsers(userId, request), HttpStatus.OK);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Boolean> deleteUser(@RequestBody UserDFRequest request) throws Exception{
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Boolean> deleteUser(@PathVariable String userId) throws Exception{
 
-        return new ResponseEntity<>(userService.DeleteUsers(request), HttpStatus.OK);
+        return new ResponseEntity<>(userService.DeleteUsers(userId), HttpStatus.OK);
     }
 }
