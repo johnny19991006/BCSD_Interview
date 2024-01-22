@@ -1,11 +1,8 @@
 package com.example.studyroom.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.annotations.Cascade;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
@@ -14,21 +11,20 @@ import java.time.LocalDateTime;
 @Builder
 @Table(name = "seats")
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 public class Seat {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_id")
-    private int seatId;
+    private Integer seatId;
 
-    @Column(name = "is_used")
-    private boolean isUsed;
+    @Column(name = "seat_number")
+    private Integer seatNum;
 
-    @Column(name = "school_id", insertable = false, updatable = false)
-    private int schoolId;
-
-    @Column(name = "room_id", insertable = false, updatable = false)
-    private int roomId;
+    @Column(name = "is_used", columnDefinition = "boolean default false")
+    private Boolean isUsed;
 
     @Column(name = "start_time")
     @CreationTimestamp
@@ -37,14 +33,9 @@ public class Seat {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @Column(name = "remain_time")
-    private LocalDateTime remainTime;
-
-    public Seat() {
-    }
-
     @ManyToOne
     @JoinColumn(name = "room_id")
+    @JsonBackReference
     private Room room;
 
     @OneToOne
