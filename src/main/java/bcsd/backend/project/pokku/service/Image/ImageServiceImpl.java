@@ -64,7 +64,7 @@ public class ImageServiceImpl implements ImageService {
                 }
 
                 Image img = Image.builder()
-                        .skillName(request.getName())
+                        .skillName(request.getName() + originalFileExtension)
                         .imageUrl(path + originalFileExtension)
                         .build();
 
@@ -121,6 +121,30 @@ public class ImageServiceImpl implements ImageService {
             res.add(Base64.getEncoder().encodeToString(imageBytes));
         }
         return new ImageDownloadResponse(res);
+    }
+
+    @Override
+    public Boolean deleteImage(String imageName) throws Exception{
+        try {
+            // 이미지 파일의 절대 경로를 생성
+            String absolutePath = new File("").getAbsolutePath() + "\\";
+            String path = absolutePath + "images/" + imageName;
+
+            // File 객체를 생성하여 이미지 파일을 삭제
+            File imageFile = new File(path);
+            if (imageFile.exists()) {
+                if (imageFile.delete()) {
+                    imageRepository.deleteById(imageName);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }
