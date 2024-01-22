@@ -47,6 +47,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/sign/**").permitAll()
                                 .requestMatchers("/user/**").hasAnyRole("User", "Admin")
+                                .requestMatchers("/admin/**").hasRole("Admin")
                                 .requestMatchers("/about/**").hasAnyRole("User", "Admin")
                                 .requestMatchers("/sns/**").hasAnyRole("User", "Admin")
                                 .requestMatchers("/upload-img/**").hasRole("Admin")
