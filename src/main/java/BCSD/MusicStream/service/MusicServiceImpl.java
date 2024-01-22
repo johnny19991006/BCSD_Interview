@@ -4,17 +4,11 @@ import BCSD.MusicStream.domain.*;
 import BCSD.MusicStream.dto.AddMusicDTO;
 import BCSD.MusicStream.dto.ModefiedMusicDTO;
 import BCSD.MusicStream.dto.MusicDTO;
-import BCSD.MusicStream.repository.CategoryRepository;
-import BCSD.MusicStream.repository.LikeRepository;
-import BCSD.MusicStream.repository.MusicRepository;
-import BCSD.MusicStream.repository.UserRepository;
+import BCSD.MusicStream.dto.IyricsDTO;
+import BCSD.MusicStream.repository.*;
 import jakarta.persistence.EntityNotFoundException;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,6 +30,7 @@ public class MusicServiceImpl implements MusicService{
     private final MusicRepository musicRepository;
     private final CategoryRepository categoryRepository;
     private final UserRepository userRepository;
+    private final IyricsRepository iyricsRepository;
     private final String MUSIC_FILE_PATH = "http://localhost:8080/music/musicMP3/";
     private final String MUSIC_ICON_PATH = "http://localhost:8080/music/musicIcon/";
     private static final String MUSIC_FILE_DIR = "src/main/resources/static/musicMP3/";
@@ -130,5 +125,11 @@ public class MusicServiceImpl implements MusicService{
         String musicIconName = musicIcon.getOriginalFilename();
         Path musicIconPath = Paths.get(MUSIC_ICON_DIR + musicId + musicIconName.substring(musicIconName.indexOf('.'), musicIconName.length()));
         Files.copy(musicIcon.getInputStream(), musicIconPath, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @Override
+    public IyricsDTO getIyrics(Integer musicId) throws IOException {
+        Iyrics iyrics = iyricsRepository.findById(musicId.longValue()).orElseThrow(() -> new EntityNotFoundException("해당 음악에 대한 가사를 찾을 수 없습니다."));
+        return IyricsDTO.builder().iyrics(iyrics.getIyrics_contents()).build();
     }
 }

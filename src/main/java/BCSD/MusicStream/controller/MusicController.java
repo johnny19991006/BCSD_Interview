@@ -3,6 +3,7 @@ package BCSD.MusicStream.controller;
 import BCSD.MusicStream.dto.AddMusicDTO;
 import BCSD.MusicStream.dto.ModefiedMusicDTO;
 import BCSD.MusicStream.dto.MusicDTO;
+import BCSD.MusicStream.dto.IyricsDTO;
 import BCSD.MusicStream.service.MusicService;
 import BCSD.MusicStream.service.PlaylistService;
 import lombok.AllArgsConstructor;
@@ -20,14 +21,14 @@ import java.util.List;
 public class MusicController {
     private final MusicService musicService;
     private final PlaylistService playlistService;
-    @GetMapping("/{musicName}")
+    @GetMapping("/search/{musicName}")
     public ResponseEntity<List<MusicDTO>> getMusicByMusicName(@PathVariable String musicName) throws MalformedURLException {
         return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(musicName));
     }
-//    @GetMapping("/{musicName}/{musicId}")
-//    public ResponseEntity<List<MusicDTO>> getMusicByM2usicName(@PathVariable String musicName) throws MalformedURLException {
-//        return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(musicName));
-//    }
+    @GetMapping("/playMusic/{musicId}")
+    public ResponseEntity<IyricsDTO> getMusicByM2usicName(@PathVariable Integer musicId) throws IOException {
+        return ResponseEntity.ok(musicService.getIyrics(musicId));
+    }
     @PostMapping
     public ResponseEntity<?> uploadMusic(@ModelAttribute AddMusicDTO addMusicDTO) {
         try {

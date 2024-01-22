@@ -1,10 +1,10 @@
 package BCSD.MusicStream.service;
 
 import BCSD.MusicStream.domain.Iyrics;
-import BCSD.MusicStream.domain.Music;
 import BCSD.MusicStream.dto.AddMusicDTO;
 import BCSD.MusicStream.dto.ModefiedMusicDTO;
 import BCSD.MusicStream.dto.MusicDTO;
+import BCSD.MusicStream.dto.IyricsDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -21,4 +21,5 @@ public interface MusicService {
     void deleteMusicIcon(Integer musicId);
     void uploadMusicMP3(Integer musicId, MultipartFile musicMP3) throws IOException;
     void uploadMusicIcon(Integer musicId, MultipartFile musicIcon) throws IOException;
+    IyricsDTO getIyrics(Integer musicId) throws IOException;
 }
