@@ -4,7 +4,7 @@ import bcsd.backend.project.pokku.dto.Sign.SignInRequest;
 import bcsd.backend.project.pokku.dto.Sign.SignInResponse;
 import bcsd.backend.project.pokku.dto.Sign.SignOutRequest;
 import bcsd.backend.project.pokku.dto.Sign.SignUpRequest;
-import bcsd.backend.project.pokku.service.SignServiceImpl;
+import bcsd.backend.project.pokku.service.Sign.SignServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
