@@ -1,10 +1,8 @@
 package com.example.studyroom.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,27 +10,26 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
+@RequiredArgsConstructor
 @Table(name = "rooms")
 @Getter
 @Setter
 public class Room {
     @Id
-    @Column
-    private int room_id;
+    @Column(name = "room_id")
+    private Integer roomId;
 
-    @Column
-    private int seats;
+    @Column(name = "seats")
+    private Integer seats;
 
     @Column(name = "used_seats")
-    private int usedSeats;
+    private Integer usedSeats;
 
     @Column(name = "remain_seats")
-    private int remainSeats;
-
-    public Room() {
-    }
+    private Integer remainSeats;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
+    @JsonManagedReference
     private List<Seat> seatList = new ArrayList<>();
 }
