@@ -28,7 +28,7 @@ public class Post{
     private String content;
 
     @Column(nullable = true)
-    private String filePath;
+    private String filepath;
 
     // 익명 게시를 위해 optional = true 추가
     // 지연 로딩 // 관련 entity의 데이터를 다 로드 안해서 성능 최적화 및 트래픽 감소
@@ -64,6 +64,6 @@ public class Post{
 
     public void updateContent(String content) { this.content = content; }
     public void updateFilePath(String filePath) {
-        this.filePath = filePath;
+        this.filepath = filePath;
     }
 }

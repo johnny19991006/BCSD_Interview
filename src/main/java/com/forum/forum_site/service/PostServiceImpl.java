@@ -58,11 +58,11 @@ public class PostServiceImpl implements PostService{
         checkAuthority(post, PostException.Type.NOT_AUTHORITY_UPDATE_POST);
 
         updatePostDto.title().ifPresent(post::updateTitle);
-        updatePostDto.title().ifPresent(post::updateContent);
+        updatePostDto.content().ifPresent(post::updateContent);
 
         // 기존에 업로드 된 파일이 있으면 삭제
-        if(post.getFilePath() !=null){
-            fileService.delete(post.getFilePath());//기존에 올린 파일 지우기
+        if(post.getFilepath() !=null){
+            fileService.delete(post.getFilepath());//기존에 올린 파일 지우기
         }
 
         // 새로운 파일들을 업로드하고 저장
@@ -89,8 +89,8 @@ public class PostServiceImpl implements PostService{
         checkAuthority(post, PostException.Type.NOT_AUTHORITY_UPDATE_POST);
 
         //기존에 올린 파일 지우기
-        if(post.getFilePath() !=null){
-            fileService.delete(post.getFilePath());
+        if(post.getFilepath() !=null){
+            fileService.delete(post.getFilepath());
         }
 
         postRepository.delete(post);
