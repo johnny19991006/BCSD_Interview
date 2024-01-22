@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .id(user.getId())
                 .email(user.getEmail())
                 .password(encoder.encode(request.getPassword()))
-                .createdAt(user.getCreatedAt())
                 .build();
 
         return repository.save(newUser);
