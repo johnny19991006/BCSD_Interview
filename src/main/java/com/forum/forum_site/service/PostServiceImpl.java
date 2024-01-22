@@ -96,6 +96,7 @@ public class PostServiceImpl implements PostService{
         postRepository.delete(post);
     }
 
+    // 현재 로그인한 유저 정보 가져오기
     private User getCurrentAuthenticatedUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
@@ -106,6 +107,7 @@ public class PostServiceImpl implements PostService{
         throw new UserException(UserException.Type.NOT_FOUND_MEMBER);
     }
 
+    // 권한 체크하기
     private void checkAuthority(Post post, PostException.Type postExceptionType) {
         User currentUser = getCurrentAuthenticatedUser();
         if(!post.getAuthor().getUsername().equals(currentUser.getUsername()))

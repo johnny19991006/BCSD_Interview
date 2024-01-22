@@ -18,6 +18,8 @@ public class PostController {
     // 글 게시
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping("")
+    // @valid -> 유효성 검사를 하는데 사용
+    // @ModelAttribute -> 모든 요청에서 사용할 수 있는 모델 속성으로 됨
     public void savePost(@Valid @ModelAttribute SavePostDto savePostDto) {
         postService.savePost(savePostDto);
     }

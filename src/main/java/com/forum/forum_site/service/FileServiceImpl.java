@@ -16,10 +16,13 @@ public class FileServiceImpl implements FileService{
     @Value("{file.dir}")
     private String fileDir;
 
+    // MultipartFile
+    // 파일 업로드를 위한 인터페이스
     @Override
     public String save(MultipartFile multipartFile) {
         String filePath = fileDir + UUID.randomUUID();
         try {
+            // multipartFile.transferTo(new File(filePath)) 업로드 된 파일을 지정 경로에 저장
             multipartFile.transferTo(new File(filePath));
         }catch (IOException e) {
             //파일 저장 에러
