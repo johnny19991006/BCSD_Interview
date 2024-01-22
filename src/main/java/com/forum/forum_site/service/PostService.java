@@ -7,7 +7,7 @@ import javax.annotation.processing.FilerException;
 
 public interface PostService {
     // 글 게시
-    void savePost(SavePostDto savePostDto) throws FilerException;
+    void savePost(SavePostDto savePostDto);
 
     // 글 수정
     void updatePost(Integer id, UpdatePostDto updatePostDto);

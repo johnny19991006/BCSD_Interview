@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.processing.FilerException;
 import java.io.IOException;
 
 
@@ -55,7 +54,7 @@ public class PostServiceImpl implements PostService{
     @Override
     public void updatePost(Integer id, UpdatePostDto updatePostDto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
-                new PostException(PostException.Type.POST_NOT_POUND));
+                new PostException(PostException.Type.POST_NOT_FOUND));
         checkAuthority(post, PostException.Type.NOT_AUTHORITY_UPDATE_POST);
 
         updatePostDto.title().ifPresent(post::updateTitle);
@@ -84,7 +83,17 @@ public class PostServiceImpl implements PostService{
 
     @Override
     public void deletePost(Integer id) {
+        Post post = postRepository.findById(id).orElseThrow(() ->
+                new PostException(PostException.Type.POST_NOT_FOUND));
 
+        checkAuthority(post, PostException.Type.NOT_AUTHORITY_UPDATE_POST);
+
+        //기존에 올린 파일 지우기
+        if(post.getFilePath() !=null){
+            fileService.delete(post.getFilePath());
+        }
+
+        postRepository.delete(post);
     }
 
     private User getCurrentAuthenticatedUser() {
