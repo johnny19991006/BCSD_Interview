@@ -2,7 +2,6 @@ package bcsd.backend.project.pokku.service.User;
 
 import bcsd.backend.project.pokku.dao.UserInfoRepository;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.dto.User.UserDFRequest;
 import bcsd.backend.project.pokku.dto.User.UserRequest;
 import bcsd.backend.project.pokku.dto.User.UserResponse;
 import jakarta.transaction.Transactional;
@@ -20,18 +19,18 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserResponse findUsers(UserDFRequest request) throws Exception{
-        UserInfo userInfo = userInfoRepository.findById(request.getUserId())
+    public UserResponse findUsers(String userId) throws Exception{
+        UserInfo userInfo = userInfoRepository.findById(userId)
                 .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
 
         return new UserResponse(userInfo);
     }
 
     @Override
-    public boolean DeleteUsers(UserDFRequest request) throws Exception{
+    public boolean DeleteUsers(String userId) throws Exception{
 
         try {
-            userInfoRepository.deleteById(request.getUserId());
+            userInfoRepository.deleteById(userId);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             throw new Exception("잘못된 요청입니다.");
@@ -40,10 +39,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean UpdateUsers(UserRequest request) throws Exception{
+    public boolean UpdateUsers(String userId, UserRequest request) throws Exception{
         try {
             UserInfo userInfo = UserInfo.builder()
-                    .userId(request.getUserId())
+                    .userId(userId)
                     .userPassword(passwordEncoder.encode(request.getUserPassword()))
                     .userName(request.getUserName())
                     .userNickname(request.getUserNickname())
