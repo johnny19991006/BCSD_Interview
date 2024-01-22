@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.service;
+package bcsd.backend.project.pokku.service.Sign;
 
 import bcsd.backend.project.pokku.dao.AuthorityRepository;
 import bcsd.backend.project.pokku.dao.PortfolioAboutRepository;
