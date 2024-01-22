@@ -2,11 +2,8 @@ package BCSD.MusicStream.service;
 
 import BCSD.MusicStream.domain.Music;
 import BCSD.MusicStream.domain.Playlist;
-import BCSD.MusicStream.domain.PlaylistMusics;
-import BCSD.MusicStream.domain.Users;
-import BCSD.MusicStream.dto.AddPlaylistDTO;
+import BCSD.MusicStream.domain.PlaylistMusic;
 import BCSD.MusicStream.dto.AddPlaylistMusicDTO;
-import BCSD.MusicStream.dto.ModefiedPlaylistDTO;
 import BCSD.MusicStream.repository.MusicRepository;
 import BCSD.MusicStream.repository.PlayListRepository;
 import BCSD.MusicStream.repository.PlaylistMusicRepository;
@@ -31,7 +28,7 @@ public class PlaylistMusicsServiceImpl implements PlaylistMusicsService {
     public void addMusic(AddPlaylistMusicDTO addPlaylistMusicDTO) {
         Music music = musicRepository.findById(addPlaylistMusicDTO.getMusic_id().longValue()).orElseThrow(() -> new EntityNotFoundException("Entity not found with music_id " + addPlaylistMusicDTO.getMusic_id()));
         Playlist playlist = playListRepository.findById(addPlaylistMusicDTO.getPlaylist_id().longValue()).orElseThrow(() -> new EntityNotFoundException("Entity not found with playlist_id " + addPlaylistMusicDTO.getPlaylist_id()));
-        playlistMusicRepository.save(PlaylistMusics.builder()
+        playlistMusicRepository.save(PlaylistMusic.builder()
                 .music(music)
                 .playlist(playlist)
                 .build());
@@ -43,7 +40,7 @@ public class PlaylistMusicsServiceImpl implements PlaylistMusicsService {
     }
 
     @Override
-    public List<PlaylistMusics> findAllMusicByPlaylistId(Integer playlistId) {
+    public List<PlaylistMusic> findAllMusicByPlaylistId(Integer playlistId) {
         return playlistMusicRepository.findAllByPlaylist_id(playlistId);
     }
 }

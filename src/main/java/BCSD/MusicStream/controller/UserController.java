@@ -20,26 +20,22 @@ public class UserController {
     private final UserService userService;
     @PostMapping("/sign-in")
     public JwtTokenDTO signIn(@RequestBody SignInDTO signInDTO) {
-        String userEmail = signInDTO.getUserEmail();
-        String password = signInDTO.getPassword();
-        JwtTokenDTO jwtTokenDTO = userService.signIn(userEmail, password);
-        log.info("request username = {}, password = {}", userEmail, password);
-        log.info("jwtToken accessToken = {}, refreshToken = {}", jwtTokenDTO.getAccessToken(), jwtTokenDTO.getRefreshToken());
+        JwtTokenDTO jwtTokenDTO = userService.signIn(signInDTO.getUserEmail(), signInDTO.getPassword());
+        log.info("User signed in with email: {}", signInDTO.getUserEmail());
         return jwtTokenDTO;
     }
-    @PostMapping("/sign-up/{userEmail}")
+    @GetMapping("/email-exists/{userEmail}")
     public Boolean existsUserEmail(@PathVariable String userEmail) {
         return userService.existsByUserEmail(userEmail);
     }
-    @PostMapping("/sign-up")
+
+    @PostMapping
     public ResponseEntity<SignUpDTO> signUp(@RequestBody SignUpDTO signUpDTO) {
-        System.out.println("dsa");
         userService.signUp(signUpDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(signUpDTO);
     }
     @PostMapping("/test")
     public String test() {
-        System.out.println("dsa");
         return "success";
     }
 }

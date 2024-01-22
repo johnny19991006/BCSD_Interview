@@ -1,11 +1,10 @@
 package BCSD.MusicStream.repository;
 
-import BCSD.MusicStream.domain.Music;
-import BCSD.MusicStream.domain.PlaylistMusics;
+import BCSD.MusicStream.domain.PlaylistMusic;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface PlaylistMusicRepository  extends JpaRepository<PlaylistMusics, Long> {
-    public List<PlaylistMusics> findAllByPlaylist_id(Integer playlistId);
+public interface PlaylistMusicRepository  extends JpaRepository<PlaylistMusic, Long> {
+    public List<PlaylistMusic> findAllByPlaylist_id(Integer playlistId);
 }

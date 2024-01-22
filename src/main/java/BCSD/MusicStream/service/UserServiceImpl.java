@@ -1,15 +1,12 @@
 package BCSD.MusicStream.service;
 
-import BCSD.MusicStream.domain.Users;
+import BCSD.MusicStream.domain.Member;
 import BCSD.MusicStream.dto.JwtTokenDTO;
 import BCSD.MusicStream.dto.SignUpDTO;
-import BCSD.MusicStream.dto.UserDTO;
 import BCSD.MusicStream.provider.JwtTokenProvider;
 import BCSD.MusicStream.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -47,7 +44,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void signUp(SignUpDTO signUpDTO) {
-        Users users = new Users(null,
+        Member users = new Member(null,
                 signUpDTO.getUser_name(),
                 signUpDTO.getUser_email(),
                 signUpDTO.getUser_pw(),

@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalTime;
+import java.sql.Time;
 
 @Data
 @NoArgsConstructor
@@ -16,14 +16,25 @@ import java.time.LocalTime;
 public class Music {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer music_id;
-    private String music_name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "category_id")
+    private Integer id;
+
+    @Column(name = "name", nullable = false, length = 10)
+    private String name;
+
+    @ManyToOne
+    @JoinColumn(name = "category_id", referencedColumnName = "id")
     private Category category;
-    private String singer_name;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Users user;
-    private LocalTime music_time;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private Member user;
+
+    @Column(name = "singer_name", nullable = false, length = 10)
+    private String singerName;
+
+    @Column(name = "duration")
+    private Time duration;
+
+    @OneToOne(mappedBy = "music")
+    private Lyric lyric;
 }

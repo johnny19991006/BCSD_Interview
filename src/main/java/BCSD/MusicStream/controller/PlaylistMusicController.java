@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/playlistMusics")
 @AllArgsConstructor
-public class PlaylistMusicsController {
+public class PlaylistMusicController {
 
     private final PlaylistService playlistService;
     @PostMapping

@@ -2,36 +2,43 @@ package BCSD.MusicStream.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 
 @Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
 @Builder
-@EqualsAndHashCode(of = "user_id")
-public class Users implements UserDetails {
+//@EqualsAndHashCode(of = "user_id")
+public class Member implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer user_id;
-    private String user_name;
-    @Column(name = "user_email")
-    private String user_email;
-    @Column(name = "user_pw")
-    private String user_pw;
-    private LocalDate birth_date;
-    private Boolean authority_type;
+    private Integer id;
+
+    @Column(name = "name", nullable = false, length = 10)
+    private String name;
+
+    @Column(name = "email", nullable = false, length = 255)
+    private String email;
+
+    @Column(name = "password", nullable = false, length = 20)
+    private String password;
+
+    @Column(name = "birth_date")
+    private Date birthDate;
+
+    @Column(name = "authority_type", nullable = false)
+    private Boolean authorityType;
 
     @Override
     public Collection<SimpleGrantedAuthority> getAuthorities() {
         Collection<SimpleGrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority(authority_type.toString()));
+        list.add(new SimpleGrantedAuthority(authorityType.toString()));
         return list;
     }
     @Override

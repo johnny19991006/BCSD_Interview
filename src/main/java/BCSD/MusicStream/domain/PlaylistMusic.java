@@ -1,7 +1,5 @@
 package BCSD.MusicStream.domain;
 
-import BCSD.MusicStream.domain.Music;
-import BCSD.MusicStream.domain.Playlist;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,15 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Builder
-public class PlaylistMusics {
+public class PlaylistMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer playlistMusicId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "music_id")
+    private Integer id;
+
+    @ManyToOne
+    @JoinColumn(name = "music_id", referencedColumnName = "id")
     private Music music;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "playlist_id")
+    @ManyToOne
+    @JoinColumn(name = "playlist_id", referencedColumnName = "id")
     private Playlist playlist;
 }

@@ -1,7 +1,5 @@
 package BCSD.MusicStream.dto;
 
-import BCSD.MusicStream.domain.Category;
-import BCSD.MusicStream.domain.Users;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

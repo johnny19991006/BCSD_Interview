@@ -8,12 +8,11 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Builder
-@EqualsAndHashCode(of = "user_id")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
-    Integer categoryId;
-    @Column(name = "category_name")
-    String categoryName;
+    private Integer id;
+
+    @Column(name = "name", nullable = false, length = 10)
+    private String name;
 }

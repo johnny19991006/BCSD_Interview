@@ -2,8 +2,8 @@ package BCSD.MusicStream.service;
 
 import BCSD.MusicStream.domain.Music;
 import BCSD.MusicStream.domain.Playlist;
-import BCSD.MusicStream.domain.PlaylistMusics;
-import BCSD.MusicStream.domain.Users;
+import BCSD.MusicStream.domain.PlaylistMusic;
+import BCSD.MusicStream.domain.Member;
 import BCSD.MusicStream.dto.AddPlaylistDTO;
 import BCSD.MusicStream.dto.ModefiedPlaylistDTO;
 import BCSD.MusicStream.repository.MusicRepository;
@@ -25,7 +25,7 @@ public class PlaylistServiceImpl implements PlaylistService{
     private final UserRepository userRepository;
     @Override
     public void addPlaylist(AddPlaylistDTO playlistDTO) {
-        Users user = userRepository.findById(playlistDTO.getUser_id().longValue()).get();
+        Member user = userRepository.findById(playlistDTO.getUser_id().longValue()).get();
         playListRepository.save(Playlist.builder()
                 .playlist_name(playlistDTO.getPlaylist_name())
                 .user(user)
@@ -48,6 +48,6 @@ public class PlaylistServiceImpl implements PlaylistService{
     public void addPlaylistMusic(Integer playlistId, Integer musicId) {
         Playlist playlist = playListRepository.findById(playlistId.longValue()).get();
         Music music = musicRepository.findById(musicId.longValue()).get();
-        playlistMusicRepository.save(PlaylistMusics.builder().music(music).playlist(playlist).build());
+        playlistMusicRepository.save(PlaylistMusic.builder().music(music).playlist(playlist).build());
     }
 }

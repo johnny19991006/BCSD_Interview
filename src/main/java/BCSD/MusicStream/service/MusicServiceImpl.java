@@ -59,7 +59,7 @@ public class MusicServiceImpl implements MusicService{
     @Override
     public Integer addMusic(AddMusicDTO addMusicDTO) throws IOException {
         Category category = categoryRepository.findById(addMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 카테고리를 찾지 못했습니다."));
-        Users user = userRepository.findById(addMusicDTO.getUserId().longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 유저를 찾지 못했습니다."));
+        Member user = userRepository.findById(addMusicDTO.getUserId().longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 유저를 찾지 못했습니다."));
         Music music = Music.builder()
                 .music_id(null)
                 .music_name(addMusicDTO.getMusicName())
@@ -77,12 +77,12 @@ public class MusicServiceImpl implements MusicService{
 
     @Override
     public void modefiedMusic(ModefiedMusicDTO modefiedMusicDTO) {
-        Users user = userRepository.findById(modefiedMusicDTO.getUserId().longValue()).orElseThrow(() -> new EntityNotFoundException("User not found."));
+        Member user = userRepository.findById(modefiedMusicDTO.getUserId().longValue()).orElseThrow(() -> new EntityNotFoundException("User not found."));
         Category category = categoryRepository.findById(modefiedMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new EntityNotFoundException("Category not found."));
         musicRepository.save(Music.builder()
-                .music_id(modefiedMusicDTO.getMusicId())
-                .music_name(modefiedMusicDTO.getMusicName())
-                .music_time(modefiedMusicDTO.getMusicTime())
+                .id(modefiedMusicDTO.getMusicId())
+                .name(modefiedMusicDTO.getMusicName())
+                .duration(modefiedMusicDTO.getMusicTime())
                 .user(user)
                 .category(category)
                 .singer_name(modefiedMusicDTO.getSingerName())
@@ -95,7 +95,7 @@ public class MusicServiceImpl implements MusicService{
     }
 
     @Override
-    public Iyrics getMusicIyrics(Integer musicId) {
+    public Lyric getMusicIyrics(Integer musicId) {
         return null;
     }
 
@@ -129,7 +129,7 @@ public class MusicServiceImpl implements MusicService{
 
     @Override
     public IyricsDTO getIyrics(Integer musicId) throws IOException {
-        Iyrics iyrics = iyricsRepository.findById(musicId.longValue()).orElseThrow(() -> new EntityNotFoundException("해당 음악에 대한 가사를 찾을 수 없습니다."));
-        return IyricsDTO.builder().iyrics(iyrics.getIyrics_contents()).build();
+        Lyric iyrics = iyricsRepository.findById(musicId.longValue()).orElseThrow(() -> new EntityNotFoundException("해당 음악에 대한 가사를 찾을 수 없습니다."));
+        return IyricsDTO.builder().iyrics(iyrics.getContents()).build();
     }
 }
