@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PortfolioArchivingRequest {
-    private String userId;
+    private Long portfolioArchivingId;
     private String archivingName;
     private String archivingExplanation;
 
