@@ -16,7 +16,7 @@ public class PortfolioCareer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_career_id")
-    private String portfolioCareerId;
+    private Long portfolioCareerId;
 
     @Column(name = "career_explanation")
     private String careerExplanation;
