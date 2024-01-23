@@ -27,7 +27,7 @@ public class PostException extends RuntimeException{
     }
 
     // 파일 예외 생성자
-    public PostException(PostException.Type type) {
+    public PostException(Type type) {
         super(type.errorMessage);
         this.errorCode = type.errorCode;
         this.httpStatus = type.httpStatus;

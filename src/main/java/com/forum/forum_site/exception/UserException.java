@@ -27,7 +27,7 @@ public class UserException extends RuntimeException{
     }
 
     // 파일 예외 생성자
-    public UserException(UserException.Type type) {
+    public UserException(Type type) {
         super(type.errorMessage);
         this.errorCode = type.errorCode;
         this.httpStatus = type.httpStatus;
