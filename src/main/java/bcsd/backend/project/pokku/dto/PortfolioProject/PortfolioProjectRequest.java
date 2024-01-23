@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PortfolioProjectRequest {
-    private String userId;
+    private Long portfolioProjectId;
     private String projectName;
     private String projectExplanation;
 }
