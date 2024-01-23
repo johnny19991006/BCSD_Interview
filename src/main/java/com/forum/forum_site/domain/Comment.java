@@ -17,27 +17,27 @@ import static jakarta.persistence.FetchType.LAZY;
 @Entity
 public class Comment {
 
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer comment_id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id", referencedColumnName = "post_id")
     private Post post;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "author_id" , nullable = false)
+    @JoinColumn(name = "author_id", referencedColumnName = "user_id")
     private User author;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", referencedColumnName = "comment_id")
     private Comment parent;
 
     @Lob
-    @Column(nullable = false)
+    @Column // (nullable = false)
     private String content;
 
     @Column
-    private Integer likes_count;
+    private Integer likes_count = 0;
 
     private boolean is_Removed= false;
 

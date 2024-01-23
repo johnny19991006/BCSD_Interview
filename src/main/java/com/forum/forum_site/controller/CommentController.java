@@ -29,7 +29,7 @@ public class CommentController {
 
     @PutMapping("/{commentId}")
     public void updateComment(@PathVariable("commentId") Integer commentId,
-                       UpdateCommentDto updateCommentDto) {
+                              UpdateCommentDto updateCommentDto) {
         commentService.updateComment(commentId, updateCommentDto);
     }
 
