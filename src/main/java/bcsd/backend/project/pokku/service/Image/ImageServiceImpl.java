@@ -2,22 +2,14 @@ package bcsd.backend.project.pokku.service.Image;
 
 import bcsd.backend.project.pokku.dao.*;
 import bcsd.backend.project.pokku.domain.*;
-import bcsd.backend.project.pokku.dto.Image.ImageDownloadRequest;
-import bcsd.backend.project.pokku.dto.Image.ImageDownloadResponse;
 import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 @Service
 @Transactional
@@ -110,17 +102,6 @@ public class ImageServiceImpl implements ImageService {
             return false;
         }
         return true;
-    }
-
-    @Override
-    public ImageDownloadResponse download(ImageDownloadRequest request) throws Exception{
-        List<Image> images = imageRepository.findAllById(request.getImageName());
-        List<String> res = new ArrayList<>();
-        for (Image img: images) {
-            byte[] imageBytes = Files.readAllBytes(Paths.get(new File("").getAbsolutePath() + File.separator + img.getImageUrl()));
-            res.add(Base64.getEncoder().encodeToString(imageBytes));
-        }
-        return new ImageDownloadResponse(res);
     }
 
     @Override
