@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class PortfolioCareerRequest {
-    private String userId;
+    private Long portfolioCareerId;
     private String careerExplanation;
 }
