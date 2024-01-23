@@ -16,7 +16,7 @@ public class PortfolioArchiving {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "portfolio_archiving_id")
-    private String portfolioArchivingId;
+    private Long portfolioArchivingId;
 
     @Column(name = "archiving_name")
     private String archivingName;
