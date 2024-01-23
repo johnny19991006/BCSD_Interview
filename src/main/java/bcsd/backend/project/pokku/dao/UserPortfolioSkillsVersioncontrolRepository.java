@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -16,5 +17,8 @@ public interface UserPortfolioSkillsVersioncontrolRepository extends JpaReposito
 
     @Query("SELECT p FROM UserPortfolioSkillsVersioncontrol p WHERE p.userInfo = :user_id and p.skillsVersioncontrol = :skills_versioncontrol_id")
     Optional<UserPortfolioSkillsVersioncontrol> findEntity(@Param("user_id") UserInfo user, @Param("skills_versioncontrol_id") SkillsVersioncontrol skillsVersioncontrol);
+
+    @Query("SELECT p.skillsVersioncontrol FROM UserPortfolioSkillsVersioncontrol p WHERE p.userInfo = :user_id")
+    List<Long> findByUserId(@Param("user_id") UserInfo user);
 
 }
