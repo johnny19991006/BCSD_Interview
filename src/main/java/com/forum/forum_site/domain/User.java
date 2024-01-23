@@ -84,9 +84,16 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
+    private List<Comment> commentList = new ArrayList<>();
 
     public void addPost(Post post){
         postList.add(post);
+    }
+
+    public void addComment(Comment comment) {
+        commentList.add(comment);
     }
 }
 
