@@ -18,13 +18,13 @@ Create Table Semester
 */
 @NoArgsConstructor
 @Getter
-@Entity
+@Entity // JPA 사용 시 CRUD 작업 수행 가능
 @Table(name = "semester")
 public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
     @Column(name = "semester_id", length = 20)
-    private String semesterId;
+    private int semesterId;
 
     @Column(name = "student_id", length = 20)
     private String studentId;
@@ -32,7 +32,7 @@ public class Semester {
     @Column(name = "semester_year", nullable = false)
     private int semesterYear;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.STRING) // enum을 DB 내부에 어떤 형태로 저장할지? -> String
     @Column(name = "semester_grade", nullable = false)
     private SemesterGradeEnum semesterGradeEnum;
 
@@ -41,7 +41,7 @@ public class Semester {
     private SemesterEnum semesterEnum;
 
     @Builder
-    public Semester(String semesterId, String studentId, int semesterYear,
+    public Semester(int semesterId, String studentId, int semesterYear,
                     SemesterGradeEnum semesterGradeEnum, SemesterEnum semesterEnum)
     {
         this.semesterId = semesterId;
