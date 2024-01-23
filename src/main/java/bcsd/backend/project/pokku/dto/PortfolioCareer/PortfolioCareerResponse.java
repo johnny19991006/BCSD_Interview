@@ -1,11 +1,13 @@
 package bcsd.backend.project.pokku.dto.PortfolioCareer;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-public class PortfolioCareerRequest {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PortfolioCareerResponse {
     private Long portfolioCareerId;
     private String careerExplanation;
 }

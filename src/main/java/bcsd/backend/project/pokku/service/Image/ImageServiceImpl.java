@@ -2,22 +2,14 @@ package bcsd.backend.project.pokku.service.Image;
 
 import bcsd.backend.project.pokku.dao.*;
 import bcsd.backend.project.pokku.domain.*;
-import bcsd.backend.project.pokku.dto.Image.ImageDownloadRequest;
-import bcsd.backend.project.pokku.dto.Image.ImageDownloadResponse;
 import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
 
 @Service
 @Transactional
@@ -64,7 +56,7 @@ public class ImageServiceImpl implements ImageService {
                 }
 
                 Image img = Image.builder()
-                        .skillName(request.getName())
+                        .skillName(request.getName() + originalFileExtension)
                         .imageUrl(path + originalFileExtension)
                         .build();
 
@@ -113,14 +105,27 @@ public class ImageServiceImpl implements ImageService {
     }
 
     @Override
-    public ImageDownloadResponse download(ImageDownloadRequest request) throws Exception{
-        List<Image> images = imageRepository.findAllById(request.getImageName());
-        List<String> res = new ArrayList<>();
-        for (Image img: images) {
-            byte[] imageBytes = Files.readAllBytes(Paths.get(new File("").getAbsolutePath() + File.separator + img.getImageUrl()));
-            res.add(Base64.getEncoder().encodeToString(imageBytes));
+    public Boolean deleteImage(String imageName) throws Exception{
+        try {
+            // 이미지 파일의 절대 경로를 생성
+            String absolutePath = new File("").getAbsolutePath() + "\\";
+            String path = absolutePath + "images/" + imageName;
+
+            // File 객체를 생성하여 이미지 파일을 삭제
+            File imageFile = new File(path);
+            if (imageFile.exists()) {
+                if (imageFile.delete()) {
+                    imageRepository.deleteById(imageName);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        } catch (Exception e) {
+            return false;
         }
-        return new ImageDownloadResponse(res);
     }
 
 }

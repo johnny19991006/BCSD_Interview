@@ -79,4 +79,28 @@ public class JwtProvider {
             return false;
         }
     }
+
+    public boolean invalidateToken(String token, String accountId){
+        try {
+            if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
+                return false;
+            } else {
+                token = token.split(" ")[1].trim();
+            }
+
+            Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+
+            String tokenAccountId = claims.getBody().getSubject();
+            if (!tokenAccountId.equals(accountId)) {
+                return false;
+            }
+
+            claims.getBody().setExpiration(new Date(System.currentTimeMillis() - 1000));
+
+            return true;
+        } catch (Exception e){
+            return false;
+        }
+    }
+
 }

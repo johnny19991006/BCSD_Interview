@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -19,5 +20,8 @@ public interface UserPortfolioSkillsFrontendRepository extends JpaRepository<Use
 
     @Query("SELECT p FROM UserPortfolioSkillsFrontend p WHERE p.userInfo = :user_id and p.skillsFrontend = :skills_frontend_id")
     Optional<UserPortfolioSkillsFrontend> findEntity(@Param("user_id") UserInfo user, @Param("skills_frontend_id") SkillsFrontend skillsFrontend);
+
+    @Query("SELECT p.skillsFrontend FROM UserPortfolioSkillsFrontend p WHERE p.userInfo = :user_id")
+    List<Long> findByUserId(@Param("user_id") UserInfo user);
 
 }

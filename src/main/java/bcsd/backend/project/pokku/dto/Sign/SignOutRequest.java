@@ -1,11 +1,11 @@
-package bcsd.backend.project.pokku.dto.User;
+package bcsd.backend.project.pokku.dto.Sign;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDFRequest {
+public class SignOutRequest {
     private String userId;
     private String token;
 }

@@ -1,4 +1,4 @@
-package bcsd.backend.project.pokku.dto.SignIn;
+package bcsd.backend.project.pokku.dto.Sign;
 
 import bcsd.backend.project.pokku.domain.Authority;
 import bcsd.backend.project.pokku.domain.UserInfo;

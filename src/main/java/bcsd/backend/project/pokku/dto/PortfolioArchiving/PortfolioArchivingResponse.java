@@ -1,13 +1,14 @@
 package bcsd.backend.project.pokku.dto.PortfolioArchiving;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
-public class PortfolioArchivingRequest {
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PortfolioArchivingResponse {
     private Long portfolioArchivingId;
     private String archivingName;
     private String archivingExplanation;
-
 }
