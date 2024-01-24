@@ -20,8 +20,7 @@ public class LikeController {
         likeService.insert(postId);
     }
 
-    @PostMapping("/{postId}/{commentId}")
-    @ResponseStatus(HttpStatus.CREATED)
+    @DeleteMapping("/{postId}")
     public void deleteLike(@PathVariable("postId") Integer postId) {
         likeService.delete(postId);
     }
