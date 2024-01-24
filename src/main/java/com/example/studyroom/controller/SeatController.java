@@ -3,7 +3,7 @@ package com.example.studyroom.controller;
 import com.example.studyroom.domain.Seat;
 import com.example.studyroom.dto.ChangeSeatDTO;
 import com.example.studyroom.dto.ChoiceSeatDTO;
-import com.example.studyroom.dto.EndSeatDTO;
+import com.example.studyroom.dto.CancleSeatDTO;
 import com.example.studyroom.dto.InsertSeatDTO;
 import com.example.studyroom.service.SeatService;
 import org.springframework.web.bind.annotation.*;
@@ -44,8 +44,8 @@ public class SeatController {
         return seatService.choiceSeat(choiceSeatDTO);
     }
 
-    @PatchMapping("/end")
-    public Seat endSeat(@RequestBody EndSeatDTO endSeatDTO) {
-        return seatService.endSeat(endSeatDTO);
+    @PatchMapping("/cancle")
+    public Seat cancleSeat(@RequestBody CancleSeatDTO cancleSeatDTO) {
+        return seatService.cancleSeat(cancleSeatDTO);
     }
 }
