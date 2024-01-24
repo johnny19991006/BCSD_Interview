@@ -8,11 +8,11 @@ import lombok.*;
 @Entity
 @Builder
 @Table(name = "users")
-@AllArgsConstructor
-@RequiredArgsConstructor
 @Getter
-@Setter
 public class User {
+    public User() {}
+
+
     @Id
     @Column(name = "school_id")
     private Integer schoolId;
@@ -29,4 +29,15 @@ public class User {
     @JoinColumn(name = "school_id")
     @Nullable
     private Seat seat;
+
+    public User(Integer schoolId){
+        this.schoolId = schoolId;
+    }
+
+    public User(Integer schoolId, String name, String password, Seat seat){
+        this.schoolId = schoolId;
+        this.name = name;
+        this.password = password;
+        this.seat = seat;
+    }
 }
