@@ -10,6 +10,7 @@ Create Table Subject
 );
 */
 // subject_name은 문자열로 할 지, AUTO_INCREMENT를 이용한 INT 형으로 사용 할 지 한 번 생각 해보겠습니다.
+import java.util.ArrayList;
 import java.util.List;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -35,8 +36,8 @@ public class Subject {
     @Column(name = "credit", nullable = false)
     private int credit;
 
-    @OneToMany(mappedBy = "subject")
-    private List<SubjectScore> subjectScores;
+    @OneToMany(mappedBy = "subject") // 과목에서 성적을 참조할 것? -> 할 수 있으면 좋겠음
+    private List<SubjectScore> subjectScores = new ArrayList<>();
 
     @Builder
     public Subject(String subjectName, String professorName, CategoryEnum categoryEnum, int credit)

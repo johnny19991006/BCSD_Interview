@@ -26,7 +26,7 @@ public class Semester {
     @Column(name = "semester_id", length = 20)
     private int semesterId;
 
-    @ManyToOne // 외래키 지정, 학생 아이디로 구분
+    @ManyToOne // 외래키 지정, 학생 아이디로 구분, 이를 직접 사용하는 것이 좋을 것 같음
     @JoinColumn(name = "student_id")
     private Student student_id;
 

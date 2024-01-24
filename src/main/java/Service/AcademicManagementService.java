@@ -1,12 +1,12 @@
-package AcademicManagement.BCSDproject;
+package Service;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class BcsDprojectApplication {
+public class AcademicManagementService {
 	public static void main(String[] args) {
-		SpringApplication.run(BcsDprojectApplication.class, args);
+		SpringApplication.run(AcademicManagementService.class, args);
 	}
 
 }

@@ -56,6 +56,14 @@ public class StudentGradeInformation {
     @Column(name = "avg_all_score", nullable = false)
     private float avgAllScore;
 
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
+
+    @ManyToOne
+    @JoinColumn(name = "semester_id")
+    private Semester semester;
+
     @Builder
     public StudentGradeInformation(String studentId, int semesterId, int totalCredit, int totalMajorCredit,
                                    float avgMajorScore, int totalGeneralCredit, float avgGeneralScore,

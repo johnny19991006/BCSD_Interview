@@ -43,7 +43,7 @@ public class SubjectScore {
     @Column(name = "subject_retake", nullable = false)
     private String subjectRetake;
 
-    @ManyToOne
+    @ManyToOne // 오류 있는 이유..
     @JoinColumn(name = "subject_name")
     private Subject subject;
 

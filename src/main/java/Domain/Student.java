@@ -53,9 +53,6 @@ public class Student {
     @Column(name = "update_at") // 업데이트 시간
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "student")
-    private List<SubjectScore> subjectScores;
-
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
                    int studentGrade, List<Semester> studentSemester, String studentAttend, LocalDateTime updateAt)
