@@ -26,8 +26,9 @@ public class Semester {
     @Column(name = "semester_id", length = 20)
     private int semesterId;
 
-    @Column(name = "student_id", length = 20)
-    private String studentId;
+    @ManyToOne // 외래키 지정, 학생 아이디로 구분
+    @JoinColumn(name = "student_id")
+    private Student student_id;
 
     @Column(name = "semester_year", nullable = false)
     private int semesterYear;
@@ -41,11 +42,11 @@ public class Semester {
     private SemesterEnum semesterEnum;
 
     @Builder
-    public Semester(int semesterId, String studentId, int semesterYear,
+    public Semester(int semesterId, Student student_id, int semesterYear,
                     SemesterGradeEnum semesterGradeEnum, SemesterEnum semesterEnum)
     {
         this.semesterId = semesterId;
-        this.studentId = studentId;
+        this.student_id = student_id;
         this.semesterYear = semesterYear;
         this.semesterGradeEnum = semesterGradeEnum;
         this.semesterEnum = semesterEnum;

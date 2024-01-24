@@ -10,7 +10,7 @@ Create Table Subject
 );
 */
 // subject_name은 문자열로 할 지, AUTO_INCREMENT를 이용한 INT 형으로 사용 할 지 한 번 생각 해보겠습니다.
-
+import java.util.List;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,8 +21,9 @@ import lombok.NoArgsConstructor;
 @Table(name = "Subject")
 public class Subject {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_name", length = 20, nullable = false)
-    private String subjectId;
+    private String subjectName;
 
     @Column(name = "professor_name", length = 20)
     private String professorName;
@@ -34,10 +35,13 @@ public class Subject {
     @Column(name = "credit", nullable = false)
     private int credit;
 
+    @OneToMany(mappedBy = "subject")
+    private List<SubjectScore> subjectScores;
+
     @Builder
-    public Subject(String subjectId, String professorName, CategoryEnum categoryEnum, int credit)
+    public Subject(String subjectName, String professorName, CategoryEnum categoryEnum, int credit)
     {
-        this.subjectId = subjectId;
+        this.subjectName = subjectName;
         this.professorName = professorName;
         this.categoryEnum = categoryEnum;
         this.credit = credit;

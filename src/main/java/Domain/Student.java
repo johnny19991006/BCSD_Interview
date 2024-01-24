@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import Domain.Semester;
+import java.util.List;
 
 import java.time.LocalDateTime;
 /*
@@ -26,6 +28,7 @@ import java.time.LocalDateTime;
 @Table(name = "Student")
 public class Student {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id", length = 20, nullable = false) // 학생이 사용 할 아이디
     private String studentId;
 
@@ -41,18 +44,21 @@ public class Student {
     @Column(name = "student_grade", nullable = false) // 학년
     private int studentGrade;
 
-    @Column(name = "student_semester", nullable = false) // 학기
-    private int studentSemester;
+    @OneToMany(mappedBy = "student_id") // 학생은 여러 학기를 가질 수 있음, 외래키
+    private List<Semester> studentSemester;
 
     @Column(name = "student_attend", length = 10, nullable = false) // 학적 상황
     private String studentAttend;
 
-    @Column(name = "update_at") // 업데이트 시간 111
+    @Column(name = "update_at") // 업데이트 시간
     private LocalDateTime updateAt;
+
+    @OneToMany(mappedBy = "student")
+    private List<SubjectScore> subjectScores;
 
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
-                   int studentGrade, int studentSemester, String studentAttend, LocalDateTime updateAt)
+                   int studentGrade, List<Semester> studentSemester, String studentAttend, LocalDateTime updateAt)
     {
         this.studentId = studentId;
         this.studentPw = studentPw;

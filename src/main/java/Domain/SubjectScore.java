@@ -25,7 +25,7 @@ Create Table Subject_Score
 @Entity // JPA 사용 시 CRUD 작업 수행 가능
 @Table(name = "Subject_Score")
 public class SubjectScore {
-    @Id
+    @Id // 현재 PK가 둘이므로 복합키 사용도 고려
     @Column(name = "student_id", length = 20)
     private String studentId;
 
@@ -42,6 +42,14 @@ public class SubjectScore {
 
     @Column(name = "subject_retake", nullable = false)
     private String subjectRetake;
+
+    @ManyToOne
+    @JoinColumn(name = "subject_name")
+    private Subject subject;
+
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
 
     @Builder
     public SubjectScore(String studentId, String subjectName, SubjectScoreEnum subjectScoreEnum,

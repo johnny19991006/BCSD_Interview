@@ -1,9 +1,6 @@
 package Domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +28,7 @@ Create Table Student_Grade_Information
 @Table(name = "Student_Grade_Information")
 public class StudentGradeInformation {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
     private String studentId;
 
