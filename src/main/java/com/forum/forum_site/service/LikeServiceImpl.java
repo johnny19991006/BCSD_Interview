@@ -3,7 +3,6 @@ package com.forum.forum_site.service;
 import com.forum.forum_site.domain.Likes;
 import com.forum.forum_site.domain.Post;
 import com.forum.forum_site.domain.User;
-import com.forum.forum_site.dto.RequestLikeDto;
 import com.forum.forum_site.exception.LikeException;
 import com.forum.forum_site.exception.PostException;
 import com.forum.forum_site.exception.UserException;
@@ -21,9 +20,9 @@ public class LikeServiceImpl implements LikeService {
     private final PostRepository postRepository;
 
     @Override
-    public void insert(Integer postId, RequestLikeDto requestLikeDto) {
+    public void insert(Integer postId) {
         User currentUser = getCurrentAuthenticatedUser();
-        Post post = postRepository.findById(requestLikeDto.getPostId()).orElseThrow(() ->
+        Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostException(PostException.Type.POST_NOT_FOUND));
 
         // 이미 좋아요 되어 있으면 에러
@@ -31,22 +30,21 @@ public class LikeServiceImpl implements LikeService {
             throw new LikeException(LikeException.Type.ALREADY_PRESS_LIKE);
         }
 
+        post.insertLike();
+
         Likes like = Likes.builder()
                 .post(post)
                 .user(currentUser)
                 .build();
 
         likeRepository.save(like);
-
-        post.insertLike();
     }
 
     @Override
-    public void delete(Integer postId, RequestLikeDto requestLikeDto) {
+    public void delete(Integer postId) {
         User currentUser = getCurrentAuthenticatedUser();
-        Post post = postRepository.findById(requestLikeDto.getPostId()).orElseThrow(() ->
+        Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostException(PostException.Type.POST_NOT_FOUND));
-
 
         Likes like = likeRepository.findByUserAndPost(currentUser, post)
                 .orElseThrow(() -> new LikeException(LikeException.Type.LIKE_NOT_FOUND));
