@@ -16,15 +16,13 @@ public class LikeController {
 
     @PostMapping("/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void incresaseLike(@PathVariable("postId") Integer postId, SaveCommentDto saveCommentDto) {
-        // commentService.saveComment(postId, saveCommentDto);
+    public void incresaseLike(@PathVariable("postId") Integer postId) {
+        likeService.insert(postId);
     }
 
     @PostMapping("/{postId}/{commentId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void deleteLike(@PathVariable("postId") Integer postId,
-                              @PathVariable("commentId") Integer commentId,
-                              SaveCommentDto saveCommentDto) {
-        // commentService.saveReComment(postId, commentId, saveCommentDto);
+    public void deleteLike(@PathVariable("postId") Integer postId) {
+        likeService.delete(postId);
     }
 }
