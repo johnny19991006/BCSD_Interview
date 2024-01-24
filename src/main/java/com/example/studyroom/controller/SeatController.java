@@ -44,6 +44,11 @@ public class SeatController {
         return seatService.choiceSeat(choiceSeatDTO);
     }
 
+    @PatchMapping("/change")
+    public Seat changeSeat(@RequestBody ChangeSeatDTO changeSeatDTO){
+        return seatService.changeSeat(changeSeatDTO);
+    }
+
     @PatchMapping("/cancle")
     public Seat cancleSeat(@RequestBody CancleSeatDTO cancleSeatDTO) {
         return seatService.cancleSeat(cancleSeatDTO);
