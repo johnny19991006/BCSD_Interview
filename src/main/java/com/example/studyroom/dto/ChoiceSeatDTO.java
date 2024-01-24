@@ -11,8 +11,6 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class ChoiceSeatDTO {
     private Integer seatId;
-    private Integer seatNum;
     private Integer schoolId;
     private Integer roomId;
-    private Boolean isUsed;
 }
