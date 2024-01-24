@@ -49,9 +49,9 @@ public class LikeServiceImpl implements LikeService {
         Likes like = likeRepository.findByUserAndPost(currentUser, post)
                 .orElseThrow(() -> new LikeException(LikeException.Type.LIKE_NOT_FOUND));
 
-        likeRepository.delete(like);
-
         post.deleteLike();
+
+        likeRepository.delete(like);
     }
 
     private User getCurrentAuthenticatedUser() {
