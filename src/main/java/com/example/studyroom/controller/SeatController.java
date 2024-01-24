@@ -1,7 +1,9 @@
 package com.example.studyroom.controller;
 
 import com.example.studyroom.domain.Seat;
+import com.example.studyroom.dto.ChangeSeatDTO;
 import com.example.studyroom.dto.ChoiceSeatDTO;
+import com.example.studyroom.dto.EndSeatDTO;
 import com.example.studyroom.dto.InsertSeatDTO;
 import com.example.studyroom.service.SeatService;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +24,6 @@ public class SeatController {
         return seatService.insertSeat(insertSeatDTO);
     }
 
-    @PatchMapping("/")
-    public Seat choiceSeat(@RequestBody ChoiceSeatDTO choiceSeatDTO) {
-        return seatService.choiceSeat(choiceSeatDTO);
-    }
-
     @GetMapping("")
     public List<Seat> getAllSeats() {
         return seatService.getAllSeats();
@@ -40,5 +37,15 @@ public class SeatController {
     @DeleteMapping("/{seatId}")
     public void deleteSeat(@PathVariable int seatId) {
         seatService.deleteSeat(seatId);
+    }
+
+    @PatchMapping("/")
+    public Seat choiceSeat(@RequestBody ChoiceSeatDTO choiceSeatDTO) {
+        return seatService.choiceSeat(choiceSeatDTO);
+    }
+
+    @PatchMapping("/end")
+    public Seat endSeat(@RequestBody EndSeatDTO endSeatDTO) {
+        return seatService.endSeat(endSeatDTO);
     }
 }
