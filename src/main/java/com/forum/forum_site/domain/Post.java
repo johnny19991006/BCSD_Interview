@@ -70,4 +70,12 @@ public class Post{
     public void updateFilePath(String filePath) {
         this.filepath = filePath;
     }
+
+    // 좋아요 증가
+    public void insertLike() {
+        this.likes_count += 1;
+    }
+
+    // 좋아요 감소
+    public void deleteLike() { this.likes_count -= 1; }
 }
