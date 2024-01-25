@@ -20,7 +20,7 @@ public class LikeServiceImpl implements LikeService {
     private final PostRepository postRepository;
 
     @Override
-    public void insert(Integer postId) {
+    public void insertLike(Integer postId) {
         User currentUser = getCurrentAuthenticatedUser();
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostException(PostException.Type.POST_NOT_FOUND));
@@ -41,7 +41,7 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void delete(Integer postId) {
+    public void deleteLike(Integer postId) {
         User currentUser = getCurrentAuthenticatedUser();
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostException(PostException.Type.POST_NOT_FOUND));

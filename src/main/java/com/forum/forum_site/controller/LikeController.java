@@ -16,12 +16,12 @@ public class LikeController {
 
     @PostMapping("/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
-    public void incresaseLike(@PathVariable("postId") Integer postId) {
-        likeService.insert(postId);
+    public void insertLike(@PathVariable("postId") Integer postId) {
+        likeService.insertLike(postId);
     }
 
     @DeleteMapping("/{postId}")
     public void deleteLike(@PathVariable("postId") Integer postId) {
-        likeService.delete(postId);
+        likeService.deleteLike(postId);
     }
 }

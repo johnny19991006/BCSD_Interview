@@ -1,8 +1,8 @@
 package com.forum.forum_site.service;
 
 public interface LikeService {
-    void insert(Integer postId);
+    void insertLike(Integer postId);
 
-    void delete(Integer postId);
+    void deleteLike(Integer postId);
 
 }
