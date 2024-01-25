@@ -1,11 +1,14 @@
 package Controller;
 
+import Domain.Student;
 import Dto.StudentDTO;
 import Service.StudentService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor // service 생성자 생성
@@ -21,6 +24,11 @@ public class StudentController {
     }
     // JSON 처리 시는 @RequestBody, 일반적인 get, post에는 사용하지 않아도 된다고 함
 
+    @GetMapping("")
+    public List<Student> findAllStudent()
+    {
+        return service.findAllStudent();
+    }
     @GetMapping("/{studentId}")
     public StudentDTO findById(@PathVariable String studentId)
     {

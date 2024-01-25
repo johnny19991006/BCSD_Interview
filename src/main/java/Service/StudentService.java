@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.List;
 
 // 필요한 기능, 유저 추가, 유저 수정, 유저 삭제, 유저 업데이트
 @Service
@@ -38,6 +39,12 @@ public class StudentService implements StudentServiceInterface{
     {
         studentRepository.save(studentDTO.toEntity());
         return studentDTO;
+    }
+
+    @Override
+    public List<Student> findAllStudent()
+    {
+        return studentRepository.findAll();
     }
 
     @Override
