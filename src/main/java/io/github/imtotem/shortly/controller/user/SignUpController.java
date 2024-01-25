@@ -3,7 +3,6 @@ package io.github.imtotem.shortly.controller.user;
 import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.dto.user.UserInfoRequest;
 import io.github.imtotem.shortly.dto.user.UserInfoResponse;
-import io.github.imtotem.shortly.dto.user.UserResponse;
 import io.github.imtotem.shortly.service.user.signup.SignUpService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +19,7 @@ public class SignUpController {
     private final SignUpService service;
 
     @PostMapping
-    public ResponseEntity<UserResponse> signUp(@RequestBody @Valid UserInfoRequest request) {
+    public ResponseEntity<UserInfoResponse> signUp(@RequestBody @Valid UserInfoRequest request) {
 
         User user = service.createUser(
                 User.builder()
@@ -29,7 +28,7 @@ public class SignUpController {
                         .build()
         );
 
-        UserResponse response = UserInfoResponse.builder()
+        UserInfoResponse response = UserInfoResponse.builder()
                 .id(user.getId())
                 .email(user.getEmail())
                 .createdAt(user.getCreatedAt())
