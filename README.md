@@ -5,7 +5,7 @@
 - [2. 전체 권한 api](#2-전체-권한-api)
   * [/sign/in, POST](#signin-post)
   * [/sign/out, POST](#signout-post)
-  * [/sign/up, POST](#-sign-up--post)
+  * [/sign/up, POST](#signup-post)
 - [3. User, Admin 권한 api](#3-user--admin----api)
   * [/user/{id}, GET](#-user--id---get)
   * [/user/{id}, PUT](#-user--id---put)
