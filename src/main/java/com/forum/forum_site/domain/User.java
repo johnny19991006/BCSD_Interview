@@ -79,7 +79,7 @@ public class User implements UserDetails{
         return true;
     }
 
-    // 회원 탈퇴시 작성한 게시물 및 댓글 삭제
+    // 회원 탈퇴시 작성한 게시물 및 댓글, 스크랩 삭제
     @Builder.Default
     @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
@@ -88,6 +88,10 @@ public class User implements UserDetails{
     @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    @Builder.Default
+    @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
+    private List<Post> scrapList = new ArrayList<>();
+
     public void addPost(Post post){
         postList.add(post);
     }
@@ -95,6 +99,8 @@ public class User implements UserDetails{
     public void addComment(Comment comment) {
         commentList.add(comment);
     }
+
+    public void addScrap(Post post) {scrapList.add(post);}
 }
 
 

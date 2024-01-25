@@ -55,9 +55,16 @@ public class Post{
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
+    // 유저가 작성한 포스트 리스트에 추가
     public void confirmAuthor(User author) {
         this.author = author;
         author.addPost(this);
+    }
+
+    // 유저가 스크랩한 포스트 리스트에 추가
+    public void confirmUser(User author) {
+        this.author = author;
+        author.addScrap(this);
     }
 
     public void addComment(Comment comment) {
