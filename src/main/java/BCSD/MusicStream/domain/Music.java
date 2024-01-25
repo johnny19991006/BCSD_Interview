@@ -1,18 +1,17 @@
 package BCSD.MusicStream.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.sql.Time;
 
-@Data
-@NoArgsConstructor
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
+@Getter
+@Setter
+@ToString
 public class Music {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,8 +25,8 @@ public class Music {
     private Category category;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Member user;
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
 
     @Column(name = "singer_name", nullable = false, length = 10)
     private String singerName;
@@ -35,6 +34,9 @@ public class Music {
     @Column(name = "duration")
     private Time duration;
 
-    @OneToOne(mappedBy = "music")
-    private Lyric lyric;
+    @Column(name = "image_file_name")
+    private String imageFileName;
+
+    @Column(name = "sound_file_name")
+    private String soundFileName;
 }

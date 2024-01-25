@@ -8,11 +8,11 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
-public class Category {
+public class Authority {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "name", nullable = false, length = 10)
-    private String name;
+    @Column(name = "authority_type", nullable = false, length = 10)
+    private String type;
 }

@@ -1,25 +1,19 @@
 package BCSD.MusicStream.service;
 
-import BCSD.MusicStream.domain.Lyric;
-import BCSD.MusicStream.dto.AddMusicDTO;
-import BCSD.MusicStream.dto.ModefiedMusicDTO;
-import BCSD.MusicStream.dto.MusicDTO;
-import BCSD.MusicStream.dto.IyricsDTO;
-import org.springframework.web.multipart.MultipartFile;
+import BCSD.MusicStream.dto.Lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.dto.music.ModifyMusicDTO;
+import BCSD.MusicStream.dto.music.RequestMusicDTO;
+import BCSD.MusicStream.dto.music.UploadMusicDTO;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.util.List;
 
 public interface MusicService {
-    List<MusicDTO> getMusicByMusicNameOrSingerName(String targetText) throws MalformedURLException;
-    Integer addMusic(AddMusicDTO addMusicDTO) throws IOException;
-    void modefiedMusic(ModefiedMusicDTO modefiedMusicDTO);
-    void deleteMusic(Integer musicId);
-    Lyric getMusicIyrics(Integer musicId);
-    void deleteMusicMP3(Integer musicId);
-    void deleteMusicIcon(Integer musicId);
-    void uploadMusicMP3(Integer musicId, MultipartFile musicMP3) throws IOException;
-    void uploadMusicIcon(Integer musicId, MultipartFile musicIcon) throws IOException;
-    IyricsDTO getIyrics(Integer musicId) throws IOException;
+    List<RequestMusicDTO> getMusicByMusicNameOrSingerName(String targetText) throws MalformedURLException;
+    RequestLyricsDTO getLyricsByMusicId(Integer musicId);
+    Integer addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId) throws IOException, UnsupportedAudioFileException;
+    void modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException;
+    void deleteMusic(Integer musicId, Integer memberId);
 }

@@ -5,11 +5,12 @@ import lombok.*;
 
 import java.util.Set;
 
-@Data
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Entity
 @Builder
+@Getter
+@Setter
 public class Playlist {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,8 +20,8 @@ public class Playlist {
     private String name;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Member user;
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
 
     @OneToMany(mappedBy = "playlist")
     private Set<PlaylistMusic> playlistMusics;

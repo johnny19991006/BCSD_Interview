@@ -3,19 +3,19 @@ package BCSD.MusicStream.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Entity
 @Builder
+@Getter
 public class UserLike {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private Member user;
+    @JoinColumn(name = "member_id", referencedColumnName = "id")
+    private Member member;
 
     @ManyToOne
     @JoinColumn(name = "music_id", referencedColumnName = "id")

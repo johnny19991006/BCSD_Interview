@@ -1,27 +1,32 @@
 package BCSD.MusicStream.controller;
 
-import BCSD.MusicStream.dto.AddPlaylistDTO;
-import BCSD.MusicStream.dto.ModefiedPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.AddPlaylistDTO;
+import BCSD.MusicStream.dto.playlistMusic.AddPlaylistMusicDTO;
+import BCSD.MusicStream.dto.playlistMusic.RequestPlaylistMusicDTO;
+import BCSD.MusicStream.service.PlaylistMusicsService;
 import BCSD.MusicStream.service.PlaylistService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/playlistMusics")
 @AllArgsConstructor
 public class PlaylistMusicController {
 
-    private final PlaylistService playlistService;
+    private final PlaylistMusicsService playlistMusicsService;
+
+    @GetMapping("/{playlistId}")
+    public List<RequestPlaylistMusicDTO> getPlaylistMusicsByPlaylistId(@PathVariable Integer playlistId) {
+        return playlistMusicsService.findAllMusicByPlaylistId(playlistId);
+    }
     @PostMapping
-    public void createPlaylist(@RequestBody AddPlaylistDTO playlistDTO) {
-        playlistService.addPlaylist(playlistDTO);
+    public void addPlaylistMusic(@RequestBody AddPlaylistMusicDTO addPlaylistMusicDTO) {
+        playlistMusicsService.addMusic(addPlaylistMusicDTO);
     }
-    @PutMapping
-    public void modefiedPlaylistName(@RequestBody ModefiedPlaylistDTO modefiedPlaylistDTO) {
-        playlistService.modefiedPlaylistName(modefiedPlaylistDTO);
-    }
-    @DeleteMapping
-    public void deletePlaylist(@PathVariable Integer playlistId) {
-        playlistService.removePlaylist(playlistId);
+    @DeleteMapping("/{playlistMusicId}")
+    public void deletePlaylistMusicByPlaylistMusicId(@PathVariable Integer playlistMusicId) {
+        playlistMusicsService.removeMusicByPlaylistMusicId(playlistMusicId);
     }
 }

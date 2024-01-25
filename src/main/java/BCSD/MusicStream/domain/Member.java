@@ -5,17 +5,17 @@ import lombok.*;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
-@Data
+@Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Entity
 @Builder
-//@EqualsAndHashCode(of = "user_id")
-public class Member implements UserDetails {
+@Getter
+@Setter
+public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -30,39 +30,9 @@ public class Member implements UserDetails {
     private String password;
 
     @Column(name = "birth_date")
-    private Date birthDate;
+    private LocalDate birthDate;
 
-    @Column(name = "authority_type", nullable = false)
-    private Boolean authorityType;
-
-    @Override
-    public Collection<SimpleGrantedAuthority> getAuthorities() {
-        Collection<SimpleGrantedAuthority> list = new ArrayList<>();
-        list.add(new SimpleGrantedAuthority(authorityType.toString()));
-        return list;
-    }
-    @Override
-    public String getPassword() {
-        return null;
-    }
-    @Override
-    public String getUsername() {
-        return null;
-    }
-    @Override
-    public boolean isAccountNonExpired() {
-        return false;
-    }
-    @Override
-    public boolean isAccountNonLocked() {
-        return false;
-    }
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return false;
-    }
-    @Override
-    public boolean isEnabled() {
-        return false;
-    }
+    @ManyToOne
+    @JoinColumn(name = "authority_id", referencedColumnName = "id")
+    private Authority authority;
 }

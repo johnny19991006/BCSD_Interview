@@ -1,16 +1,14 @@
 package BCSD.MusicStream.domain;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 @Builder
+@Getter
+@Table(name = "playlist_music")
 public class PlaylistMusic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

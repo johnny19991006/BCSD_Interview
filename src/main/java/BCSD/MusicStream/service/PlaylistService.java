@@ -1,11 +1,14 @@
 package BCSD.MusicStream.service;
 
-import BCSD.MusicStream.dto.AddPlaylistDTO;
-import BCSD.MusicStream.dto.ModefiedPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.AddPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.ModifyPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.RequestPlaylistDTO;
+
+import java.util.List;
 
 public interface PlaylistService {
-    public void addPlaylist(AddPlaylistDTO playlistDTO);
+    public List<RequestPlaylistDTO> getPlaylistByMemberId(Integer MemberId);
+    public void addPlaylist(AddPlaylistDTO addPlaylistDTO, Integer memberId);
     public void removePlaylist(Integer playlistId);
-    public void modefiedPlaylistName(ModefiedPlaylistDTO modefiedPlaylistDTO);
-    public void addPlaylistMusic(Integer playlistId, Integer musicId);
+    public void modifyPlaylistName(ModifyPlaylistDTO modifyPlaylistDTO);
 }

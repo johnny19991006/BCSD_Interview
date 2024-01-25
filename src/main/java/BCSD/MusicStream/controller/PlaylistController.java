@@ -1,10 +1,16 @@
 package BCSD.MusicStream.controller;
 
-import BCSD.MusicStream.dto.AddPlaylistDTO;
-import BCSD.MusicStream.dto.ModefiedPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.AddPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.ModifyPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.RequestPlaylistDTO;
+import BCSD.MusicStream.security.JwtTokenProvider;
 import BCSD.MusicStream.service.PlaylistService;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/playlist")
@@ -12,17 +18,25 @@ import org.springframework.web.bind.annotation.*;
 public class PlaylistController {
 
     private final PlaylistService playlistService;
+    @GetMapping
+    public List<RequestPlaylistDTO> getPlaylist(HttpServletRequest request) {
+        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
+        Integer memberId = (Integer) cLaims.get("memberId");
+        return playlistService.getPlaylistByMemberId(memberId);
+    }
     @PostMapping
-    public void createPlaylist(@RequestBody AddPlaylistDTO playlistDTO) {
-        playlistService.addPlaylist(playlistDTO);
+    public void createPlaylist(HttpServletRequest request,  @RequestBody AddPlaylistDTO addPlaylistDTO) {
+        System.out.println("ds");
+        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
+        Integer memberId = (Integer) cLaims.get("memberId");
+        playlistService.addPlaylist(addPlaylistDTO, memberId);
     }
     @PutMapping
-    public void modefiedPlaylistName(@RequestBody ModefiedPlaylistDTO modefiedPlaylistDTO) {
-        playlistService.modefiedPlaylistName(modefiedPlaylistDTO);
+    public void modefiedPlaylistName(HttpServletRequest request, @RequestBody ModifyPlaylistDTO modifyPlaylistDTO) {
+        playlistService.modifyPlaylistName(modifyPlaylistDTO);
     }
     @DeleteMapping("/{playlistId}")
-    public void deletePlaylist(@PathVariable String playlistId) {
-        System.out.println(playlistId);
-        playlistService.removePlaylist(Integer.parseInt(playlistId));
+    public void deletePlaylist(@PathVariable Integer playlistId) {
+        playlistService.removePlaylist(playlistId);
     }
 }
