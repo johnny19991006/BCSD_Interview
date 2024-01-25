@@ -31,7 +31,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("@checker.isSelf(request.email)")
+    @PreAuthorize("@checker.isSelf(#request.email)")
     @PutMapping
     public ResponseEntity<UserInfoResponse> updateUser(@RequestBody @Valid UserInfoRequest request) {
 
@@ -51,7 +51,7 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PreAuthorize("@checker.isSelf(request.email)")
+    @PreAuthorize("@checker.isSelf(#request.email)")
     @DeleteMapping
     public ResponseEntity<Boolean> deleteUser(@RequestBody @Valid UserInfoRequest request) {
 
