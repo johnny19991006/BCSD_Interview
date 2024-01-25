@@ -28,13 +28,7 @@ public class UserServiceImpl implements UserService {
         User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
 
-        User newUser = User.builder()
-                .id(user.getId())
-                .email(user.getEmail())
-                .password(encoder.encode(request.getPassword()))
-                .build();
-
-        return repository.save(newUser);
+        return user.update(encoder.encode(request.getPassword()));
     }
 
     @Override
