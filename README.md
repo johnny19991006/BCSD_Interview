@@ -6,7 +6,7 @@
   * [/sign/in, POST](#signin-post)
   * [/sign/out, POST](#signout-post)
   * [/sign/up, POST](#signup-post)
-- [3. User, Admin 권한 api](#3-user--admin----api)
+- [3. User, Admin 권한 api](#3-user-admin-권한-api)
   * [/user/{id}, GET](#-user--id---get)
   * [/user/{id}, PUT](#-user--id---put)
   * [/user/{id}, DELETE](#-user--id---delete)
