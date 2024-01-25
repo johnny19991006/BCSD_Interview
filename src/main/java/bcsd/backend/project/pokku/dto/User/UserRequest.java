@@ -13,5 +13,4 @@ public class UserRequest {
     private String userPassword;
     private String userNickname;
     private String userEducation;
-    private String token;
 }

@@ -46,7 +46,7 @@ public class PortfolioController {
         return new ResponseEntity<>(portfolioService.findSkills(userId), HttpStatus.OK);
     }
 
-    @GetMapping(value = "/skills/{category}")
+    @GetMapping(value = "/skillslist/{category}")
     public ResponseEntity<List<PortfolioSkillsListResponse>> findSkillsList(@PathVariable(name = "category") String category) throws Exception{
         return new ResponseEntity<>(portfolioService.findSkillsList(category), HttpStatus.OK);
     }
