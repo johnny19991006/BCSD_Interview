@@ -12,12 +12,13 @@ import java.util.NoSuchElementException;
 
 // 필요한 기능, 유저 추가, 유저 수정, 유저 삭제, 유저 업데이트
 @Service
-@Transactional
+@Transactional // 클래스 전체 정의, 메소드 개별 정의 어떤 게 나을지?
 @RequiredArgsConstructor // StudentRepository의 생성자 주입, final 혹은 @Notnull 붙은 것 포함
 public class StudentService implements StudentServiceInterface{
     private final StudentRepository studentRepository;
 
-    // 엔티티를 DTO로 변환하기, 이를 이용하면 필드값 변환 없이 복사 가, 영향 x
+    // 엔티티를 DTO로 변환하기, 이를 이용하면 필드값 변환 없이 복사 가능, 영향 x
+    // 필요 유무 따져보고, 필요 없다면 삭제할 것
     private StudentDTO toDto(Student student)
     {
         return StudentDTO.builder()
@@ -67,6 +68,7 @@ public class StudentService implements StudentServiceInterface{
 
         return new StudentDTO(student);
     }
+    // StudentId는 고유 값을 사용하므로 수정 불가하도록 했음
 
     @Override
     public void deleteStudent(String studentId) {
