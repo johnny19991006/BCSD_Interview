@@ -22,7 +22,6 @@ import lombok.NoArgsConstructor;
 @Table(name = "Subject")
 public class Subject {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "subject_name", length = 20, nullable = false)
     private String subjectName;
 

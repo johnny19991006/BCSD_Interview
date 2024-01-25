@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import Domain.Semester;
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -28,7 +27,6 @@ import java.time.LocalDateTime;
 @Table(name = "Student")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id", length = 20, nullable = false) // 학생이 사용 할 아이디
     private String studentId;
 
@@ -64,6 +62,34 @@ public class Student {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
+        this.updateAt = updateAt;
+    }
+
+    public void setStudentPw(String studentPw) {
+        this.studentPw = studentPw;
+    }
+
+    public void setStudentName(String studentName) {
+        this.studentName = studentName;
+    }
+
+    public void setStudentMajor(String studentMajor) {
+        this.studentMajor = studentMajor;
+    }
+
+    public void setStudentGrade(int studentGrade) {
+        this.studentGrade = studentGrade;
+    }
+
+    public void setStudentSemester(List<Semester> studentSemester) {
+        this.studentSemester = studentSemester;
+    }
+
+    public void setStudentAttend(String studentAttend) {
+        this.studentAttend = studentAttend;
+    }
+
+    public void setUpdateAt(LocalDateTime updateAt) {
         this.updateAt = updateAt;
     }
 }

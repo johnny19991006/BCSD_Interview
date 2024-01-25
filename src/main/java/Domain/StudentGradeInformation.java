@@ -28,7 +28,6 @@ Create Table Student_Grade_Information
 @Table(name = "Student_Grade_Information")
 public class StudentGradeInformation {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
     private String studentId;
 
