@@ -83,4 +83,8 @@ public class Seat {
         this.startTime = now;
         this.endTime = now.plusHours(3);
     }
+
+    public void extendSeat(){
+        this.endTime =  this.endTime.plusHours(3);
+    }
 }

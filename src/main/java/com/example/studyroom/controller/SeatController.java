@@ -1,10 +1,7 @@
 package com.example.studyroom.controller;
 
 import com.example.studyroom.domain.Seat;
-import com.example.studyroom.dto.ChangeSeatDTO;
-import com.example.studyroom.dto.ChoiceSeatDTO;
-import com.example.studyroom.dto.CancleSeatDTO;
-import com.example.studyroom.dto.InsertSeatDTO;
+import com.example.studyroom.dto.*;
 import com.example.studyroom.service.SeatService;
 import org.springframework.web.bind.annotation.*;
 
@@ -52,5 +49,10 @@ public class SeatController {
     @PatchMapping("/cancle")
     public Seat cancleSeat(@RequestBody CancleSeatDTO cancleSeatDTO) {
         return seatService.cancleSeat(cancleSeatDTO);
+    }
+
+    @PatchMapping("/extend")
+    public Seat extendSeat(@RequestBody ExtendSeatDTO extendSeatDTO){
+        return seatService.extendSeat(extendSeatDTO);
     }
 }
