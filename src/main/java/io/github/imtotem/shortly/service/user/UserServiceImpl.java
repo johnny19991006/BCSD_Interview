@@ -18,15 +18,14 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder encoder;
 
     @Override
-    public User findUser(long id) throws RuntimeException {
-        // TODO 권한 체크
-        return repository.findById(id)
+    public User findUser(String email) throws RuntimeException {
+        return repository.findByEmail(email)
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
     public User updateUser(User request) throws RuntimeException {
-        User user = repository.findById(request.getId())
+        User user = repository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
 
         User newUser = User.builder()
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean deleteUser(User request) throws RuntimeException {
-        if (!repository.existsById(request.getId())) {
+        if (!repository.existsByEmail(request.getEmail())) {
             throw new UserException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
