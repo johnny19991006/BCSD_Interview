@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoResponse implements UserResponse {
+public class UserInfoResponse {
     private long id;
     private String email;
     private LocalDateTime createdAt;
