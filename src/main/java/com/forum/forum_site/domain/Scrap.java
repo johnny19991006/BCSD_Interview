@@ -4,17 +4,22 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import static jakarta.persistence.FetchType.LAZY;
+
 @Table(name = "Scrap")
 @Data
 @NoArgsConstructor
 @Entity
 public class Scrap {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer scrap_id;
 
-    @Column(nullable = false)
-    private Integer post_id;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "user_id")
+    private User author;
 
-    @Column(nullable = false)
-    private Integer user_id;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "post_id")
+    private Post post;
 }
