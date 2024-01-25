@@ -24,7 +24,7 @@ public class LoginServiceImpl implements LoginService {
     public JwtToken login(User request) throws RuntimeException {
 
         User user = repository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new UsernameNotFoundException(ErrorCode.EMAIL_NOT_FOUND.getMessage()));
+            .orElseThrow(() -> new UserException(ErrorCode.EMAIL_NOT_FOUND));
 
         if(!encoder.matches(request.getPassword(), user.getPassword())) {
             throw new UserException(ErrorCode.WRONG_PASSWORD);
