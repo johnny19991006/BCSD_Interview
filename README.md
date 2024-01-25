@@ -1,17 +1,5 @@
 # BCSD_BackEnd_Project
 
-- [BCSD_BackEnd_Project](#bcsd-backend-project)
-    * [1. 기능 우선순위](#1--------)
-        - [1-1 User권한](#1-1-user--)
-        - [1-1 User권한 api 사용법](#1-1-user---api----)
-            + [1.회원가입](#1----)
-            + [2. 로그인](#2----)
-            + [3. 회원정보 수정](#3--------)
-            + [4. 회원 탈퇴](#4------)
-            + [5. 회원 정보 열람](#5---------)
-            + [6-1 개인정보 공개 설정](#6-1-----------)
-        - [1-2 Admin 권한](#1-2-admin---)
-
 ## 1. 기능 우선순위
 
 #### 1-1 User권한
@@ -32,11 +20,91 @@
 7. 다른 유저 검색
 8. 즐겨찾기 추가
 ```
-#### 1-1 User권한 api 사용법
-###### 1.회원가입
-```text
-localhost:8080/sign-up, POST
 
+#### 1-2 Admin 권한
+
+```text
+1. 개발 분야별 사용 가능한 기술스택 이미지 추가 및 삭제
+2. 일반 사용자 삭제
+```
+
+## 2. 전체 권한 api
+#### 리스트
+```text
+/sign/in - 로그인 post
+/sign/up - 회원가입 post
+/sign/out - 로그아웃 post
+```
+
+###### /sign/in, POST
+```text
+localhost:8080/sign/in, POST
+
+# request
+raw-json
+{
+    "userId": "",
+    "userPassword": ""
+}
+
+# response
+{
+    "userId": "",
+    "userPassword": "",
+    "roles": [
+        {
+            "authName": "",
+            "authId": 
+        }
+    ],
+    "token": ""
+}
+```
+
+###### /sign/out, POST
+```text
+localhost:8080/sign/out, POST
+
+# request
+raw-json
+{
+    "userId": "",
+    "token": ""
+}
+
+# response
+true or false
+```
+
+###### /sign/up, POST
+```text
+localhost:8080/sign/up, POST
+
+# request
+raw-json
+{
+    "userName": "",
+    "userBirth": "",
+    "userTel": "",
+    "userEmail": "",
+    "userId": "",
+    "userPassword": "",
+    "userNickname": "",
+    "userEducation": ""
+}
+
+# response
+true or false
+```
+
+## 3. User, Admin 권한 api
+###### /user/{id}, GET
+```text
+localhost:8080/user/{id}, GET
+
+# request
+
+# response
 {
     "userName": "",
     "userBirth": "",
@@ -49,19 +117,489 @@ localhost:8080/sign-up, POST
 }
 ```
 
-###### 2. 로그인
+###### /user/{id}, PUT
 ```text
-localhost:8080/sign-in, POST
+localhost:8080/user/{id}, PUT
 
+# request
+raw-json
 {
-    "userId": "",
-    "userPassword": ""
+    "userName": "",
+    "userBirth": "",
+    "userTel": "",
+    "userEmail": "",
+    "userPassword": "",
+    "userNickname": "",
+    "userEducation": ""
+}
+
+# response
+true or false
+```
+
+###### /user/{id}, DELETE
+```text
+localhost:8080/user/{id}, DELETE
+
+# request
+
+# response
+true or false
+```
+
+###### /user/blog/{id}, GET
+```text
+localhost:8080/user/blog/{id}, GET
+
+# request
+
+# response
+{
+    "snsName": ""
 }
 ```
-###### 3. 회원정보 수정
-```text
-localhost:8080/user, PUT
 
+###### /user/blog/{id}, POST
+```text
+localhost:8080/user/blog/{id}, POST
+
+# request
+raw-json
+{
+    "snsName": ""
+}
+
+# response
+true or false
+```
+
+###### /user/blog/{id}, DELETE
+```text
+localhost:8080/user/blog/{id}, DELETE
+
+# request
+
+# response
+true or false
+```
+
+###### /user/blog/{id}, PUT
+```text
+localhost:8080/user/blog/{id}, PUT
+
+# request
+raw-json
+{
+    "snsName": ""
+}
+
+# response
+true or false
+```
+
+###### /user/github/{id}, GET
+```text
+localhost:8080/user/github/{id}, GET
+
+# request
+
+# response
+{
+    "snsName": ""
+}
+```
+
+###### /user/github/{id}, POST
+```text
+localhost:8080/user/github/{id}, POST
+
+# request
+raw-json
+{
+    "snsName": ""
+}
+
+# response
+true or false
+```
+
+###### /user/github/{id}, DELETE
+```text
+localhost:8080/user/github/{id}, DELETE
+
+# request
+
+# response
+true or false
+```
+
+###### /user/github/{id}, PUT
+```text
+localhost:8080/user/github/{id}, PUT
+
+# request
+raw-json
+{
+    "snsName": ""
+}
+
+# response
+true or false
+```
+
+###### /user/instagram/{id}, GET
+```text
+localhost:8080/user/instagram/{id}, GET
+
+# request
+
+# response
+{
+    "snsName": ""
+}
+```
+
+###### /user/instagram/{id}, POST
+```text
+localhost:8080/user/instagram/{id}, POST
+
+# request
+raw-json
+{
+    "snsName": ""
+}
+
+# response
+true or false
+```
+
+###### /user/instagram/{id}, DELETE
+```text
+localhost:8080/user/instagram/{id}, DELETE
+
+# request
+
+# response
+true or false
+```
+
+###### /user/instagram/{id}, PUT
+```text
+localhost:8080/user/instagram/{id}, PUT
+
+# request
+raw-json
+{
+    "snsName": ""
+}
+
+# response
+true or false
+```
+
+###### /portfolio/about/{id}, GET
+```text
+localhost:8080/portfolio/about/{id}, GET
+
+# request
+
+# response
+{
+    "userNameVisible": true or false,
+    "userTelvisible": true or false,
+    "userEmailVisible": true or false,
+    "userEducationVisible": true or false
+}
+```
+
+###### /portfolio/about/{id}, PUT
+```text
+localhost:8080/portfolio/about/{id}, PUT
+
+# request
+raw-json
+{
+    "userNameVisible": true or false,
+    "userTelvisible": true or false,
+    "userEmailVisible": true or false,
+    "userEducationVisible": true or false
+}
+
+# response
+true or false
+```
+
+###### /portfolio/skillslist/{category}, GET
+```text
+localhost:8080/portfolio/skillslist/{category}, GET
+
+# request
+
+# response
+[
+    {
+        "skillId": num,
+        "skillName": ""
+    }
+]
+```
+
+###### /portfolio/skills/{id}, GET
+```text
+localhost:8080/portfolio/skills/{id}, GET
+
+# request
+
+# response
+{
+    "skillsFrontendIdList": [],
+    "skillsBackendIdList": [],
+    "skillsMobileappIdList": [],
+    "skillsDeploymentIdList": [],
+    "skillsVersioncontrolIdList": [],
+    "skillsCertificationIdList": [],
+    "skillsCommunicationIdList": []
+}
+```
+
+###### /portfolio/skills/{id}, POST
+```text
+localhost:8080/portfolio/skills/{id}, POST
+
+# request
+raw-json
+{
+    "category": "",
+    "skillsId": num
+}
+
+# response
+true or false
+```
+
+###### /portfolio/skills/{id}, DELETE
+```text
+localhost:8080/portfolio/skills/{id}, DELETE
+
+# request
+raw-json
+{
+    "category": "",
+    "skillsId": num
+}
+
+# response
+true or false
+```
+
+###### /portfolio/archiving/{id}, GET
+```text
+localhost:8080/portfolio/archiving/{id}, GET
+
+# request
+
+# response
+[
+    {
+        "portfolioArchivingId": num,
+        "archivingName": "",
+        "archivingExplanation": ""
+    }
+    .
+    .
+    .
+]
+```
+
+###### /portfolio/archiving/{id}, POST
+```text
+localhost:8080/portfolio/archiving/{id}, POST
+
+# request
+raw-json
+{
+    "portfolioArchivingId": num,
+    "archivingName": "",
+    "archivingExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/archiving/{id}, DELETE
+```text
+localhost:8080/portfolio/archiving/{id}, DELETE
+
+# request
+raw-json
+{
+    "portfolioArchivingId": num,
+    "archivingName": "",
+    "archivingExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/archiving/{id}, PUT
+```text
+localhost:8080/portfolio/archiving/{id}, PUT
+
+# request
+raw-json
+{
+    "portfolioArchivingId": num,
+    "archivingName": "",
+    "archivingExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/project/{id}, GET
+```text
+localhost:8080/portfolio/project/{id}, GET
+
+# request
+
+# response
+[
+    {
+        "portfolioProjectId": num,
+        "projectName": "",
+        "projectExplanation": ""
+    }
+    .
+    .
+    .
+]
+```
+
+###### /portfolio/project/{id}, POST
+```text
+localhost:8080/portfolio/project/{id}, POST
+
+# request
+raw-json
+{
+    "portfolioProjectId": num,
+    "projectName": "",
+    "projectExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/project/{id}, DELETE
+```text
+localhost:8080/portfolio/project/{id}, DELETE
+
+# request
+raw-json
+{
+    "portfolioProjectId": num,
+    "projectName": "",
+    "projectExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/project/{id}, PUT
+```text
+localhost:8080/portfolio/project/{id}, PUT
+
+# request
+raw-json
+{
+    "portfolioProjectId": num,
+    "projectName": "",
+    "projectExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/career/{id}, GET
+```text
+localhost:8080/portfolio/career/{id}, GET
+
+# request
+
+# response
+[
+    {
+        "portfolioCareerId": num,
+        "careerExplanation": ""
+    }
+    .
+    .
+    .
+]
+```
+
+###### /portfolio/career/{id}, POST
+```text
+localhost:8080/portfolio/career/{id}, POST
+
+# request
+raw-json
+{
+    "portfolioCareerId": num,
+    "careerExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/career/{id}, DELETE
+```text
+localhost:8080/portfolio/career/{id}, DELETE
+
+# request
+raw-json
+{
+    "portfolioCareerId": num,
+    "careerExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/career/{id}, PUT
+```text
+localhost:8080/portfolio/career/{id}, PUT
+
+# request
+raw-json
+{
+    "portfolioCareerId": num,
+    "careerExplanation": ""
+}
+# response
+true or false
+```
+
+###### /portfolio/image/{name}, POST
+```text
+localhost:8080/portfolio/image/{name}, POST
+
+# request
+
+# response
+{
+    "base64Images": ""
+}
+```
+
+## 4. Admin 권한 api
+###### /admin/user/{id}, GET
+```text
+localhost:8080/admin/user/{id}, GET
+
+# request
+
+# response
 {
     "userName": "",
     "userBirth": "",
@@ -70,117 +608,41 @@ localhost:8080/user, PUT
     "userId": "",
     "userPassword": "",
     "userNickname": "",
-    "userEducation": "",
-    "token": ""
+    "userEducation": ""
 }
 ```
 
-###### 4. 회원 탈퇴
+###### /admin/user/{id}, DELETE
 ```text
-localhost:8080/user, DELETE
+localhost:8080/admin/user/{id}, DELETE
 
+# request
+
+# response
+true or false
+```
+
+###### /admin/image, POST
+```text
+localhost:8080/admin/image, POST
+
+# request
+form-data
 {
-    "userId": "",
-    "token": ""
+    "image": 파일,
+    "name": "",
+    "category": ""
 }
+# response
+true or false
 ```
 
-###### 5. 회원 정보 열람
+###### /admin/image/{name}, DELETE
 ```text
-localhost:8080/user, POST
+localhost:8080/admin/image/{name}, DELETE
 
-{
-    "userId": "",
-    "token": ""
-}
-```
+# request
 
-###### 6-1 개인정보 공개 설정
-```text
-localhost:8080/about, POST
-
-{
-    "userId": ""
-}
-```
-```text
-localhost:8080/about, PUT
-
-{
-    "userId": "",
-    "userNameVisible": true or false,
-    "userTelVisible": true or false,
-    "userEmailVisible": true or false,
-    "userEducationVisible": true or false
-}
-```
-
-###### 6-2 github, blog, instagram 작성
-```text
-localhost:8080/sns, POST
-{
-    "userId": ""
-}
-```
-
-```text
-localhost:8080/sns, PUT
-
-{
-    "userId": "",
-    "userGithub": "",
-    "userBlog": "",
-    "userInstagram": ""
-}
-```
-
-###### 6-e image 불러오기
-
-```text
-localhost:8080/download-img, POST
-
-{
-    "imageName": ["이름", "쓰기", "여러개", ...]
-}
-
-```
-
-###### 6-3 개발 분야별 사용 가능한 기술스택 작성
-
-```text
-localhost:8080/portfolio, POST
-
-{
-    "userId": "",
-    "category": "{frontend, backend, deployment, communication, certification, versioncontrol, mobileapp} 중 하나 작성"
-    "skillsId": n
-}
-
-```
-
-```text
-localhost:8080/portfolio, DELETE
-
-{
-    "userId": "",
-    "category": "{frontend, backend, deployment, communication, certification, versioncontrol, mobileapp} 중 하나 작성"
-    "skillsId": n
-}
-
-```
-
-#### 1-2 Admin 권한
-
-```text
-1. 개발 분야별 사용 가능한 기술스택 이미지 추가 및 삭제
-2. 일반 사용자 삭제
-```
-#### 1-2 Admin권한 api 사용법
-
-###### 1.이미지 업로드
-```text
-localhost:8080/upload-img, POST, form-data
-
-var formData = new FormData();
-formData.append('image', file, 'name', '파일이름(확장자 제외)', 'category', '{frontend, backend, deployment, versioncontrol, communication, certification} 중 택 1');
+# response
+true or false
 ```
