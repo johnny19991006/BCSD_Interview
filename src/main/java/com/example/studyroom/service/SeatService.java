@@ -1,9 +1,13 @@
 package com.example.studyroom.service;
 
-import com.example.studyroom.domain.*;
+import com.example.studyroom.Message;
+import com.example.studyroom.domain.Room;
+import com.example.studyroom.domain.Seat;
+import com.example.studyroom.domain.User;
 import com.example.studyroom.dto.*;
-import com.example.studyroom.repository.*;
-import jakarta.validation.constraints.Null;
+import com.example.studyroom.repository.RoomRepository;
+import com.example.studyroom.repository.SeatRepository;
+import com.example.studyroom.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -61,14 +65,14 @@ public class SeatService {
     private void isUserUsing(Integer schoolId) {
 
         if (seatRepository.existsByUser(User.builder().schoolId(schoolId).build())) {
-            throw new IllegalArgumentException("이미 선택한 자리가 있습니다!");
+            throw new IllegalArgumentException(Message.ALREADY_USE.getMessage());
         }
     }
 
     private void isNotUse(Boolean isUsed) {
 
         if (isUsed) {
-            throw new IllegalArgumentException("이미 사용하고 있는 자리입니다!");
+            throw new IllegalArgumentException(Message.ALREADY_OCCUPIED.getMessage());
         }
     }
 
@@ -77,14 +81,14 @@ public class SeatService {
         Seat seat = seatRepository.findById(seatId).orElse(null);
 
         if (seat == null) {
-            throw new NullPointerException("좌석에 null값이 들어갔습니다");
+            throw new NullPointerException(Message.INCORRECT_SEAT.getMessage());
         }
 
         Integer roomId = seatRepository.findRoomIdBySeatId(seatId);
         User user = userRepository.findBySchoolId(schoolId);
 
         if (!userRepository.existsBySchoolId(user.getSchoolId())) {
-            throw new IllegalArgumentException("존재하지 않는 사용자입니다");
+            throw new IllegalArgumentException(Message.NON_EXISTENT_USER.getMessage());
         }
 
         seat.choiceSeatUpdate(seatRepository.findSeatNumBySeatId(seatId), userRepository.findBySchoolId(schoolId), roomRepository.findByRoomId(roomId));
@@ -93,7 +97,7 @@ public class SeatService {
         return seat;
     }
 
-    public Seat cancleSeat(CancleSeatDTO cancleSeatDTO){
+    public Seat cancleSeat(CancleSeatDTO cancleSeatDTO) {
 
         Room room = roomRepository.findByRoomId(seatRepository.findRoomIdBySeatId(cancleSeatDTO.getSeatId()));
         room.endSeat();
@@ -110,7 +114,7 @@ public class SeatService {
         Seat seat = seatRepository.findById(seatId).orElse(null);
 
         if (seat == null) {
-            throw new NullPointerException("좌석이 없습니다");
+            throw new NullPointerException(Message.INCORRECT_SEAT.getMessage());
         }
 
         seat.endSeatUpdate();
@@ -122,14 +126,14 @@ public class SeatService {
     private void isUsing(Boolean isUsed) {
 
         if (isUsed) {
-            throw new IllegalArgumentException("이미 사용중이 아닌 좌석입니다");
+            throw new IllegalArgumentException(Message.NON_EXISTENT_USER.getMessage());
         }
     }
 
     private void isEquals(Integer schoolId, Integer seatId) {
 
         if (!(seatRepository.findSeatIdByUserSchoolId(schoolId).equals(seatId))) {
-            throw new IllegalArgumentException("좌석이 이전 좌석과 다릅니다");
+            throw new IllegalArgumentException(Message.DIFFERENT_PREVIOUS_SEAT.getMessage());
         }
     }
 
@@ -141,7 +145,7 @@ public class SeatService {
         Boolean existingSeatIsUsed = seatRepository.findIsUsedBySeatId(seatRepository.findSeatIdByUserSchoolId(changeSeatDTO.getSchoolId()));
         Integer existingSeatId = seatRepository.findSeatIdByUserSchoolId(changeSeatDTO.getSchoolId());
 
-        endSeat(existingSeatIsUsed, existingSeatId,  changeSeatDTO.getSchoolId());
+        endSeat(existingSeatIsUsed, existingSeatId, changeSeatDTO.getSchoolId());
 
         Seat newSeat = useSeat(changeSeatDTO.getSeatId(), changeSeatDTO.getSchoolId());
 
@@ -151,18 +155,18 @@ public class SeatService {
     private void isSeatDifferent(Integer seatId, Integer schoolId) {
 
         if ((seatRepository.findSeatIdByUserSchoolId(schoolId)).equals(seatId)) {
-            throw new IllegalArgumentException("변경하려는 좌석이 이전 좌석과 동일합니다");
+            throw new IllegalArgumentException(Message.SAME_PREVIOUS_SEAT.getMessage());
         }
     }
 
-    public Seat extendSeat(ExtendSeatDTO extendSeatDTO){
+    public Seat extendSeat(ExtendSeatDTO extendSeatDTO) {
         isUsing(!seatRepository.findIsUsedBySeatId(extendSeatDTO.getSeatId()));
         isEquals(extendSeatDTO.getSchoolId(), extendSeatDTO.getSeatId());
 
         Seat seat = seatRepository.findById(extendSeatDTO.getSeatId()).orElse(null);
 
-        if(seat == null){
-            throw new NullPointerException("올바르지 않은 좌석입니다");
+        if (seat == null) {
+            throw new NullPointerException(Message.INCORRECT_SEAT.getMessage());
         }
 
         seat.extendSeat();
