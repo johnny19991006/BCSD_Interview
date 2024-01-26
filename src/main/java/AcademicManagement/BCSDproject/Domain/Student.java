@@ -42,8 +42,8 @@ public class Student {
     @Column(name = "student_grade", nullable = false) // 학년
     private int studentGrade;
 
-    @OneToMany(mappedBy = "student_id") // 학생은 여러 학기를 가질 수 있음, 외래키
-    private List<Semester> studentSemester;
+    @Column(name = "student_semester", nullable = false)
+    private int studentSemester;
 
     @Column(name = "student_attend", length = 10, nullable = false) // 학적 상황
     private String studentAttend;
@@ -51,9 +51,12 @@ public class Student {
     @Column(name = "update_at") // 업데이트 시간
     private LocalDateTime updateAt;
 
+    @OneToMany(mappedBy = "student") // 학생은 여러 학기를 가질 수 있음, 외래키
+    private List<Semester> studentSemesterAll;
+
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
-                   int studentGrade, List<Semester> studentSemester, String studentAttend, LocalDateTime updateAt)
+                   int studentGrade, int studentSemester, String studentAttend, LocalDateTime updateAt)
     {
         this.studentId = studentId;
         this.studentPw = studentPw;
@@ -81,7 +84,7 @@ public class Student {
         this.studentGrade = studentGrade;
     }
 
-    public void setStudentSemester(List<Semester> studentSemester) {
+    public void setStudentSemester(int studentSemester) {
         this.studentSemester = studentSemester;
     }
 

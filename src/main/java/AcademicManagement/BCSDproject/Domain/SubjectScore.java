@@ -1,5 +1,7 @@
 package AcademicManagement.BCSDproject.Domain;
 
+import AcademicManagement.BCSDproject.ComplexKey.SubjectScoreId;
+
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -20,6 +22,7 @@ Create Table Subject_Score
 */
 
 // 이 부분의 PK 두 가지도 INT 형으로 할 수 있는지 한 번 찾아보도록 하겠습니다
+@IdClass(SubjectScoreId.class) // 복합키 사용해서 IdClass 클래스 생성 후 사용
 @NoArgsConstructor
 @Getter
 @Entity // JPA 사용 시 CRUD 작업 수행 가능
@@ -44,11 +47,11 @@ public class SubjectScore {
     private String subjectRetake;
 
     @ManyToOne // 오류 있는 이유..
-    @JoinColumn(name = "subject_name")
+    @JoinColumn(name = "subject_name", insertable = false, updatable = false) // 직접적인 변경 X
     private Subject subject;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id", insertable = false,  updatable = false) // 위와 동일
     private Student student;
 
     @Builder

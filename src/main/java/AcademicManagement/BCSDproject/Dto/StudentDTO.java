@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /*
-Student나 StudentGradeInformation 같은 정보는 DTO로 전달하는 것이 좋을 것이라 생각했습니음
+Student나 StudentGradeInformation 같은 정보는 DTO로 전달하는 것이 좋을 것이라 생각했습니다
 */
 @Getter
 @NoArgsConstructor
@@ -20,7 +20,7 @@ public class StudentDTO {
     private String studentName;
     private String studentMajor;
     private int studentGrade;
-    private List<Semester> studentSemester;
+    private int studentSemester;
     private String studentAttend;
     private LocalDateTime updateAt;
 
@@ -42,7 +42,7 @@ public class StudentDTO {
 
     @Builder
     public StudentDTO(String studentId, String studentPw, String studentName,
-                      String studentMajor, int studentGrade, List<Semester> studentSemester,
+                      String studentMajor, int studentGrade, int studentSemester,
                       String studentAttend, LocalDateTime updateAt)
     {
         this.studentId = studentId;

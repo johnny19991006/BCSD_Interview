@@ -56,11 +56,11 @@ public class StudentGradeInformation {
     private float avgAllScore;
 
     @ManyToOne
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
     private Student student;
 
     @ManyToOne
-    @JoinColumn(name = "semester_id")
+    @JoinColumn(name = "semester_id", insertable = false, updatable = false)
     private Semester semester;
 
     @Builder

@@ -19,16 +19,15 @@ Create Table Semester
 @NoArgsConstructor
 @Getter
 @Entity // JPA 사용 시 CRUD 작업 수행 가능
-@Table(name = "semester")
+@Table(name = "Semester")
 public class Semester {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT
-    @Column(name = "semester_id", length = 20)
+    @Column(name = "semester_id", length = 20, nullable = false)
     private int semesterId;
 
-    @ManyToOne // 외래키 지정, 학생 아이디로 구분, 이를 직접 사용하는 것이 좋을 것 같음
-    @JoinColumn(name = "student_id")
-    private Student student_id;
+    @Column(name = "student_id", insertable = false, updatable = false)
+    private String studentId;
 
     @Column(name = "semester_year", nullable = false)
     private int semesterYear;
@@ -41,12 +40,16 @@ public class Semester {
     @Column(name = "semester")
     private SemesterEnum semesterEnum;
 
+    @ManyToOne
+    @JoinColumn(name = "student_id")
+    private Student student;
+
     @Builder
-    public Semester(int semesterId, Student student_id, int semesterYear,
+    public Semester(int semesterId, String student, int semesterYear,
                     SemesterGradeEnum semesterGradeEnum, SemesterEnum semesterEnum)
     {
         this.semesterId = semesterId;
-        this.student_id = student_id;
+        this.studentId = studentId;
         this.semesterYear = semesterYear;
         this.semesterGradeEnum = semesterGradeEnum;
         this.semesterEnum = semesterEnum;
