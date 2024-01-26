@@ -1,8 +1,8 @@
-package Service;
+package AcademicManagement.BCSDproject.Service;
 
-import Domain.Student;
-import Dto.StudentDTO;
-import Repository.StudentRepository;
+import AcademicManagement.BCSDproject.Domain.Student;
+import AcademicManagement.BCSDproject.Dto.StudentDTO;
+import AcademicManagement.BCSDproject.Repository.StudentRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 
 // 필요한 기능, 유저 추가, 유저 수정, 유저 삭제, 유저 업데이트
 @Service
-@Transactional // 클래스 전체 정의, 메소드 개별 정의 어떤 게 나을지?
+@Transactional
 @RequiredArgsConstructor // StudentRepository의 생성자 주입, final 혹은 @Notnull 붙은 것 포함
 public class StudentService implements StudentServiceInterface{
     private final StudentRepository studentRepository;
@@ -78,7 +78,8 @@ public class StudentService implements StudentServiceInterface{
     // StudentId는 고유 값을 사용하므로 수정 불가하도록 했음
 
     @Override
-    public void deleteStudent(String studentId) {
+    public void deleteStudent(String studentId)
+    {
         studentRepository.deleteById(studentId);
     }
 }

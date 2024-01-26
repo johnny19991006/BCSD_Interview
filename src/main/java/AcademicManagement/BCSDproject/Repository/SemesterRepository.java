@@ -1,6 +1,6 @@
-package Repository;
+package AcademicManagement.BCSDproject.Repository;
 
-import Domain.Semester;
+import AcademicManagement.BCSDproject.Domain.Semester;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SemesterRepository extends JpaRepository<Semester, Integer> {

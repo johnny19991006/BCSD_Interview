@@ -1,4 +1,4 @@
-package Domain;
+package AcademicManagement.BCSDproject.Domain;
 // Semester 내에서 사용하는 semester enum
 public enum SemesterEnum {
     Fisrt_SEMESTER("1학기"),

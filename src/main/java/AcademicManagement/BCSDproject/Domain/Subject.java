@@ -1,4 +1,4 @@
-package Domain;
+package AcademicManagement.BCSDproject.Domain;
 
 /*
 Create Table Subject
@@ -19,6 +19,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Getter
+@Entity
 @Table(name = "Subject")
 public class Subject {
     @Id

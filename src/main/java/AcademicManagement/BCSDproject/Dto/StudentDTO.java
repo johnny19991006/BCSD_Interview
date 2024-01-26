@@ -1,7 +1,7 @@
-package Dto;
+package AcademicManagement.BCSDproject.Dto;
 
-import Domain.Semester;
-import Domain.Student;
+import AcademicManagement.BCSDproject.Domain.Semester;
+import AcademicManagement.BCSDproject.Domain.Student;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

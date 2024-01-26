@@ -8,6 +8,5 @@ public class BcsDprojectApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(BcsDprojectApplication.class, args);
 	}
-
 }
 

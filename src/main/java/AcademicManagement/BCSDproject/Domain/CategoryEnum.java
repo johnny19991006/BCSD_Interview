@@ -1,4 +1,4 @@
-package Domain;
+package AcademicManagement.BCSDproject.Domain;
 
 public enum CategoryEnum {
     MAJOR("전공"),

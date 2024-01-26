@@ -1,4 +1,4 @@
-package Domain;
+package AcademicManagement.BCSDproject.Domain;
 
 public enum SubjectScoreEnum {
     APLUS("A+"), AZERO("A0"), BPLUS("B+"), BZERO("B0"), CPLUS("C+")

@@ -1,21 +1,23 @@
-package Controller;
+package AcademicManagement.BCSDproject.Controller;
 
-import Domain.Student;
-import Dto.StudentDTO;
-import Service.StudentService;
+import AcademicManagement.BCSDproject.Domain.Student;
+import AcademicManagement.BCSDproject.Dto.StudentDTO;
+import AcademicManagement.BCSDproject.Service.StudentService;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequiredArgsConstructor // service 생성자 생성
 @RequestMapping("/Student")
 public class StudentController {
-    @Autowired // 필드 주입 비권장
     private final StudentService service;
+
+    @Autowired
+    public StudentController(StudentService service) {
+        this.service = service;
+    }
 
     @PostMapping("")
     public StudentDTO createStudent(@RequestBody StudentDTO student)

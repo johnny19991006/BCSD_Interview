@@ -1,4 +1,4 @@
-package Domain;
+package AcademicManagement.BCSDproject.Domain;
 // Semester 내에서 사용하는 semester_grade enum
 public enum SemesterGradeEnum {
     FIRST_YEAR("1학년"),

@@ -1,4 +1,4 @@
-package Domain;
+package AcademicManagement.BCSDproject.Domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;

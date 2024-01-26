@@ -1,7 +1,7 @@
-package Service;
+package AcademicManagement.BCSDproject.Service;
 
-import Domain.Student;
-import Dto.StudentDTO;
+import AcademicManagement.BCSDproject.Domain.Student;
+import AcademicManagement.BCSDproject.Dto.StudentDTO;
 
 import java.util.List;
 
