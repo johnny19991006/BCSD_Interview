@@ -46,7 +46,7 @@ public class SubjectScore {
     @Column(name = "subject_retake", nullable = false)
     private String subjectRetake;
 
-    @ManyToOne // 오류 있는 이유..
+    @ManyToOne
     @JoinColumn(name = "subject_name", insertable = false, updatable = false) // 직접적인 변경 X
     private Subject subject;
 
