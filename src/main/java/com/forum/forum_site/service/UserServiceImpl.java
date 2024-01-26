@@ -1,19 +1,26 @@
 package com.forum.forum_site.service;
 
+import com.forum.forum_site.domain.Post;
 import com.forum.forum_site.domain.User;
+import com.forum.forum_site.dto.ScrapPostDto;
+import com.forum.forum_site.exception.UserException;
+import com.forum.forum_site.repository.ScrapRepository;
 import com.forum.forum_site.repository.UserRepository;
 import com.forum.forum_site.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -22,6 +29,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
+    private final ScrapRepository scrapRepository;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -83,5 +91,32 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
         return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+    }
+
+    @Transactional(readOnly = true)
+    @Override
+    public List<ScrapPostDto> getUserScrapList() {
+        User currentUser = getCurrentAuthenticatedUser();
+        // 스크랩된 포스트를 ScrapPostDto 리스트로 변환
+        return scrapRepository.findAllByAuthor(currentUser).stream()
+                .map(scrap -> new ScrapPostDto(
+                        scrap.getPost().getPost_id(),
+                        scrap.getPost().getTitle(),
+                        scrap.getPost().getContent(),
+                        scrap.getPost().getCreated_at(),
+                        scrap.getPost().getLikes_count()
+                        // 필요한 경우 추가 필드 매핑
+                ))
+                .collect(Collectors.toList());
+    }
+
+    private User getCurrentAuthenticatedUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof User) {
+            return (User) authentication.getPrincipal();
+        }
+
+        throw new UserException(UserException.Type.NOT_FOUND_MEMBER);
     }
 }

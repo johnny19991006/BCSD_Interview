@@ -1,6 +1,7 @@
 package com.forum.forum_site.service;
 
 import com.forum.forum_site.domain.User;
+import com.forum.forum_site.dto.ScrapPostDto;
 
 import java.util.List;
 import java.util.Map;
@@ -24,4 +25,5 @@ public interface UserService {
 
     String loginUser(Map<String, String> user);
 
+    List<ScrapPostDto> getUserScrapList();
 }
