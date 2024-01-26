@@ -27,13 +27,18 @@ public class ScrapServiceImpl implements ScrapService{
                 new PostException(PostException.Type.POST_NOT_FOUND));
 
         // 이미 스크랩 되어 있으면 에러
-        if(scrapRepository.findByUserAndPost(currentUser, post).isPresent()) {
+        if(scrapRepository.findByAuthorAndPost(currentUser, post).isPresent()) {
             throw new ScrapException(ScrapException.Type.ALREADY_EXIST_SCRAP);
         }
 
-        post.confirmUser(currentUser);
+        post.scrapUser(currentUser);
 
-        postRepository.save(post);
+        Scrap scrap = Scrap.builder()
+                .post(post)
+                .user(currentUser)
+                        .build();
+
+        scrapRepository.save(scrap);
     }
 
     @Override
@@ -42,8 +47,9 @@ public class ScrapServiceImpl implements ScrapService{
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostException(PostException.Type.POST_NOT_FOUND));
 
-        Scrap scrap = scrapRepository.findByUserAndPost(currentUser, post)
+        Scrap scrap = scrapRepository.findByAuthorAndPost(currentUser, post)
                 .orElseThrow(() -> new ScrapException(ScrapException.Type.SCRAP_NOT_FOUND));
+
 
         scrapRepository.delete(scrap);
     }

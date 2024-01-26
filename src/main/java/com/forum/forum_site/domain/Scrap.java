@@ -1,6 +1,7 @@
 package com.forum.forum_site.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -22,4 +23,10 @@ public class Scrap {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
     private Post post;
+
+    @Builder
+    public Scrap(User user, Post post) {
+        this.author = user;
+        this.post = post;
+    }
 }
