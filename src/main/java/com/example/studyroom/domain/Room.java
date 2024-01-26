@@ -58,14 +58,8 @@ public class Room {
         this.seatList = seatList;
     }
 
-    public void useSeat() {
-        this.usedSeats += 1;
-        this.remainSeats -= 1;
+    public void usedSeats(Integer usedSeats) {
+        this.usedSeats = usedSeats;
+        this.remainSeats = seats - usedSeats;
     }
-
-    public void endSeat() {
-        this.usedSeats -= 1;
-        this.remainSeats -= 1;
-    }
-
 }
