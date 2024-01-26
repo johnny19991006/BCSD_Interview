@@ -1,15 +1,21 @@
 package com.forum.forum_site.controller;
 
+import com.forum.forum_site.dto.ScrapPostDto;
 import com.forum.forum_site.service.ScrapService;
+import com.forum.forum_site.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/scrap")
 public class ScrapController {
     private final ScrapService scrapService;
+    private final UserService userService;
 
     @PostMapping("/{postId}")
     @ResponseStatus(HttpStatus.CREATED)
@@ -22,4 +28,8 @@ public class ScrapController {
         scrapService.deleteScrap(postId);
     }
 
+    @GetMapping("/myScraps")
+    public ResponseEntity<List<ScrapPostDto>> getUserScraps() {
+        return ResponseEntity.ok(userService.getUserScrapList());
+    }
 }
