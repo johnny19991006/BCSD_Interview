@@ -1,9 +1,11 @@
 package com.forum.forum_site.controller;
 
+import com.forum.forum_site.domain.Post;
+import com.forum.forum_site.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.forum.forum_site.service.UserServiceImpl;
 import com.forum.forum_site.domain.User;
 
 import java.util.List;
@@ -17,39 +19,40 @@ import org.slf4j.LoggerFactory;
 @RequestMapping("/user")
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
+    private final UserService userService;
 
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("")
     public List<User> findAll() {
-        return userServiceImpl.findAll();
+        return userService.findAll();
     }
 
     @GetMapping("/{id}")
     public User findUsers(@PathVariable(name = "id") Integer id) {
-        return userServiceImpl.findById(id);
+        return userService.findById(id);
     }
 
     @PostMapping("")
     public User createUser(@RequestBody User newUser) {
-        return userServiceImpl.createUser(newUser);
+        return userService.createUser(newUser);
     }
 
     @PutMapping("/{id}")
     public void updateUserName(@RequestParam @PathVariable(name = "id") Integer id, @RequestBody User user) {
-        userServiceImpl.updateUsername(id, user);
+        userService.updateUsername(id, user);
     }
 
     // 회원가입
     @PostMapping("/join")
     public void join(@RequestBody Map<String, String> user) {
-        userServiceImpl.joinUser(user);
+        userService.joinUser(user);
     }
 
     // 로그인
     @PostMapping("/login")
     public String login(@RequestBody Map<String, String> user) {
-        return userServiceImpl.loginUser(user);
+        return userService.loginUser(user);
     }
+
 }
