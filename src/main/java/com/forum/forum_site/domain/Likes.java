@@ -19,7 +19,7 @@ public class Likes {
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "member_id")
-    private User user;
+    private User author;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "post_id")
@@ -27,7 +27,7 @@ public class Likes {
 
     @Builder
     public Likes(User user, Post post) {
-        this.user = user;
+        this.author = user;
         this.post = post;
     }
 }

@@ -26,7 +26,7 @@ public class LikeServiceImpl implements LikeService {
                 new PostException(PostException.Type.POST_NOT_FOUND));
 
         // 이미 좋아요 되어 있으면 에러
-        if(likeRepository.findByUserAndPost(currentUser, post).isPresent()) {
+        if(likeRepository.findByAuthorAndPost(currentUser, post).isPresent()) {
             throw new LikeException(LikeException.Type.ALREADY_PRESS_LIKE);
         }
 
@@ -46,7 +46,7 @@ public class LikeServiceImpl implements LikeService {
         Post post = postRepository.findById(postId).orElseThrow(() ->
                 new PostException(PostException.Type.POST_NOT_FOUND));
 
-        Likes like = likeRepository.findByUserAndPost(currentUser, post)
+        Likes like = likeRepository.findByAuthorAndPost(currentUser, post)
                 .orElseThrow(() -> new LikeException(LikeException.Type.LIKE_NOT_FOUND));
 
         post.deleteLike();
