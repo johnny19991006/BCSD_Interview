@@ -9,5 +9,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface ScrapRepository extends JpaRepository<Scrap, Integer> {
-    Optional<Scrap> findByUserAndPost(User user, Post post);
+    Optional<Scrap> findByAuthorAndPost(User user, Post post);
 }
