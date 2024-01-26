@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl extends BaseService implements CommentService{
 
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
@@ -79,15 +79,5 @@ public class CommentServiceImpl implements CommentService{
         List<Comment> removalCommentList = comment.findRemovableList();
         commentRepository.deleteAll(removalCommentList);
 
-    }
-
-    private User getCurrentAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
-        }
-
-        throw new UserException(UserException.Type.NOT_FOUND_MEMBER);
     }
 }

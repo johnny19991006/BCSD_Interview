@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class ScrapServiceImpl implements ScrapService{
+public class ScrapServiceImpl extends BaseService implements ScrapService{
     private final ScrapRepository scrapRepository;
     private final PostRepository postRepository;
 
@@ -52,15 +52,5 @@ public class ScrapServiceImpl implements ScrapService{
 
 
         scrapRepository.delete(scrap);
-    }
-
-    private User getCurrentAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
-        }
-
-        throw new UserException(UserException.Type.NOT_FOUND_MEMBER);
     }
 }

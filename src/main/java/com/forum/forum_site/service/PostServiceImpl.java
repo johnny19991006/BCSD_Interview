@@ -22,7 +22,7 @@ import java.io.IOException;
 @Service
 @RequiredArgsConstructor
 @Transactional // 데이터들의 ACID를 보장해줌
-public class PostServiceImpl implements PostService{
+public class PostServiceImpl extends BaseService implements PostService{
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -94,17 +94,6 @@ public class PostServiceImpl implements PostService{
         }
 
         postRepository.delete(post);
-    }
-
-    // 현재 로그인한 유저 정보 가져오기
-    private User getCurrentAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
-        }
-
-        throw new UserException(UserException.Type.NOT_FOUND_MEMBER);
     }
 
     // 권한 체크하기

@@ -15,7 +15,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class LikeServiceImpl implements LikeService {
+public class LikeServiceImpl extends BaseService implements LikeService {
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
 
@@ -52,15 +52,5 @@ public class LikeServiceImpl implements LikeService {
         post.deleteLike();
 
         likeRepository.delete(like);
-    }
-
-    private User getCurrentAuthenticatedUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication != null && authentication.getPrincipal() instanceof User) {
-            return (User) authentication.getPrincipal();
-        }
-
-        throw new UserException(UserException.Type.NOT_FOUND_MEMBER);
     }
 }
