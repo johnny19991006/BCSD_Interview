@@ -47,4 +47,31 @@ public class Subject {
         this.categoryEnum = categoryEnum;
         this.credit = credit;
     }
+
+    public Subject(Subject subject) {
+        this.subjectName = subject.getSubjectName();
+        this.professorName = subject.getProfessorName();
+        this.categoryEnum = subject.getCategoryEnum();
+        this.credit = subject.getCredit();
+    }
+
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
+    }
+
+    public void setProfessorName(String professorName) {
+        this.professorName = professorName;
+    }
+
+    public void setCategoryEnum(CategoryEnum categoryEnum) {
+        this.categoryEnum = categoryEnum;
+    }
+
+    public void setCredit(int credit) {
+        this.credit = credit;
+    }
+
+    public void setSubjectScores(List<SubjectScore> subjectScores) {
+        this.subjectScores = subjectScores;
+    }
 }
