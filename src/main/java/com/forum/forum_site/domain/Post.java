@@ -62,7 +62,7 @@ public class Post{
     }
 
     // 유저가 스크랩한 포스트 리스트에 추가
-    public void confirmUser(User author) {
+    public void scrapUser(User author) {
         this.author = author;
         author.addScrap(this);
     }
