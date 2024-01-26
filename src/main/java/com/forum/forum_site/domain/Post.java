@@ -1,8 +1,9 @@
 package com.forum.forum_site.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ import static jakarta.persistence.CascadeType.ALL;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "Post")
-@Data
+@Getter
 @NoArgsConstructor
 @Entity
 public class Post{
@@ -52,6 +53,9 @@ public class Post{
         this.content = content;
     }
 
+
+    // ToDo 이게 과연 좋은 방법이 맞는것 일까? 스크랩 페이지 어떻게 보여줄 것인지 고민하기
+    @JsonIgnore
     @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 

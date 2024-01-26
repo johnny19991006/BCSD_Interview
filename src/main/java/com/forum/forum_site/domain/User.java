@@ -1,10 +1,8 @@
 package com.forum.forum_site.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,9 +15,10 @@ import java.util.stream.Collectors;
 import static jakarta.persistence.CascadeType.ALL;
 
 @Table(name = "User")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Builder
 public class User implements UserDetails{
@@ -80,16 +79,17 @@ public class User implements UserDetails{
     }
 
     // 회원 탈퇴시 작성한 게시물 및 댓글, 스크랩 삭제
-    @Builder.Default
-    @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
 
-    @Builder.Default
+    @JsonIgnore
     @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
-    @Builder.Default
-    @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
+    @JsonIgnore
+    // ToDo (fetch = FetchType.EAGER) 성능에 문제가 발생할 수 있을 것 같은데 어떻게 처리 할지 고민
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> scrapList = new ArrayList<>();
 
     public void addPost(Post post){

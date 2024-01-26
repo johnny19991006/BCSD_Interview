@@ -2,11 +2,9 @@ package com.forum.forum_site.domain;
 
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Table(name = "Board")
-@Data
 @NoArgsConstructor
 @Entity
 public class Board {

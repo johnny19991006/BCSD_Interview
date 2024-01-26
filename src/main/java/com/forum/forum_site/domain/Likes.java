@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "Likes")
-@Data
 @NoArgsConstructor
 @Entity
 public class Likes {

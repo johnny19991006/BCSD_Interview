@@ -2,7 +2,7 @@ package com.forum.forum_site.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -11,8 +11,8 @@ import java.util.Optional;
 
 import static jakarta.persistence.FetchType.LAZY;
 
+@Getter
 @Table(name = "Comment")
-@Data
 @NoArgsConstructor
 @Entity
 public class Comment {

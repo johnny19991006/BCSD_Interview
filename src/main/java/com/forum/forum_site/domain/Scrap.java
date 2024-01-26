@@ -2,13 +2,13 @@ package com.forum.forum_site.domain;
 
 import jakarta.persistence.*;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import static jakarta.persistence.FetchType.LAZY;
 
 @Table(name = "Scrap")
-@Data
+@Getter
 @NoArgsConstructor
 @Entity
 public class Scrap {

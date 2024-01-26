@@ -1,12 +1,12 @@
 package com.forum.forum_site.domain;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Table(name = "Message")
-@Data
 @NoArgsConstructor
+@Getter
 @Entity
 public class Message {
     @Id @GeneratedValue
