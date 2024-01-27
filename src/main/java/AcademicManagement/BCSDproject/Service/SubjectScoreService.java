@@ -1,5 +1,6 @@
 package AcademicManagement.BCSDproject.Service;
 
+import AcademicManagement.BCSDproject.Domain.Student;
 import AcademicManagement.BCSDproject.Domain.SubjectScore;
 import AcademicManagement.BCSDproject.Repository.SubjectScoreRepository;
 
@@ -44,7 +45,7 @@ public class SubjectScoreService {
 
         subjectScoreRepository.save(changeScore);
 
-        return new SubjectScore(subjectScore);
+        return changeScore;
     }
 
     public void deleteSubjectScore(String subjectName)
@@ -52,4 +53,8 @@ public class SubjectScoreService {
         subjectScoreRepository.deleteById(subjectName);
     }
 
+    public List<SubjectScore> findStudentScoreByStudentId(String studentId)
+    {
+        return subjectScoreRepository.findByStudentId(studentId);
+    }
 }

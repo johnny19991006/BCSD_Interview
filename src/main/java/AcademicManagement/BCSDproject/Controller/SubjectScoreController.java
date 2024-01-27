@@ -51,4 +51,10 @@ public class SubjectScoreController {
         service.deleteSubjectScore(subjectName);
     }
 
+    @GetMapping("/Student/{studentId}")
+    public List<SubjectScore> findStudentScoreByStudentId(@PathVariable String studentId)
+    {
+        return service.findStudentScoreByStudentId(studentId);
+    }
+
 }

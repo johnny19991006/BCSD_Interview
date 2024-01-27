@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 // Semester 내에서 현재 필요한 기능
-// 성적 확인 가능하게 추가
+// 성적 확인 가능하게 추가,
 @Service
 @Transactional
 @RequiredArgsConstructor
