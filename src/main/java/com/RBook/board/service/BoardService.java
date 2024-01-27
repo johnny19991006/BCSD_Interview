@@ -1,8 +1,7 @@
 package com.RBook.board.service;
 
-
 import com.RBook.board.domain.Board;
-import com.RBook.board.domain.User;
+import com.RBook.board.domain.BoardImage;
 import com.RBook.board.dto.BoardDTO;
 import com.RBook.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
@@ -15,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -40,6 +40,14 @@ public class BoardService {
                 .build();
     }
 
+    /*
+    //BoardImage타입을 List<String>타입으로 저장
+    private List<String> getBoardImageUrls(Board board) {
+        return board.getBoardImage().stream()
+                .map(BoardImage::getUrl)
+                .collect(Collectors.toList());
+    }
+*/
     //게시판 목록 불러오기
     public List<BoardDTO> getBoardList(Integer pageNum) {
         Page<Board> page = boardRepository.findAll(PageRequest.of(
@@ -69,7 +77,6 @@ public class BoardService {
                 .userId(board.getUserId())
                 .createDate(board.getCreateDate())
                 .modifyDate(board.getModifyDate())
-                .image(board.getImage())
                 .build();
 
         return boardDTO;
@@ -81,23 +88,13 @@ public class BoardService {
         return boardDTO;
     }
 
-    public BoardDTO updateBoard(BoardDTO boardDTO, Long boardId, User userId) {
+    public BoardDTO modifyBoard(BoardDTO boardDTO, Long userId) {
+        Long boardId = boardDTO.getBoardId();
         Optional<Board> boardOptional = boardRepository.findById(boardId);
         Board board = boardOptional.get();
 
         if (board.getUserId().equals(userId)) {
-            BoardDTO updateBoard = BoardDTO.builder()
-                    .boardId(boardId)
-                    .writer(boardDTO.getWriter())
-                    .title(boardDTO.getTitle())
-                    .author(boardDTO.getAuthor())
-                    .content(boardDTO.getContent())
-                    .genre(boardDTO.getGenre())
-                    .userId(userId)
-                    .createDate(boardDTO.getCreateDate())
-                    .modifyDate(boardDTO.getModifyDate())
-                    .build();
-            boardRepository.save(updateBoard.toEntity());
+            boardRepository.save(boardDTO.toEntity());
         }
         return boardDTO;
     }

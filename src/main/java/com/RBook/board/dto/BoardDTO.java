@@ -1,6 +1,7 @@
 package com.RBook.board.dto;
 
 import com.RBook.board.domain.Board;
+import com.RBook.board.domain.BoardImage;
 import com.RBook.board.domain.Genre;
 import com.RBook.board.domain.User;
 import lombok.Builder;
@@ -9,6 +10,9 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -24,7 +28,7 @@ public class BoardDTO {
     private User userId;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
-    private String image;
+
 
     public Board toEntity() {
         Board board = Board.builder()
@@ -35,13 +39,25 @@ public class BoardDTO {
                 .content(content)
                 .genre(genre)
                 .userId(userId)
-                .image(image)
                 .build();
         return board;
     }
+    /*
+    //List<String>타입을 BoardImage타입으로 바꿔서 저장하기 위한 함수
+    public List<BoardImage> convertToBoardImageList(List<String> imageUrls) {
+        if (imageUrls == null) {
+            return Collections.emptyList();
+        }
+
+        return imageUrls.stream()
+                .map(url -> BoardImage.builder().url(url).build())
+                .collect(Collectors.toList());
+    }
+
+     */
 
     @Builder
-    public BoardDTO(Long boardId, String writer, String title, String author, String content, Genre genre, User userId, LocalDateTime createDate, LocalDateTime modifyDate, String image) {
+    public BoardDTO(Long boardId, String writer, String title, String author, String content, Genre genre, User userId, LocalDateTime createDate, LocalDateTime modifyDate) {
         this.boardId = boardId;
         this.writer = writer;
         this.title = title;
@@ -51,7 +67,7 @@ public class BoardDTO {
         this.userId = userId;
         this.createDate = createDate;
         this.modifyDate = modifyDate;
-        this.image = image;
+
     }
 
 }

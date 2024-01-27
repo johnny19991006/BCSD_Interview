@@ -1,12 +1,10 @@
 package com.RBook.board.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 /*
 CREATE TABLE Board (
 	board_id BIGINT PRIMARY KEY AUTO_INCREMENT,
@@ -53,11 +51,11 @@ public class Board extends Time{
     @JoinColumn(name = "id")
     private User userId;
 
-    @Column(name = "image_path")
-    private String image;
-
+    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OrderBy("imageId asc")
+    private List<BoardImage> boardImage;
     @Builder
-    public Board(Long boardId, String writer, String title, String author, String content, Genre genre, User userId, String image) {
+    public Board(Long boardId, String writer, String title, String author, String content, Genre genre, User userId, List<BoardImage> boardImage) {
         this.boardId = boardId;
         this.writer = writer;
         this.title = title;
@@ -65,7 +63,7 @@ public class Board extends Time{
         this.content = content;
         this.genre = genre;
         this.userId = userId;
-        this.image = image;
+        this.boardImage = boardImage;
     }
 
 }
