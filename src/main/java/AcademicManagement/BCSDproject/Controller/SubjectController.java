@@ -32,19 +32,19 @@ public class SubjectController {
         return service.findAllSubject();
     }
 
-    @GetMapping("/subjectName")
+    @GetMapping("/{subjectName}")
     public Subject findById(@PathVariable String subjectName)
     {
         return service.findById(subjectName);
     }
 
-    @PutMapping("/subjectName")
+    @PutMapping("/{subjectName}")
     public Subject updateSubject(@RequestBody Subject subject, @PathVariable String subjectName)
     {
         return service.updateSubject(subject, subjectName);
     }
 
-    @DeleteMapping("/subjectName")
+    @DeleteMapping("/{subjectName}")
     public void deleteSubject(@PathVariable String subjectName)
     {
         service.deleteSubject(subjectName);

@@ -67,5 +67,4 @@ public class StudentDTO {
         this.studentAttend = student.getStudentAttend();
         this.updateAt = student.getUpdateAt();
     }
-
 }

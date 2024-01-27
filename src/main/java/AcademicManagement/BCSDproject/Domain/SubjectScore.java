@@ -12,7 +12,7 @@ Create Table Subject_Score
 (
 	student_id VARCHAR(20),
     subject_name VARCHAR(20),
-    subject_grade ENUM('A+', 'A0', 'B+', 'B0', 'C+', 'C0', 'D+', 'D0', 'F') NOT NULL,
+    subject_grade ENUM('APLUS', 'AZERO', 'B+', 'B0', 'C+', 'C0', 'D+', 'D0', 'F') NOT NULL,
     subject_score INT NOT NULL,
     subject_retake VARCHAR(1) NOT NULL,
     PRIMARY KEY (student_id, subject_name),
@@ -21,7 +21,7 @@ Create Table Subject_Score
 );
 */
 
-// 이 부분의 PK 두 가지도 INT 형으로 할 수 있는지 한 번 찾아보도록 하겠습니다
+// 이 부분의 PK 두 가지도 INT 형으로 할 수 있는지 한 번 생각해보기
 @IdClass(SubjectScoreId.class) // 복합키 사용해서 IdClass 클래스 생성 후 사용
 @NoArgsConstructor
 @Getter

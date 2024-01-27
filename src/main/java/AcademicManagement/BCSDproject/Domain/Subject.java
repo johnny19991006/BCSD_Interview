@@ -16,8 +16,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @NoArgsConstructor
+@Setter
 @Getter
 @Entity
 @Table(name = "Subject")
@@ -53,25 +55,5 @@ public class Subject {
         this.professorName = subject.getProfessorName();
         this.categoryEnum = subject.getCategoryEnum();
         this.credit = subject.getCredit();
-    }
-
-    public void setSubjectName(String subjectName) {
-        this.subjectName = subjectName;
-    }
-
-    public void setProfessorName(String professorName) {
-        this.professorName = professorName;
-    }
-
-    public void setCategoryEnum(CategoryEnum categoryEnum) {
-        this.categoryEnum = categoryEnum;
-    }
-
-    public void setCredit(int credit) {
-        this.credit = credit;
-    }
-
-    public void setSubjectScores(List<SubjectScore> subjectScores) {
-        this.subjectScores = subjectScores;
     }
 }

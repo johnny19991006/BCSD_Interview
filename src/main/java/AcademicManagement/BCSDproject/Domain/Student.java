@@ -51,8 +51,8 @@ public class Student {
     @Column(name = "update_at") // 업데이트 시간
     private LocalDateTime updateAt;
 
-    @OneToMany(mappedBy = "student") // 학생은 여러 학기를 가질 수 있음, 외래키
-    private List<Semester> studentSemesterAll;
+    //@OneToMany(mappedBy = "student") // 학생은 여러 학기를 가질 수 있음, 외래키
+    //private List<Semester> studentSemesterAll;
 
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
