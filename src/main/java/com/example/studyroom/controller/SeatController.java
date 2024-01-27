@@ -3,12 +3,15 @@ package com.example.studyroom.controller;
 import com.example.studyroom.domain.Seat;
 import com.example.studyroom.dto.*;
 import com.example.studyroom.service.SeatService;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/seats")
+@EnableScheduling
 public class SeatController {
     private final SeatService seatService;
 
@@ -54,5 +57,10 @@ public class SeatController {
     @PatchMapping("/extend")
     public Seat extendSeat(@RequestBody ExtendSeatDTO extendSeatDTO){
         return seatService.extendSeat(extendSeatDTO);
+    }
+
+    @Scheduled(fixedRate = 10000)
+    public void endExpiredSeat(){
+        seatService.endExpiredSeats();
     }
 }
