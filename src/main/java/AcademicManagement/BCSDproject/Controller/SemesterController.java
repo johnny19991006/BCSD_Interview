@@ -50,7 +50,7 @@ public class SemesterController {
     }
 
     @GetMapping("/Student/{studentId}")
-    public List<Semester> studentSemester(String studentId)
+    public List<Semester> studentSemester(@PathVariable String studentId)
     {
         return service.studentSemester(studentId);
     }

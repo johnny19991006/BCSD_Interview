@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
     student_semester INT(2) NOT NULL,
     student_attend VARCHAR(10) NOT NULL,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
+); 
 */
 
 @NoArgsConstructor // AllArgsConstructor

@@ -1,5 +1,6 @@
 package AcademicManagement.BCSDproject.Domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -52,6 +53,7 @@ public class Semester {
 
     @ManyToOne
     @JoinColumn(name = "student_id")
+    @JsonIgnore // Semester 출력시 student 항목 삭제 목적
     private Student student;
 
     @Builder

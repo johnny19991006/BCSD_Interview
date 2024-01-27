@@ -2,10 +2,12 @@ package AcademicManagement.BCSDproject.Domain;
 
 import AcademicManagement.BCSDproject.ComplexKey.SubjectScoreId;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /*
 Create Table Subject_Score
@@ -13,7 +15,7 @@ Create Table Subject_Score
 	student_id VARCHAR(20),
     subject_name VARCHAR(20),
     subject_grade ENUM('APLUS', 'AZERO', 'B+', 'B0', 'C+', 'C0', 'D+', 'D0', 'F') NOT NULL,
-    subject_score INT NOT NULL,
+    subject_score FLOAT NOT NULL,
     subject_retake VARCHAR(1) NOT NULL,
     PRIMARY KEY (student_id, subject_name),
     FOREIGN KEY (student_id) references Student(student_id),
@@ -25,10 +27,11 @@ Create Table Subject_Score
 @IdClass(SubjectScoreId.class) // 복합키 사용해서 IdClass 클래스 생성 후 사용
 @NoArgsConstructor
 @Getter
+@Setter
 @Entity // JPA 사용 시 CRUD 작업 수행 가능
 @Table(name = "Subject_Score")
 public class SubjectScore {
-    @Id // 현재 PK가 둘이므로 복합키 사용도 고려
+    @Id // 현재 PK가 둘이므로 복합키 사용(@IdClass)
     @Column(name = "student_id", length = 20)
     private String studentId;
 
@@ -41,7 +44,7 @@ public class SubjectScore {
     private SubjectScoreEnum subjectScoreEnum;
 
     @Column(name = "subject_score", nullable = false)
-    private int subjectScore;
+    private float subjectScore;
 
     @Column(name = "subject_retake", nullable = false)
     private String subjectRetake;
@@ -52,16 +55,25 @@ public class SubjectScore {
 
     @ManyToOne
     @JoinColumn(name = "student_id", insertable = false,  updatable = false) // 위와 동일
+    @JsonIgnore
     private Student student;
 
     @Builder
     public SubjectScore(String studentId, String subjectName, SubjectScoreEnum subjectScoreEnum,
-                        int subjectScore, String subjectRetake)
+                        float subjectScore, String subjectRetake)
     {
         this.studentId = studentId;
         this.subjectName = subjectName;
         this.subjectScoreEnum = subjectScoreEnum;
         this.subjectScore = subjectScore;
         this.subjectRetake = subjectRetake;
+    }
+
+    public SubjectScore(SubjectScore subjectScore) {
+        this.studentId = subjectScore.getStudentId();
+        this.subjectName = subjectScore.getSubjectName();
+        this.subjectScoreEnum = subjectScore.getSubjectScoreEnum();
+        this.subjectScore = subjectScore.getSubjectScore();
+        this.subjectRetake = subjectScore.getSubjectRetake();
     }
 }

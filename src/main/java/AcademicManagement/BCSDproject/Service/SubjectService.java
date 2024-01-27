@@ -44,7 +44,6 @@ public class SubjectService implements SubjectServiceInterface{
         changeSubject.setProfessorName(subject.getProfessorName());
         changeSubject.setCategoryEnum(subject.getCategoryEnum());
         changeSubject.setCredit(subject.getCredit());
-        changeSubject.setSubjectScores(subject.getSubjectScores());
 
         subjectRepository.save(changeSubject);
 

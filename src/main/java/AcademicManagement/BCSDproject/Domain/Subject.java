@@ -38,8 +38,8 @@ public class Subject {
     @Column(name = "credit", nullable = false)
     private int credit;
 
-    @OneToMany(mappedBy = "subject") // 과목에서 성적을 참조할 것? -> 할 수 있으면 좋겠음
-    private List<SubjectScore> subjectScores = new ArrayList<>();
+    // @OneToMany(mappedBy = "subject") // 과목에서 성적을 참조할 것? -> 할 수 있으면 좋겠음
+    // private List<SubjectScore> subjectScores = new ArrayList<>();
 
     @Builder
     public Subject(String subjectName, String professorName, CategoryEnum categoryEnum, int credit)
