@@ -1,49 +1,28 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.UserDTO;
-import HSAnimal.demo.entity.User;
+import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.UserRepository;
 import HSAnimal.demo.service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/")
+@RequestMapping("/users")
 public class UserController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
     private final UserService userService;
-
-    // Create: 사용자 추가
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody UserDTO dto) {
-        Long userId = userService.save(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User with ID " + userId + " registered successfully.");
-    }
 
     // Read: 사용자 검색
     @GetMapping("/{user_id}")
     public User read(@PathVariable String user_id) {
         return userRepository.findByUserId(user_id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
-    }
-
-    @GetMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) {
-        new SecurityContextLogoutHandler().logout(request, response,
-                SecurityContextHolder.getContext().getAuthentication());
-        return "redirect:/login";
     }
 
     // Update: 사용자 정보 수정

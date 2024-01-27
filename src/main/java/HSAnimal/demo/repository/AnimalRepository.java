@@ -1,6 +1,6 @@
 package HSAnimal.demo.repository;
 
-import HSAnimal.demo.entity.Animal;
+import HSAnimal.demo.domain.Animal;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

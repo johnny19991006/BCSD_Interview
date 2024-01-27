@@ -1,13 +1,11 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.entity.Animal;
+import HSAnimal.demo.domain.Animal;
 import HSAnimal.demo.repository.AnimalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/animals")

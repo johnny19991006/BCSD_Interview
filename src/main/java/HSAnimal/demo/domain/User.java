@@ -1,12 +1,13 @@
-package HSAnimal.demo.entity;
+package HSAnimal.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 
 @Builder        // SQL 파라미터에 값을 쉽게 넣어주기 위함
 @Entity(name = "users")  // 해당 class에서 사용할 테이블 명
@@ -36,9 +37,7 @@ public class User implements UserDetails {
     // UserDetails 인터페이스의 메서드 구현
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // 사용자의 권한 정보를 반환하는 로직을 구현해야 합니다.
-        // 이 예제에서는 null을 반환하였으니 실제 권한 로직을 구현해야 합니다.
-        return null;
+        return List.of(new SimpleGrantedAuthority("USER"));
     }
 
     @Override

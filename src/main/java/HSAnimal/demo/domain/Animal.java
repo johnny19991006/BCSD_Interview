@@ -1,4 +1,4 @@
-package HSAnimal.demo.entity;
+package HSAnimal.demo.domain;
 
 import jakarta.persistence.*;
 import lombok.*;
