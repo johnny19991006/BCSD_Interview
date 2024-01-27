@@ -1,11 +1,16 @@
 package BCSD.MusicStream.controller;
 
-import BCSD.MusicStream.dto.Lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.api.GeoReader;
+import BCSD.MusicStream.api.OpenWeather;
+import BCSD.MusicStream.api.WeatherAPI;
+import BCSD.MusicStream.dto.lyrics.RequestLyricsDTO;
 import BCSD.MusicStream.dto.music.RequestMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
 import BCSD.MusicStream.security.JwtTokenProvider;
+import BCSD.MusicStream.service.GeoService;
 import BCSD.MusicStream.service.MusicService;
-import BCSD.MusicStream.service.PlaylistService;
+import com.maxmind.geoip2.model.CityResponse;
+import com.maxmind.geoip2.record.Location;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -23,10 +28,25 @@ import java.util.List;
 @AllArgsConstructor
 public class MusicController {
     private final MusicService musicService;
+    private final GeoService geoService;
+    private final WeatherAPI weatherAPI;
+    private final GeoReader geoReader;
 //    private final PlaylistService playlistService;
     @GetMapping("/{targetText}")
     public ResponseEntity<List<RequestMusicDTO>> getMusicByMusicName(@PathVariable String targetText) throws MalformedURLException {
         return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText));
+    }
+    @GetMapping("/music-weather")
+    public ResponseEntity<?> getMusicByWeather(HttpServletRequest request) throws IOException {
+       try {
+           CityResponse cityResponse = geoService.findCity(geoService.getIpAddress());
+           Location location = cityResponse.getLocation();
+           OpenWeather weather = weatherAPI.getWeather(location.getLatitude().toString(), location.getLongitude().toString());
+
+           return ResponseEntity.ok(weather.getWeather().get(0).getMain());
+       }catch(Exception e1) {
+           return ResponseEntity.ok("failed");
+       }
     }
     @GetMapping("/playMusic/{musicId}")
     public ResponseEntity<RequestLyricsDTO> getLyricsByMusicId(@PathVariable Integer musicId) throws IOException {

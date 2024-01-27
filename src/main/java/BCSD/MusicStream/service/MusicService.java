@@ -1,6 +1,6 @@
 package BCSD.MusicStream.service;
 
-import BCSD.MusicStream.dto.Lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.dto.lyrics.RequestLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.RequestMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;

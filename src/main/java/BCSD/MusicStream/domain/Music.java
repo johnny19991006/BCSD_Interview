@@ -28,6 +28,10 @@ public class Music {
     @JoinColumn(name = "member_id", referencedColumnName = "id")
     private Member member;
 
+    @ManyToOne
+    @JoinColumn(name = "weather_id", referencedColumnName = "id")
+    private Weather weather;
+
     @Column(name = "singer_name", nullable = false, length = 10)
     private String singerName;
 

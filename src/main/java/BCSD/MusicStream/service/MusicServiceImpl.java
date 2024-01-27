@@ -1,7 +1,7 @@
 package BCSD.MusicStream.service;
 
 import BCSD.MusicStream.domain.*;
-import BCSD.MusicStream.dto.Lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.dto.lyrics.RequestLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.RequestMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
@@ -9,12 +9,10 @@ import BCSD.MusicStream.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.client.RestTemplate;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
-import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +21,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,5 +117,23 @@ public class MusicServiceImpl implements MusicService{
         musicRepository.deleteById(musicId.longValue());
         soundFile.delete();
         imageFile.delete();
+    }
+
+    private static final String WEATHER_API_KEY = "your_weather_api_key";
+    private static final String GEOIP_API_KEY = "your_geoip_api_key";
+    private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
+    private static final String GEOIP_URL = "http://api.ipgeolocation.io/ipgeo?apiKey={apiKey}&ip={ip}";
+
+    public String getCurrentWeather(String ipAddress) {
+        RestTemplate restTemplate = new RestTemplate();
+
+        ResponseEntity<String> locationResponse = restTemplate.getForEntity(GEOIP_URL, String.class, GEOIP_API_KEY, ipAddress);
+        // 위치 정보 파싱 (실제 구현에서는 JSON 파싱이 필요합니다)
+        String lat = ""; // 위도 추출
+        String lon = ""; // 경도 추출
+
+        // 위치 정보를 사용하여 날씨 정보 가져오기
+        ResponseEntity<String> weatherResponse = restTemplate.getForEntity(WEATHER_URL, String.class, lat, lon, WEATHER_API_KEY);
+        return weatherResponse.getBody();
     }
 }
