@@ -84,7 +84,7 @@ public class User implements UserDetails{
     private List<Post> postList = new ArrayList<>();
 
     @JsonIgnore
-    @OneToMany(mappedBy = "author", cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     @JsonIgnore
