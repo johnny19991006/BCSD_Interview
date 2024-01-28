@@ -69,4 +69,11 @@ public class UrlServiceImpl implements UrlService {
 
         return true;
     }
+
+    @Override
+    public String restoreUrl(String shortUrl) {
+        return shortUrlRepository.findById(base62.decode(shortUrl))
+                .orElseThrow(() -> new UserException(ErrorCode.URL_NOT_FOUND))
+                .getOriginUrl();
+    }
 }

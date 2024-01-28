@@ -12,4 +12,6 @@ public interface UrlService {
     UserUrl updateUrl(UserUrl request) throws RuntimeException;
 
     boolean deleteUrl(UserUrl request) throws RuntimeException;
+
+    String restoreUrl(String shortUrl) throws RuntimeException;
 }
