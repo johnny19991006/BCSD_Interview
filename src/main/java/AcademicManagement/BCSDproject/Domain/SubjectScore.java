@@ -1,10 +1,10 @@
 package AcademicManagement.BCSDproject.Domain;
 
 import AcademicManagement.BCSDproject.ComplexKey.SubjectScoreId;
-
 import AcademicManagement.BCSDproject.Enum.SemesterEnum;
 import AcademicManagement.BCSDproject.Enum.SemesterGradeEnum;
 import AcademicManagement.BCSDproject.Enum.SubjectScoreEnum;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
