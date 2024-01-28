@@ -1,7 +1,6 @@
 package com.RBook.board.dto;
 
 import com.RBook.board.domain.Board;
-import com.RBook.board.domain.BoardImage;
 import com.RBook.board.domain.Genre;
 import com.RBook.board.domain.User;
 import lombok.Builder;
@@ -10,9 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Getter
@@ -25,7 +21,7 @@ public class BoardDTO {
     private String author;
     private String content;
     private Genre genre;
-    private User userId;
+    private User user;
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
@@ -38,7 +34,7 @@ public class BoardDTO {
                 .author(author)
                 .content(content)
                 .genre(genre)
-                .userId(userId)
+                .user(user)
                 .build();
         return board;
     }
@@ -57,14 +53,14 @@ public class BoardDTO {
      */
 
     @Builder
-    public BoardDTO(Long boardId, String writer, String title, String author, String content, Genre genre, User userId, LocalDateTime createDate, LocalDateTime modifyDate) {
+    public BoardDTO(Long boardId, String writer, String title, String author, String content, Genre genre, User user, LocalDateTime createDate, LocalDateTime modifyDate) {
         this.boardId = boardId;
         this.writer = writer;
         this.title = title;
         this.author = author;
         this.content = content;
         this.genre = genre;
-        this.userId = userId;
+        this.user = user;
         this.createDate = createDate;
         this.modifyDate = modifyDate;
 

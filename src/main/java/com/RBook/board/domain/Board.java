@@ -49,21 +49,17 @@ public class Board extends Time{
 
     @ManyToOne
     @JoinColumn(name = "id")
-    private User userId;
+    private User user;
 
-    @OneToMany(mappedBy = "boardId", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    @OrderBy("imageId asc")
-    private List<BoardImage> boardImage;
     @Builder
-    public Board(Long boardId, String writer, String title, String author, String content, Genre genre, User userId, List<BoardImage> boardImage) {
+    public Board(Long boardId, String writer, String title, String author, String content, Genre genre, User user) {
         this.boardId = boardId;
         this.writer = writer;
         this.title = title;
         this.author = author;
         this.content = content;
         this.genre = genre;
-        this.userId = userId;
-        this.boardImage = boardImage;
+        this.user = user;
     }
 
 }

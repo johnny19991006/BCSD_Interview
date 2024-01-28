@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class UserDTO {
     private Long id;
-    private String loginID;
+    private String loginId;
     private String loginPw;
     private String userName;
     private String nickname;
@@ -26,26 +26,13 @@ public class UserDTO {
     private LocalDateTime createDate;
     private LocalDateTime modifyDate;
 
-    public User toEntity() {
-        User user = User.builder()
-                .id(id)
-                .loginId(loginID)
-                .loginPw(loginPw)
-                .userName(userName)
-                .nickname(nickname)
-                .userEmail(userEmail)
-                .gender(gender)
-                .birthday(birthday)
-                .build();
-        return user;
-    }
 
     @Builder
-    public UserDTO(Long id, String loginID, String loginPw,
+    public UserDTO(Long id, String loginId, String loginPw,
                    String userName, String nickname, String userEmail,
                    Gender gender, LocalDate birthday, LocalDateTime createDate, LocalDateTime modifyDate) {
         this.id = id;
-        this.loginID = loginID;
+        this.loginId = loginId;
         this.loginPw = loginPw;
         this.userName = userName;
         this.nickname = nickname;

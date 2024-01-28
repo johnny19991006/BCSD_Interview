@@ -36,7 +36,7 @@ public class User extends Time{
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    @Column(name = "birthday", nullable = false)
+    @Column(name = "birthday")
     @Temporal(TemporalType.DATE)
     private LocalDate birthday;
 
@@ -50,7 +50,6 @@ public class User extends Time{
         this.userEmail = userEmail;
         this.gender = gender;
         this.birthday = birthday;
-
     }
 
 }

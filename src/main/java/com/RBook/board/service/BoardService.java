@@ -1,7 +1,6 @@
 package com.RBook.board.service;
 
 import com.RBook.board.domain.Board;
-import com.RBook.board.domain.BoardImage;
 import com.RBook.board.dto.BoardDTO;
 import com.RBook.board.repository.BoardRepository;
 import jakarta.transaction.Transactional;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -34,7 +32,7 @@ public class BoardService {
                 .author(board.getAuthor())
                 .content(board.getContent())
                 .genre(board.getGenre())
-                .userId(board.getUserId())
+                .user(board.getUser())
                 .createDate(board.getCreateDate())
                 .modifyDate(board.getModifyDate())
                 .build();
@@ -74,7 +72,7 @@ public class BoardService {
                 .author(board.getAuthor())
                 .content(board.getContent())
                 .genre(board.getGenre())
-                .userId(board.getUserId())
+                .user(board.getUser())
                 .createDate(board.getCreateDate())
                 .modifyDate(board.getModifyDate())
                 .build();
@@ -93,7 +91,7 @@ public class BoardService {
         Optional<Board> boardOptional = boardRepository.findById(boardId);
         Board board = boardOptional.get();
 
-        if (board.getUserId().equals(userId)) {
+        if (board.getUser().getId().equals(userId)) {
             boardRepository.save(boardDTO.toEntity());
         }
         return boardDTO;

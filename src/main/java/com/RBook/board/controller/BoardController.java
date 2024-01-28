@@ -53,8 +53,9 @@ public class BoardController {
         model.addAttribute("boardDTO", boardDTO);
         return "board/update";
     }
-    @GetMapping("/post/edit/{no}/{userId}")
-    public String update(BoardDTO boardDTO, @PathVariable("userId") Long userId) {
+    @PostMapping ("/post/edit/{no}")
+    public String update(BoardDTO boardDTO) {
+        Long userId = boardDTO.getUser().getId();
         boardService.modifyBoard(boardDTO, userId);
 
         return "redirect:/board/list";

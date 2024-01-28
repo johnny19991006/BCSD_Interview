@@ -6,19 +6,26 @@ import com.RBook.board.dto.LoginRequest;
 import com.RBook.board.dto.UserDTO;
 import com.RBook.board.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("users")
 public class UserController {
 
     private final UserService userService;
 
+    @GetMapping("/join")
+    public String saveUser() {
+        return "users/saveUser";
+    }
     @PostMapping("/join")
-    public UserDTO saveUser(@RequestBody UserDTO userDTO) {return userService.saveUser(userDTO);}
+    public String saveUser(UserDTO userDTO) {
+        userService.saveUser(userDTO);
+        return "home";
+    }
 
     @PostMapping("/login")
     public String login(@RequestBody LoginRequest req) {

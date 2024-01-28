@@ -21,7 +21,17 @@ public class UserService {
     private final BCryptPasswordEncoder encoder;
 
     public UserDTO saveUser(UserDTO userDTO) {
-        userRepository.save(userDTO.toEntity());
+        User user = User.builder()
+                .id(userDTO.getId())
+                .loginId(userDTO.getLoginId())
+                .loginPw(userDTO.getLoginPw())
+                .userName(userDTO.getUserName())
+                .nickname(userDTO.getNickname())
+                .userEmail(userDTO.getUserEmail())
+                .gender(userDTO.getGender())
+                .birthday(userDTO.getBirthday())
+                .build();
+        userRepository.save(user);
         return userDTO;
     }
     public User login(LoginRequest req) {
@@ -46,7 +56,7 @@ public class UserService {
 
         UserDTO userDTO = UserDTO.builder()
                 .id(user.getId())
-                .loginID(user.getLoginId())
+                .loginId(user.getLoginId())
                 .loginPw(user.getLoginPw())
                 .userName(user.getUserName())
                 .nickname(user.getNickname())
