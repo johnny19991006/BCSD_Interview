@@ -62,5 +62,6 @@ public class SeatController {
     @Scheduled(fixedRate = 10000)
     public void endExpiredSeat(){
         seatService.endExpiredSeats();
+        seatService.updateRoom();
     }
 }
