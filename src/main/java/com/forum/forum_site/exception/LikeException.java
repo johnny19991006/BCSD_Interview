@@ -26,7 +26,7 @@ public class LikeException extends RuntimeException{
     }
 
     // 파일 예외 생성자
-    public LikeException(LikeException.Type type) {
+    public LikeException(Type type) {
         super(type.errorMessage);
         this.errorCode = type.errorCode;
         this.httpStatus = type.httpStatus;
