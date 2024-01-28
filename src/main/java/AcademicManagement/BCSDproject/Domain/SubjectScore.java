@@ -17,9 +17,12 @@ Create Table Subject_Score
 (
 	student_id VARCHAR(20),
     subject_name VARCHAR(20),
-    subject_grade ENUM('APLUS', 'AZERO', 'B+', 'B0', 'C+', 'C0', 'D+', 'D0', 'F') NOT NULL,
+    subject_grade ENUM('APLUS', 'AZERO', 'BPLUS', 'BZERO',
+                       'CPLUS', 'CZERO', 'DPLUS', 'DZERO', 'F') NOT NULL,
     subject_score FLOAT NOT NULL,
     subject_retake VARCHAR(1) NOT NULL,
+    take_grade ENUM('FRESHMAN', 'SOPHOMEORE', 'JUNIOR', 'SENIOR') NOT NULL,
+    take_semester ENUM('FIRST', 'SECOND', 'SUMMER', 'WINTER') NOT NULL,
     PRIMARY KEY (student_id, subject_name),
     FOREIGN KEY (student_id) references Student(student_id),
     FOREIGN KEY (subject_name) references Subject(subject_name)
