@@ -32,23 +32,24 @@ public class SubjectScoreController {
         return service.findAllSubjectScore();
     }
 
-    @GetMapping("/{subjectName}")
-    public SubjectScore findSubjectScore(@PathVariable String subjectName)
+    @GetMapping("/{subjectName}/{studentId}")
+    public SubjectScore findSubjectScore(@PathVariable String subjectName, @PathVariable String studentId)
     {
-        return service.findSubjectScore(subjectName);
+        return service.findSubjectScore(subjectName, studentId);
     }
 
-    @PutMapping("/{subjectName}")
+    @PutMapping("/{subjectName}/{studentId}")
     public SubjectScore updateSubjectScore(@RequestBody SubjectScore subjectScore,
-                                      @PathVariable String subjectName)
+                                      @PathVariable String subjectName,
+                                           @PathVariable String studentId)
     {
-        return service.updateSubjectScore(subjectScore, subjectName);
+        return service.updateSubjectScore(subjectScore, subjectName, studentId);
     }
 
-    @DeleteMapping("/{subjectName}")
-    public void deleteSubjectScore(@PathVariable String subjectName)
+    @DeleteMapping("/{subjectName}/{studentId}")
+    public void deleteSubjectScore(@PathVariable String subjectName, @PathVariable String studentId)
     {
-        service.deleteSubjectScore(subjectName);
+        service.deleteSubjectScore(subjectName, studentId);
     }
 
     @GetMapping("/Student/{studentId}")

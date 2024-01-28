@@ -16,8 +16,8 @@
 - StudentGradeInformation에 필요한 정보 생각해보기
 - Credit과 Score 관련 계산 로직 Service 내에 추가할 것
 
-4. 익일 진행 내용
-- SubjectScore에서 발생한 오류 해결
+4. 추후 진행 내용
+- SubjectScore에서 발생한 오류 해결(1/28 해결 완료)
 - StudentGradeInformation CRUD 구현하기
 
 5. 생각 중인 것
@@ -26,3 +26,8 @@
 - Domain 내에서 Setter 사용을 지양하고 있는데, 현재 Service update 부분에서 Setter
   를 사용하고 있어서 이를 어떻게 해결 할 지 생각해보기
 - REST API 규칙을 지켰는지 확인하기
+- 현재 사용하고 있는 SubjectGrade의 SubjectName을 PK로 사용하지 않고, 
+  과목 코드를 사용하여 구분 할 수 있도록 수정해보기
+
+1월 28일(일) 
+- 과목 성적 Score/{과목이름}/{학생아이디}로 RUD 가능하도록 수정 완료

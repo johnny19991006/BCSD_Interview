@@ -28,15 +28,15 @@ public class SubjectScoreService {
         return subjectScoreRepository.findAll();
     }
 
-    public SubjectScore findSubjectScore(String subjectName)
+    public SubjectScore findSubjectScore(String subjectName, String studentId)
     {
-        return subjectScoreRepository.findById(subjectName)
+        return subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
                 .orElseThrow(() -> new NoSuchElementException("Can't find"));
     }
 
-    public SubjectScore updateSubjectScore(SubjectScore subjectScore, String subjectName)
+    public SubjectScore updateSubjectScore(SubjectScore subjectScore, String subjectName, String studentId)
     {
-        SubjectScore changeScore = subjectScoreRepository.findById(subjectName)
+        SubjectScore changeScore = subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
                 .orElseThrow(() -> new NoSuchElementException("Can't find"));
 
         changeScore.setSubjectScoreEnum(subjectScore.getSubjectScoreEnum());
@@ -48,9 +48,11 @@ public class SubjectScoreService {
         return changeScore;
     }
 
-    public void deleteSubjectScore(String subjectName)
+    public void deleteSubjectScore(String subjectName, String studentId)
     {
-        subjectScoreRepository.deleteById(subjectName);
+        SubjectScore subjectScore = subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
+                        .orElseThrow(() -> new NoSuchElementException("Can't find"));
+        subjectScoreRepository.delete(subjectScore);
     }
 
     public List<SubjectScore> findStudentScoreByStudentId(String studentId)
