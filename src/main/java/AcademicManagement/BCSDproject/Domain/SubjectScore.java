@@ -2,6 +2,8 @@ package AcademicManagement.BCSDproject.Domain;
 
 import AcademicManagement.BCSDproject.ComplexKey.SubjectScoreId;
 
+import AcademicManagement.BCSDproject.Enum.SemesterEnum;
+import AcademicManagement.BCSDproject.Enum.SemesterGradeEnum;
 import AcademicManagement.BCSDproject.Enum.SubjectScoreEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -52,6 +54,14 @@ public class SubjectScore {
     @Column(name = "subject_retake", nullable = false)
     private String subjectRetake;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "take_grade", nullable = false)
+    private SemesterGradeEnum semesterGradeEnum;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "take_semester", nullable = false)
+    private SemesterEnum semesterEnum;
+
     @ManyToOne
     @JoinColumn(name = "subject_name", insertable = false, updatable = false) // 직접적인 변경 X
     private Subject subject;
@@ -63,13 +73,16 @@ public class SubjectScore {
 
     @Builder
     public SubjectScore(String studentId, String subjectName, SubjectScoreEnum subjectScoreEnum,
-                        float subjectScore, String subjectRetake)
+                        float subjectScore, String subjectRetake, SemesterGradeEnum semesterGradeEnum,
+                        SemesterEnum semesterEnum)
     {
         this.studentId = studentId;
         this.subjectName = subjectName;
         this.subjectScoreEnum = subjectScoreEnum;
         this.subjectScore = subjectScore;
         this.subjectRetake = subjectRetake;
+        this.semesterGradeEnum = semesterGradeEnum;
+        this.semesterEnum = semesterEnum;
     }
 
     public SubjectScore(SubjectScore subjectScore) {
@@ -78,5 +91,7 @@ public class SubjectScore {
         this.subjectScoreEnum = subjectScore.getSubjectScoreEnum();
         this.subjectScore = subjectScore.getSubjectScore();
         this.subjectRetake = subjectScore.getSubjectRetake();
+        this.semesterGradeEnum = subjectScore.getSemesterGradeEnum();
+        this.semesterEnum = subjectScore.getSemesterEnum();
     }
 }
