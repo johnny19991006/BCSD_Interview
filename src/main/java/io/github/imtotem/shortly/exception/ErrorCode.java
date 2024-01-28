@@ -16,6 +16,7 @@ public enum ErrorCode {
     //404 NOT_FOUND 잘못된 리소스 접근
     EMAIL_NOT_FOUND(404, "이메일을 찾을 수 없습니다."),
     USER_NOT_FOUND(404, "사용자를 찾을 수 없습니다."),
+    URL_NOT_FOUND(404, "URL을 찾을 수 없습니다."),
 
     //409 CONFLICT 중복된 리소스
     ALREADY_SAVED_EMAIL(409, "이미 존재하는 이메일입니다."),
