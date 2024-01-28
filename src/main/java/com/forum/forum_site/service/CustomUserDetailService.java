@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 // 유저 정보를 불러오기 위해 loadUserByUsername 메서드를 오버라이드 해야 한다
 public class CustomUserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username)

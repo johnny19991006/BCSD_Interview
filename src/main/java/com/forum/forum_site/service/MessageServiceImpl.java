@@ -55,7 +55,6 @@ public class MessageServiceImpl extends BaseService implements MessageService{
     @Transactional
     @Override
     public void deleteMesssageByReceiver(int messageId) {
-        User currentUser = getCurrentAuthenticatedUser();
         Message message = messageRepository.findById(messageId).orElseThrow(() ->
                 new MessageException(MessageException.Type.MESSAGE_NOT_FOUND));
 

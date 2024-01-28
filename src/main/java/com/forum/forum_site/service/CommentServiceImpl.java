@@ -25,15 +25,14 @@ import java.util.List;
 public class CommentServiceImpl extends BaseService implements CommentService{
 
     private final CommentRepository commentRepository;
-    private final UserRepository userRepository;
     private final PostRepository postRepository;
 
     @Override
     public void saveComment(Integer postId, SaveCommentDto saveCommentDto) {
-        Comment comment = saveCommentDto.toEntity();
         User currentUser = getCurrentAuthenticatedUser();
+        Comment comment = saveCommentDto.toEntity();
 
-        comment.confirmAuthor(userRepository.findByUsername(currentUser.getUsername()).orElseThrow(()->new UserException(UserException.Type.NOT_FOUND_MEMBER)));
+        comment.confirmAuthor(currentUser);
 
         comment.confirmPost(postRepository.findById(postId).orElseThrow(() -> new PostException(PostException.Type.POST_NOT_FOUND)));
 
@@ -43,10 +42,10 @@ public class CommentServiceImpl extends BaseService implements CommentService{
 
     @Override
     public void saveReComment(Integer postId, Integer parentId, SaveCommentDto saveCommentDto) {
-        Comment comment = saveCommentDto.toEntity();
         User currentUser = getCurrentAuthenticatedUser();
+        Comment comment = saveCommentDto.toEntity();
 
-        comment.confirmAuthor(userRepository.findByUsername(currentUser.getUsername()).orElseThrow(() -> new UserException(UserException.Type.NOT_FOUND_MEMBER)));
+        comment.confirmAuthor(currentUser);
 
         comment.confirmPost(postRepository.findById(postId).orElseThrow(() -> new PostException(PostException.Type.POST_NOT_FOUND)));
 
@@ -56,8 +55,8 @@ public class CommentServiceImpl extends BaseService implements CommentService{
 
     @Override
     public void updateComment(Integer id, UpdateCommentDto updateCommentDto) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentException(CommentException.Type.NOT_FOUND_COMMENT));
         User currentUser = getCurrentAuthenticatedUser();
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentException(CommentException.Type.NOT_FOUND_COMMENT));
 
         if(!comment.getAuthor().getUsername().equals(currentUser.getUsername())) {
             throw new CommentException(CommentException.Type.NOT_AUTHORITY_UPDATE_COMMENT);
@@ -68,8 +67,8 @@ public class CommentServiceImpl extends BaseService implements CommentService{
 
     @Override
     public void removeComment(Integer id) {
-        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentException(CommentException.Type.NOT_FOUND_COMMENT));
         User currentUser = getCurrentAuthenticatedUser();
+        Comment comment = commentRepository.findById(id).orElseThrow(() -> new CommentException(CommentException.Type.NOT_FOUND_COMMENT));
 
         if(!comment.getAuthor().getUsername().equals(currentUser.getUsername())) {
             throw new CommentException(CommentException.Type.NOT_AUTHORITY_DELETE_COMMENT);

@@ -50,7 +50,6 @@ public class ScrapServiceImpl extends BaseService implements ScrapService{
         Scrap scrap = scrapRepository.findByAuthorAndPost(currentUser, post)
                 .orElseThrow(() -> new ScrapException(ScrapException.Type.SCRAP_NOT_FOUND));
 
-
         scrapRepository.delete(scrap);
     }
 }

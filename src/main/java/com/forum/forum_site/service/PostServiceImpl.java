@@ -33,8 +33,7 @@ public class PostServiceImpl extends BaseService implements PostService{
         User currentUser = getCurrentAuthenticatedUser();
 
         Post post = savePostDto.toEntity();
-        post.confirmAuthor(userRepository.findById(currentUser.getUser_id())
-                .orElseThrow(() -> new UserException(UserException.Type.NOT_FOUND_MEMBER)));
+        post.confirmAuthor(currentUser);
 
         if (savePostDto.uploadFile() != null) {
             savePostDto.uploadFile().forEach(file -> {
