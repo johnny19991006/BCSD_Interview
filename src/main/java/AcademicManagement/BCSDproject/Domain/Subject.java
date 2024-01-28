@@ -10,8 +10,8 @@ Create Table Subject
 );
 */
 // subject_name은 문자열로 할 지, AUTO_INCREMENT를 이용한 INT 형으로 사용 할 지 한 번 생각 해보겠습니다.
-import java.util.ArrayList;
-import java.util.List;
+
+import AcademicManagement.BCSDproject.Enum.CategoryEnum;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

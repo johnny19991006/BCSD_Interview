@@ -1,5 +1,7 @@
 package AcademicManagement.BCSDproject.Domain;
 
+import AcademicManagement.BCSDproject.Enum.SemesterEnum;
+import AcademicManagement.BCSDproject.Enum.SemesterGradeEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;

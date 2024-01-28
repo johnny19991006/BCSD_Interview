@@ -1,4 +1,4 @@
-package AcademicManagement.BCSDproject.Domain;
+package AcademicManagement.BCSDproject.Enum;
 
 public enum CategoryEnum {
     MAJOR, GENERAL;

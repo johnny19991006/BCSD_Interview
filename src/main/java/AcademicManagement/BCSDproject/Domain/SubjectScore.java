@@ -2,6 +2,7 @@ package AcademicManagement.BCSDproject.Domain;
 
 import AcademicManagement.BCSDproject.ComplexKey.SubjectScoreId;
 
+import AcademicManagement.BCSDproject.Enum.SubjectScoreEnum;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -21,6 +22,8 @@ Create Table Subject_Score
     FOREIGN KEY (student_id) references Student(student_id),
     FOREIGN KEY (subject_name) references Subject(subject_name)
 );
+추가한 내용 : 어떤 학년의 어떤 학기에 들었는지 추가
+DB 수정
 */
 
 // 이 부분의 PK 두 가지도 INT 형으로 할 수 있는지 한 번 생각해보기

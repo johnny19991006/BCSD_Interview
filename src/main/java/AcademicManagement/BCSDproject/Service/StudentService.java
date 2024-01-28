@@ -30,7 +30,6 @@ public class StudentService implements StudentServiceInterface{
                 .studentGrade(student.getStudentGrade())
                 .studentSemester(student.getStudentSemester())
                 .studentAttend(student.getStudentAttend())
-                .updateAt(student.getUpdateAt())
                 .build();
     }
 
@@ -69,7 +68,6 @@ public class StudentService implements StudentServiceInterface{
         student.setStudentGrade(studentDTO.getStudentGrade());
         student.setStudentSemester(studentDTO.getStudentSemester());
         student.setStudentAttend(studentDTO.getStudentAttend());
-        student.setUpdateAt(studentDTO.getUpdateAt());
 
         studentRepository.save(student); // Id를 제외한 정보는 수정하여 저장 가능
 

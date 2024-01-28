@@ -5,6 +5,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import java.util.List;
 
 import java.time.LocalDateTime;
@@ -20,6 +24,7 @@ import java.time.LocalDateTime;
     student_attend VARCHAR(10) NOT NULL,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+update_at은 현재 빼두고, 추후에 수정시 추가
 */
 
 @NoArgsConstructor // AllArgsConstructor
@@ -50,16 +55,15 @@ public class Student {
     @Column(name = "student_attend", length = 10, nullable = false) // 학적 상황
     private String studentAttend;
 
-    @Column(name = "update_at") // 업데이트 시간
-    private LocalDateTime updateAt;
+    //@Column(name = "update_at") // 업데이트 시간
+    //private LocalDateTime updateAt;
 
     //@OneToMany(mappedBy = "student") // 학생은 여러 학기를 가질 수 있음, 외래키
     //private List<Semester> studentSemesterAll;
 
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
-                   int studentGrade, int studentSemester, String studentAttend, LocalDateTime updateAt)
-    {
+                   int studentGrade, int studentSemester, String studentAttend) {
         this.studentId = studentId;
         this.studentPw = studentPw;
         this.studentName = studentName;
@@ -67,7 +71,6 @@ public class Student {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
-        this.updateAt = updateAt;
     }
 
     public void setStudentPw(String studentPw) {
@@ -92,9 +95,5 @@ public class Student {
 
     public void setStudentAttend(String studentAttend) {
         this.studentAttend = studentAttend;
-    }
-
-    public void setUpdateAt(LocalDateTime updateAt) {
-        this.updateAt = updateAt;
     }
 }

@@ -34,7 +34,6 @@ public class StudentDTO {
                 .studentGrade(studentGrade)
                 .studentSemester(studentSemester)
                 .studentAttend(studentAttend)
-                .updateAt(updateAt)
                 .build();
         return student;
     }
@@ -52,7 +51,6 @@ public class StudentDTO {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
-        this.updateAt = updateAt;
     }
 
     // findById에서 사용할 studentDTO의 student 생성자
@@ -65,6 +63,5 @@ public class StudentDTO {
         this.studentGrade = student.getStudentGrade();
         this.studentSemester = student.getStudentSemester();
         this.studentAttend = student.getStudentAttend();
-        this.updateAt = student.getUpdateAt();
     }
 }
