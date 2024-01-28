@@ -48,4 +48,13 @@ public class Message {
     public boolean isDeleted() {
         return isDeletedBySender() && isDeletedByReceiver();
     }
+
+    @Builder
+    public Message(String content, User sender, User receiver, boolean deletedBySender, boolean deletedByReceiver) {
+        this.content = content;
+        this.sender = sender;
+        this.receiver = receiver;
+        this.deletedBySender = deletedBySender;
+        this.deletedByReceiver = deletedByReceiver;
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -26,13 +27,7 @@ public class MessageServiceImpl extends BaseService implements MessageService{
         User currentUser = getCurrentAuthenticatedUser();
         User receiver = userRepository.findById(receiverId).orElseThrow(() -> new MessageException(MessageException.Type.RECEIVER_NOT_FOUND));
 
-        Message message = new Message();
-        message.setReceiver(receiver);
-        message.setSender(currentUser);
-
-        message.setContent(messageDto.getContent());
-        message.setDeletedByReceiver(false);
-        message.setDeletedBySender(false);
+        Message message = messageDto.toEntity(currentUser, receiver);
         messageRepository.save(message);
 
     }
@@ -40,16 +35,10 @@ public class MessageServiceImpl extends BaseService implements MessageService{
     @Transactional(readOnly = true)
     @Override
     public List<MessageDto> receivedMessageRoom() {
-        List<Message> messages = messageRepository.findAllByReceiver(getCurrentAuthenticatedUser());
-        List<MessageDto> messageDtos = new ArrayList<>();
-
-        for(Message message : messages) {
-            // message에서 받은 편지함에서 삭제안했으면 보낼때 추가해서 보냄
-            if(!message.isDeletedByReceiver()) {
-                messageDtos.add(MessageDto.toDto(message));
-            }
-        }
-        return messageDtos;
+        return messageRepository.findAllByReceiver(getCurrentAuthenticatedUser()).stream()
+                .filter(message -> !message.isDeletedByReceiver())
+                .map(message -> new MessageDto(message.getContent()))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -68,17 +57,10 @@ public class MessageServiceImpl extends BaseService implements MessageService{
     @Transactional(readOnly = true)
     @Override
     public List<MessageDto> sentMessageRoom() {
-        User currentUser = getCurrentAuthenticatedUser();
-        List<Message> messages = messageRepository.findAllBySender(currentUser);
-        List<MessageDto> messageDtos = new ArrayList<>();
-
-        for(Message message : messages) {
-            // message 에서 받은 편지함에서 삭제하지 않았으면 보낼 때 추가해서 보내줌
-            if(!message.isDeletedBySender()) {
-                messageDtos.add(MessageDto.toDto(message));
-            }
-        }
-        return messageDtos;
+        return messageRepository.findAllBySender(getCurrentAuthenticatedUser()).stream()
+                .filter(message -> !message.isDeletedBySender())
+                .map(message -> new MessageDto(message.getContent()))
+                .collect(Collectors.toList());
     }
 
     @Override
