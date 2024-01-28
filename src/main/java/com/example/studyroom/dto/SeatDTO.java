@@ -8,9 +8,6 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Getter
-@Setter
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class SeatDTO {
     private Integer seatId;
     private Integer roomId;

@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class CancleSeatDTO {
-    Integer seatId;
-    Integer schoolId;
+    private Integer seatId;
+    private Integer schoolId;
 }

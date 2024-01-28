@@ -6,5 +6,4 @@ import lombok.Getter;
 public class ChoiceSeatDTO {
     private Integer seatId;
     private Integer schoolId;
-    private Integer roomId;
 }

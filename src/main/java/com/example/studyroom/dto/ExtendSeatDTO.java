@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public class ExtendSeatDTO {
-    Integer schoolId;
-    Integer seatId;
+    private Integer schoolId;
+    private Integer seatId;
 }
