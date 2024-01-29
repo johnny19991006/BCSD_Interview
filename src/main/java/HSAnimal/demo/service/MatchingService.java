@@ -49,27 +49,17 @@ public class MatchingService {
     // 사용자와 겹치는 동물 리스트 생성
     public Set<AnimalDTO> getAnimalDTOList(List<Integer> optionDTOList){
         Set<AnimalDTO> animalDTOList = new HashSet<>();
-//        for(int option : optionDTOList){
-//            List<AnimalKeywords> animalKeywordsList = animalKeywordsRepository.findAllByOptionId(option);
-//            for (AnimalKeywords animalKeywords : animalKeywordsList) {
-//                Optional<Animal> optionalAnimal = animalRepository.findByAnimalId(animalKeywords.getAnimalId());
-//                if (optionalAnimal.isPresent()) {
-//                    animalDTOList.add(AnimalDTO.builder()
-//                            .animalId(optionalAnimal.get().getAnimalId())
-//                            .animalName(optionalAnimal.get().getAnimalName())
-//                            .build());
-//                }
-//            }
-//        }
-        for (int option : optionDTOList) {
+        for(int option : optionDTOList){
             List<AnimalKeywords> animalKeywordsList = animalKeywordsRepository.findAllByOptionId(option);
-            animalKeywordsList.forEach(animalKeywords -> {
-                animalRepository.findByAnimalId(animalKeywords.getAnimalId())
-                        .ifPresent(optionalAnimal -> animalDTOList.add(AnimalDTO.builder()
-                                .animalId(optionalAnimal.getAnimalId())
-                                .animalName(optionalAnimal.getAnimalName())
-                                .build()));
-            });
+            for (AnimalKeywords animalKeywords : animalKeywordsList) {
+                Optional<Animal> optionalAnimal = animalRepository.findByAnimalId(animalKeywords.getAnimalId());
+                if (optionalAnimal.isPresent()) {
+                    animalDTOList.add(AnimalDTO.builder()
+                            .animalId(optionalAnimal.get().getAnimalId())
+                            .animalName(optionalAnimal.get().getAnimalName())
+                            .build());
+                }
+            }
         }
         return animalDTOList;
     }
