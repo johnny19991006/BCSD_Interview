@@ -27,16 +27,11 @@ public class MatchingController {
     }
 
     @PostMapping("/{user_id}/match")
-    public ResponseEntity<Object> matchingAnimals(@PathVariable String user_id) {
+    public List<AnimalDTO> matchingAnimals(@PathVariable String user_id) {
         List<Integer> optionList = matchingService.getOptionsDTOList(user_id).stream()
                 .map(OptionDTO::getOptionId)
                 .collect(Collectors.toList());
         Set<AnimalDTO> animalList = matchingService.getAnimalDTOList(optionList);
-        try {
-            return new ResponseEntity<>(matchingService.sumWeights(optionList, animalList), HttpStatus.OK);
-        }
-        catch (NullPointerException e) {
-            return new ResponseEntity<>("매칭된 동물이 없습니다.", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        return matchingService.sumWeights(optionList, animalList);
     }
 }
