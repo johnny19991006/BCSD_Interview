@@ -2,7 +2,6 @@ package HSAnimal.demo.controller;
 
 import HSAnimal.demo.domain.Animal;
 import HSAnimal.demo.repository.AnimalRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -11,8 +10,10 @@ import org.springframework.web.server.ResponseStatusException;
 @RequestMapping("/animals")
 public class AnimalController {
 
-    @Autowired
-    private AnimalRepository animalRepository;
+    private final AnimalRepository animalRepository;
+    public AnimalController(AnimalRepository animalRepository){
+        this.animalRepository = animalRepository;
+    }
 
     @PostMapping("/animal")
     public Animal create(@RequestBody Animal animal) {

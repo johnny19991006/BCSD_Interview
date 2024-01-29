@@ -12,17 +12,31 @@ import java.util.Optional;
 
 @Service
 @Transactional
-@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder){
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
+
+    public String signup(UserDTO dto) {
+        User user = User.builder()
+                .userId(dto.getUserId())
+                .username(dto.getUsername())
+                .password(dto.getPassword())
+                .email(dto.getEmail())
+                .build();
+        return userRepository.save(user).getUserId();
+    }
 
     // 회원가입 시 필요한 사용자 저장
     public Long save(UserDTO dto) {
         User user = User.builder()
                 .username(dto.getUsername())
                 .userId(dto.getUserId())
-                .password(passwordEncoder.encode(dto.getPassword()))
+                .password(bCryptPasswordEncoder.encode(dto.getPassword()))
                 .email(dto.getEmail())
                 .build();
         userRepository.save(user);
@@ -36,7 +50,7 @@ public class UserService {
         if (userOptional.isPresent()) {
             User user = userOptional.get();
             String hashedPasswordFromDatabase = user.getPassword();
-            if (passwordEncoder.matches(password, hashedPasswordFromDatabase)) {
+            if (bCryptPasswordEncoder.matches(password, hashedPasswordFromDatabase)) {
                 return true;
             }
         }

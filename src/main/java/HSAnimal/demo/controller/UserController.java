@@ -1,31 +1,38 @@
 package HSAnimal.demo.controller;
 
+import HSAnimal.demo.DTO.UserDTO;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.UserRepository;
 import HSAnimal.demo.service.UserService;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-@Controller
-@RequiredArgsConstructor
+@RestController
 @RequestMapping("/users")
 public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
 
-    // Read: 사용자 검색
+    public UserController(UserRepository userRepository, UserService userService){
+        this.userRepository = userRepository;
+        this.userService = userService;
+    }
+
     @GetMapping("/{user_id}")
     public User read(@PathVariable String user_id) {
         return userRepository.findByUserId(user_id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    // Update: 사용자 정보 수정
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody UserDTO request) {
+        String userId = userService.signup(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body("User with ID " + userId + " registered successfully.");
+    }
+
     @PutMapping("/{user_id}")
     public User update(@PathVariable String user_id, @RequestBody User updatedUser) {
         return userRepository.findByUserId(user_id)
@@ -41,7 +48,6 @@ public class UserController {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
     }
 
-    // Delete: 사용자 삭제
     @DeleteMapping("/{user_id}")
     public ResponseEntity<?> delete(@PathVariable String user_id) {
         return userRepository.findByUserId(user_id)

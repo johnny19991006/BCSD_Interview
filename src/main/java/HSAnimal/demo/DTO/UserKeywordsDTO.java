@@ -2,12 +2,12 @@ package HSAnimal.demo.DTO;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 @Builder
-public class UserDTO {
+public class UserKeywordsDTO {
     private String userId;
-    private String username;
-    private String password;
-    private String email;
+    private int optionId;
 }
