@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface ShortUrlRepository extends JpaRepository<Url, Long> {
     Optional<Url> findByOriginUrl(String url);
 
+    void deleteAllByCntLessThanEqual(int cnt);
 }

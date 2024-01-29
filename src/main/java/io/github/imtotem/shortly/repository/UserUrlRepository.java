@@ -10,4 +10,8 @@ public interface UserUrlRepository extends JpaRepository<UserUrl, Long> {
     List<UserUrl> findAllByUser_Email(String email);
 
     Optional<UserUrl> findByUser_EmailAndUrl_OriginUrl(String email, String url);
+
+    List<UserUrl> findAllByUser_EmailAndDeletable(String email, boolean deletable);
+
+    void deleteAllByUser_Email(String email);
 }
