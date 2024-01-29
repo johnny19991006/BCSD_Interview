@@ -33,11 +33,6 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PostMapping("")
-    public User createUser(@RequestBody User newUser) {
-        return userService.createUser(newUser);
-    }
-
     @PutMapping("/{id}")
     public void updateUserName(@RequestParam @PathVariable(name = "id") Integer id, @RequestBody User user) {
         userService.updateUsername(id, user);

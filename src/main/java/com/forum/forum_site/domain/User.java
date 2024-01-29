@@ -34,19 +34,18 @@ public class User implements UserDetails{
     @Column(length = 40, nullable = false, unique = true)
     private String email;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Builder.Default
-    @CollectionTable(name = "role", joinColumns = @JoinColumn(name = "role_id"))
-    @Column(name = "role_name")
-    private List<String> roles = new ArrayList<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     // 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return this.roles.stream()
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
+        return authorities;
     }
+
 
     // 사용자 이름 반환
     @Override

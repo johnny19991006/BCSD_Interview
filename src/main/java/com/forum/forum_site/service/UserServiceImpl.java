@@ -1,22 +1,19 @@
 package com.forum.forum_site.service;
 
-import com.forum.forum_site.domain.Post;
+import com.forum.forum_site.domain.Role;
 import com.forum.forum_site.domain.User;
 import com.forum.forum_site.dto.ScrapPostDto;
-import com.forum.forum_site.exception.UserException;
+import com.forum.forum_site.repository.RoleRepository;
 import com.forum.forum_site.repository.ScrapRepository;
 import com.forum.forum_site.repository.UserRepository;
 import com.forum.forum_site.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -30,6 +27,7 @@ public class UserServiceImpl extends BaseService implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final ScrapRepository scrapRepository;
+    private final RoleRepository roleRepository;
 
     @Override
     public User loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,7 +46,8 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public User createUser(User newUser) {
+    public User createUser(User newUser, Role role) {
+        newUser.setRole(role);
         return userRepo.save(newUser);
     }
 
@@ -75,11 +74,14 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Override
     public void joinUser(Map<String, String> user) {
+        Role defaultRole = roleRepository.findByRoleName("ROLE_USER")
+                .orElseThrow(() -> new IllegalStateException("기본 역할이 설정되지 않았습니다."));
+
         userRepo.save(User.builder()
                 .email(user.get("email"))
                 .password(passwordEncoder.encode(user.get("password")))
                 .username(user.get("username"))
-                .roles(Collections.singletonList("ROLE_USER"))
+                .role(defaultRole)
                 .build());
     }
 
@@ -90,7 +92,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         if (!passwordEncoder.matches(user.get("password"), member.getPassword())) {
             throw new IllegalArgumentException("잘못된 비밀번호입니다.");
         }
-        return jwtTokenProvider.createToken(member.getUsername(), member.getRoles());
+        return jwtTokenProvider.createToken(member.getUsername(), member.getRole());
     }
 
     @Transactional(readOnly = true)
