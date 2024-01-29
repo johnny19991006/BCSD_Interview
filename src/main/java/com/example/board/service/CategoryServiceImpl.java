@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.sql.SQLException;
 import java.util.List;
 @Service
-public class CategoryServiceImpl implements CategoryService{
+public class CategoryServiceImpl implements CategoryService {
     private final CategoryRepository categoryRepository;
     @Autowired
     public CategoryServiceImpl(CategoryRepository repository) {

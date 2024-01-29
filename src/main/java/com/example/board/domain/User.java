@@ -48,4 +48,8 @@ public class User {
     @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Board> comments;
 }
