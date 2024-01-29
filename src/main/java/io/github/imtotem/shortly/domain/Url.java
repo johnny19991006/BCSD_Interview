@@ -21,8 +21,7 @@ public class Url {
     @Column(name = "short_url")
     private String shortUrl;
 
-    @Lob
-    @Column(name = "origin_url", nullable = false, updatable = false)
+    @Column(name = "origin_url", nullable = false, updatable = false, columnDefinition = "MEDIUMTEXT")
     private String originUrl;
 
     @Builder.Default
