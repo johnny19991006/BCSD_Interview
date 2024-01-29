@@ -1,9 +1,9 @@
 package HSAnimal.demo.service;
 
-import com.example.demo.DTO.AnimalDTO;
-import com.example.demo.DTO.OptionDTO;
-import com.example.demo.entity.*;
-import com.example.demo.repository.*;
+import HSAnimal.demo.DTO.AnimalDTO;
+import HSAnimal.demo.DTO.OptionDTO;
+import HSAnimal.demo.domain.*;
+import HSAnimal.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

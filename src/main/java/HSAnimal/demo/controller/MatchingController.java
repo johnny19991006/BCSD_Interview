@@ -1,8 +1,8 @@
 package HSAnimal.demo.controller;
 
-import com.example.demo.DTO.AnimalDTO;
-import com.example.demo.DTO.OptionDTO;
-import com.example.demo.service.MatchingService;
+import HSAnimal.demo.DTO.AnimalDTO;
+import HSAnimal.demo.DTO.OptionDTO;
+import HSAnimal.demo.service.MatchingService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
