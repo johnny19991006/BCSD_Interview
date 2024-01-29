@@ -1,5 +1,6 @@
 package com.example.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,6 +24,7 @@ public class Category {
     @Column(name = "category_name", unique = true, length = 20)
     private String categoryName;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "category")
     private List<Board> boards;
 }

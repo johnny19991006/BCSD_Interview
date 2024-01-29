@@ -7,10 +7,15 @@ import java.util.List;
 
 public interface BoardService {
     public Board insertBoard(Board board) throws SQLException;
-
+    public List<Board> getAllBoards() throws SQLException;
+    public Board getBoardByBoardId(Integer boardId) throws SQLException;
+    public List<Board> getLatestBoards() throws SQLException;
+    public List<Board> getPopularBoards() throws SQLException;
+    public List<Board> getBoardsByTitleContaining(String title) throws SQLException;
+    public void updateBoardTitle(Integer boardId, String newTitle) throws SQLException;
+    public void updateBoardPrice(Integer boardId, String newPrice) throws SQLException;
+    public void updateBoardContent(Integer boardId, String newContent) throws SQLException;
+    public void updateBoardCategory(Integer boardId, Integer newCgNum) throws SQLException;
+    public void updateBoardStatus(Integer boardId, String newStatus) throws SQLException;
     public void deleteBoard(Integer boardId) throws SQLException;
-
-    // 게시글 수정
-    // 최신 게시글 조회
-    // 인기 게시글 조회
 }

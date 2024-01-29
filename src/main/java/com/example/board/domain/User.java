@@ -1,5 +1,6 @@
 package com.example.board.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.Getter;
@@ -44,6 +45,7 @@ public class User {
         createdAt = LocalDateTime.now();
     }
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
 }
