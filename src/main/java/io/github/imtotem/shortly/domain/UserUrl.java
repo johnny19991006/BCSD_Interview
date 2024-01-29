@@ -29,7 +29,7 @@ public class UserUrl extends BaseEntity {
 
     @Builder.Default
     @Column(nullable = false)
-    private boolean deletable = false;
+    private boolean deletable = true;
 
     public void updateUrl(Url url) {
         this.url = url;
