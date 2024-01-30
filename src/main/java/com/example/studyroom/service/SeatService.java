@@ -1,16 +1,22 @@
 package com.example.studyroom.service;
 
 import com.example.studyroom.Message;
-import com.example.studyroom.domain.*;
+import com.example.studyroom.domain.Room;
+import com.example.studyroom.domain.Seat;
+import com.example.studyroom.domain.User;
 import com.example.studyroom.dto.*;
-import com.example.studyroom.repository.*;
+import com.example.studyroom.repository.RoomRepository;
+import com.example.studyroom.repository.SeatRepository;
+import com.example.studyroom.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Slf4j
 @Service
+@Transactional // 자동으로 db의 변경 감지
 public class SeatService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
@@ -25,7 +31,7 @@ public class SeatService {
     public Seat insertSeat(InsertSeatDTO insertSeatDTO) {
 
         return seatRepository.save(Seat.builder()
-                .seatNum(insertSeatDTO.getSeatNum())
+                .seatNum(insertSeatDTO.getSeatId())
                 .room(Room.builder().roomId(insertSeatDTO.getRoomId()).build())
                 .build());
     }
@@ -81,39 +87,28 @@ public class SeatService {
         seat.choiceSeatUpdate(seatRepository.findSeatNumBySeatId(seatId), userRepository.findBySchoolId(schoolId), roomRepository.findByRoomId(roomId));
         seatRepository.save(seat);
 
+        user.useSeat(seat);
+        userRepository.save(user);
+
         return seat;
     }
 
-    public Seat cancleSeat(CancleSeatDTO cancleSeatDTO) {
+    public Seat cancelSeat(CancelSeatDTO cancelSeatDTO) {
 
-        Room room = roomRepository.findByRoomId(seatRepository.findRoomIdBySeatId(cancleSeatDTO.getSeatId()));
+        Seat seat = seatRepository.findById(cancelSeatDTO.getSeatId()).get();
+        User user = userRepository.findBySchoolId(cancelSeatDTO.getSchoolId());
 
-        Integer roomId = seatRepository.findRoomIdBySeatId(cancleSeatDTO.getSeatId());
-
-        room.usedSeats(seatRepository.countByRoom_RoomIdAndIsUsed(roomId, true));
-        roomRepository.save(room);
-
-        return endSeat(seatRepository.findIsUsedBySeatId(cancleSeatDTO.getSeatId()), cancleSeatDTO.getSeatId(), cancleSeatDTO.getSchoolId());
+        return endSeat(seat, user);
     }
 
-    private Seat endSeat(Boolean isUsed, Integer seatId, Integer schoolId) {
+    private Seat endSeat(Seat seat, User user) {
 
-        isUsing(!isUsed);
-        isEquals(schoolId, seatId);
-
-        Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
+        user.endSeat();
 
         seat.endSeatUpdate();
         seatRepository.save(seat);
 
         return seat;
-    }
-
-    private void isUsing(Boolean isUsed) {
-
-        if (isUsed) {
-            throw new IllegalArgumentException(Message.NON_EXISTENT_USER.getMessage());
-        }
     }
 
     private void isEquals(Integer schoolId, Integer seatId) {
@@ -128,10 +123,10 @@ public class SeatService {
         isNotUse(seatRepository.findIsUsedBySeatId(changeSeatDTO.getSeatId()));
         isSeatDifferent(changeSeatDTO.getSeatId(), changeSeatDTO.getSchoolId());
 
-        Boolean existingSeatIsUsed = seatRepository.findIsUsedBySeatId(seatRepository.findSeatIdByUserSchoolId(changeSeatDTO.getSchoolId()));
-        Integer existingSeatId = seatRepository.findSeatIdByUserSchoolId(changeSeatDTO.getSchoolId());
+        Seat seat = seatRepository.findBySeatId(seatRepository.findSeatIdByUserSchoolId(changeSeatDTO.getSchoolId()));
+        User user = userRepository.findBySchoolId(changeSeatDTO.getSchoolId());
 
-        endSeat(existingSeatIsUsed, existingSeatId, changeSeatDTO.getSchoolId());
+        endSeat(seat, user);
 
         Seat newSeat = useSeat(changeSeatDTO.getSeatId(), changeSeatDTO.getSchoolId());
 
@@ -146,7 +141,6 @@ public class SeatService {
     }
 
     public Seat extendSeat(ExtendSeatDTO extendSeatDTO) {
-        isUsing(!seatRepository.findIsUsedBySeatId(extendSeatDTO.getSeatId()));
         isEquals(extendSeatDTO.getSchoolId(), extendSeatDTO.getSeatId());
 
         Seat seat = seatRepository.findById(extendSeatDTO.getSeatId()).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
@@ -157,21 +151,21 @@ public class SeatService {
         return seat;
     }
 
-    public void endExpiredSeats(){
+    public void endExpiredSeats() {
         List<Integer> expiredSeatList = seatRepository.findExpiredSeats();
 
-        for(Integer seatId : expiredSeatList){
-            Boolean isUsed = seatRepository.findIsUsedBySeatId(seatId);
-            Integer schoolId = seatRepository.findSchoolIdBySeatId(seatId);
+        for (Integer seatId : expiredSeatList) {
 
-            endSeat(isUsed, seatId, schoolId);
+            User user = userRepository.findBySchoolId(seatRepository.findSchoolIdBySeatId(seatId));
+            Seat seat = seatRepository.findById(seatId).get();
+            endSeat(seat, user);
         }
     }
 
     public void updateRoom() {
         List<Integer> roomList = seatRepository.findAllRoomId();
 
-        for(Integer roomNumber : roomList){
+        for (Integer roomNumber : roomList) {
             Room room = roomRepository.findByRoomId(roomNumber);
 
             room.usedSeats(seatRepository.countByRoom_RoomIdAndIsUsed(roomNumber, true)); // 어떤 방의 사용중인 좌석
