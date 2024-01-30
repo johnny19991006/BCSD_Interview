@@ -4,7 +4,7 @@ import HSAnimal.demo.configuration.TokenProvider;
 import HSAnimal.demo.domain.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
+import HSAnimal.demo.repository.UserRepository;
 import java.time.Duration;
 
 @RequiredArgsConstructor
@@ -21,7 +21,7 @@ public class TokenService {
             throw new IllegalArgumentException("Unexpected token");
         }
 
-        Long userId = refreshTokenService.findByRefreshToken(refreshToken).getUserId();
+        String userId = refreshTokenService.findByRefreshToken(refreshToken).getUserId();
         User user = userService.findById(userId);
 
         return tokenProvider.generateToken(user, Duration.ofHours(2));

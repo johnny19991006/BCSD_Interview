@@ -58,8 +58,8 @@ public class UserService {
         return false;
     }
 
-    public User findById(Long userId){
-        return userRepository.findById(userId)
+    public User findById(String userId){
+        return userRepository.findByUserId(userId)
                 .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
     }
 }

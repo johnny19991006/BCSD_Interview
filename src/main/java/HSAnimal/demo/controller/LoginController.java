@@ -1,6 +1,5 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.UserDTO;
 import HSAnimal.demo.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,12 +19,6 @@ public class LoginController {
 
     public LoginController(UserService userService){
         this.userService = userService;
-    }
-
-    @PostMapping("/signup")
-    public String signup(UserDTO dto) {
-        userService.save(dto);
-        return "redirect:/login";
     }
 
     @PostMapping("/login/proc")
