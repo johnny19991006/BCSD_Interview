@@ -31,7 +31,7 @@ public class SeatService {
     public Seat insertSeat(InsertSeatDTO insertSeatDTO) {
 
         return seatRepository.save(Seat.builder()
-                .seatNum(insertSeatDTO.getSeatId())
+                .seatNum(insertSeatDTO.getSeatNum())
                 .room(Room.builder().roomId(insertSeatDTO.getRoomId()).build())
                 .build());
     }
@@ -51,12 +51,12 @@ public class SeatService {
         seatRepository.delete(Seat.builder().seatId(seatId).build());
     }
 
-    public Seat choiceSeat(ChoiceSeatDTO choiceSeatDTO) {
+    public Seat choiceSeat(UpdateSeatDTO updateSeatDTO) {
 
-        isUserUsing(choiceSeatDTO.getSchoolId());
-        isNotUse(seatRepository.findIsUsedBySeatId(choiceSeatDTO.getSeatId()));
+        isUserUsing(updateSeatDTO.getSchoolId());
+        isNotUse(seatRepository.findIsUsedBySeatId(updateSeatDTO.getSeatId()));
 
-        return useSeat(choiceSeatDTO.getSeatId(), choiceSeatDTO.getSchoolId());
+        return useSeat(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
     }
 
     private void isUserUsing(Integer schoolId) {
@@ -93,10 +93,10 @@ public class SeatService {
         return seat;
     }
 
-    public Seat cancelSeat(CancelSeatDTO cancelSeatDTO) {
+    public Seat cancelSeat(UpdateSeatDTO updateSeatDTO) {
 
-        Seat seat = seatRepository.findById(cancelSeatDTO.getSeatId()).get();
-        User user = userRepository.findBySchoolId(cancelSeatDTO.getSchoolId());
+        Seat seat = seatRepository.findById(updateSeatDTO.getSeatId()).get();
+        User user = userRepository.findBySchoolId(updateSeatDTO.getSchoolId());
 
         return endSeat(seat, user);
     }
@@ -118,17 +118,17 @@ public class SeatService {
         }
     }
 
-    public Seat changeSeat(ChangeSeatDTO changeSeatDTO) {
+    public Seat changeSeat(UpdateSeatDTO updateSeatDTO) {
 
-        isNotUse(seatRepository.findIsUsedBySeatId(changeSeatDTO.getSeatId()));
-        isSeatDifferent(changeSeatDTO.getSeatId(), changeSeatDTO.getSchoolId());
+        isNotUse(seatRepository.findIsUsedBySeatId(updateSeatDTO.getSeatId()));
+        isSeatDifferent(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
 
-        Seat seat = seatRepository.findBySeatId(seatRepository.findSeatIdByUserSchoolId(changeSeatDTO.getSchoolId()));
-        User user = userRepository.findBySchoolId(changeSeatDTO.getSchoolId());
+        Seat seat = seatRepository.findBySeatId(seatRepository.findSeatIdByUserSchoolId(updateSeatDTO.getSchoolId()));
+        User user = userRepository.findBySchoolId(updateSeatDTO.getSchoolId());
 
         endSeat(seat, user);
 
-        Seat newSeat = useSeat(changeSeatDTO.getSeatId(), changeSeatDTO.getSchoolId());
+        Seat newSeat = useSeat(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
 
         return newSeat;
     }
@@ -140,10 +140,10 @@ public class SeatService {
         }
     }
 
-    public Seat extendSeat(ExtendSeatDTO extendSeatDTO) {
-        isEquals(extendSeatDTO.getSchoolId(), extendSeatDTO.getSeatId());
+    public Seat extendSeat(UpdateSeatDTO updateSeatDTO) {
+        isEquals(updateSeatDTO.getSchoolId(), updateSeatDTO.getSeatId());
 
-        Seat seat = seatRepository.findById(extendSeatDTO.getSeatId()).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
+        Seat seat = seatRepository.findById(updateSeatDTO.getSeatId()).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
 
         seat.extendSeat();
         seatRepository.save(seat);
