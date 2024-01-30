@@ -2,7 +2,12 @@ package AcademicManagement.BCSDproject.Service;
 
 import AcademicManagement.BCSDproject.Domain.Semester;
 import AcademicManagement.BCSDproject.Domain.Subject;
+import AcademicManagement.BCSDproject.Domain.SubjectScore;
+import AcademicManagement.BCSDproject.Enum.SemesterEnum;
+import AcademicManagement.BCSDproject.Enum.SemesterGradeEnum;
 import AcademicManagement.BCSDproject.Repository.SemesterRepository;
+import AcademicManagement.BCSDproject.Repository.SubjectRepository;
+import AcademicManagement.BCSDproject.Repository.SubjectScoreRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,6 +22,8 @@ import java.util.NoSuchElementException;
 @RequiredArgsConstructor
 public class SemesterService {
     private final SemesterRepository semesterRepository;
+    private final SubjectScoreRepository subjectScoreRepository;
+    private final SubjectRepository subjectRepository;
 
     public Semester createSemester(Semester semester)
     {
@@ -59,5 +66,26 @@ public class SemesterService {
     public List<Semester> studentSemester(String studentId)
     {
         return semesterRepository.findByStudentId(studentId);
+    }
+
+    public void updateSemesterCredit(String studentId, SemesterGradeEnum semesterGradeEnum,
+                                     SemesterEnum semesterEnum)
+    {
+        List<SubjectScore> subjectScores = subjectScoreRepository.findByStudentIdAndSemesterGradeEnumAndSemesterEnum
+                (studentId, semesterGradeEnum, semesterEnum);
+        // 학생의 이름, 학년, 학기를 이용하여 SubjectScore 리스트 생성
+
+        int totalCredit = subjectScores.stream()
+                .mapToInt(subjectScore -> subjectRepository.findBySubjectName(subjectScore.getSubjectName()).get().getCredit())
+                .sum();
+        // 스트림을 이용하여 리스트의 값에 있는 크레딧 값을 가져오고, 이를 합하도록 함(이때 subjectRepository의 크레딧을 가져옴)
+
+        Semester semesterEntity = semesterRepository.findByStudentIdAndSemesterGradeEnumAndSemesterEnum
+                (studentId, semesterGradeEnum, semesterEnum);
+        // 이를 새로운 학기를 생성하여 Set을 이용해, 총 학점을 넣도록 하였음.
+
+        semesterEntity.setSemesterCredit(totalCredit);
+
+        semesterRepository.save(semesterEntity);
     }
 }
