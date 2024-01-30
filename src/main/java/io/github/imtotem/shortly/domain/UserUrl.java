@@ -3,6 +3,8 @@ package io.github.imtotem.shortly.domain;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "user_url")
@@ -20,6 +22,7 @@ public class UserUrl extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @ManyToOne
     @JoinColumn(name = "url_id", nullable = false)
     private Url url;
