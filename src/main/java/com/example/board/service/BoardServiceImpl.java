@@ -1,29 +1,65 @@
 package com.example.board.service;
 
 import com.example.board.domain.*;
-import com.example.board.repository.BoardRepository;
-import com.example.board.repository.CategoryRepository;
+import com.example.board.dto.BoardDTO;
+import com.example.board.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class BoardServiceImpl implements BoardService {
     private final BoardRepository boardRepository;
     private final CategoryRepository categoryRepository;
+    private final HashtagRepository hashtagRepository;
+    private final UserRepository userRepository;
+    private final BoardHasHashtagRepository boardHasHashtagRepository;
 
     @Autowired
-    public BoardServiceImpl(BoardRepository boardRepository, CategoryRepository categoryRepository) {
+    public BoardServiceImpl(BoardRepository boardRepository, CategoryRepository categoryRepository, HashtagRepository hashtagRepository, UserRepository userRepository, BoardHasHashtagRepository boardHasHashtagRepository) {
         this.boardRepository = boardRepository;
         this.categoryRepository = categoryRepository;
+        this.hashtagRepository = hashtagRepository;
+        this.userRepository = userRepository;
+        this.boardHasHashtagRepository = boardHasHashtagRepository;
     }
     @Override
-    public Board insertBoard(Board board) throws SQLException { // 게시글 추가
-        return this.boardRepository.save(board);
+    @Transactional
+    public Board insertBoard(BoardDTO boardDTO) throws SQLException {
+        User user = userRepository.findById(boardDTO.getUserId()).orElse(null);
+        Category category = categoryRepository.findById(boardDTO.getCategoryId()).orElse(null);
+
+        Board board = new Board();
+        board.setUser(user);
+        board.setCategory(category);
+        board.setBoardTitle(boardDTO.getBoardTitle());
+        board.setBoardPrice(boardDTO.getBoardPrice());
+        board.setBoardContent(boardDTO.getBoardContent());
+        board.setBoardstatus(boardDTO.getBoardStatus());
+
+        List<Integer> hashtagIds = boardDTO.getHashtagIds();
+
+        List<BoardHasHashtag> boardHasHashtags = new ArrayList<>();
+
+        for (Integer hashtagId : hashtagIds) {
+            Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
+            BoardHasHashtag boardHasHashtag = new BoardHasHashtag();
+            boardHasHashtag.setBoard(board);
+            boardHasHashtag.setHashtag(hashtag);
+            boardHasHashtags.add(boardHasHashtag);
+        }
+        board.setBoardHashtags(boardHasHashtags);
+
+        boardRepository.save(board);  // Board 저장
+        boardHasHashtagRepository.saveAll(boardHasHashtags);
+
+        return board;
     }
     @Override
     public List<Board> getAllBoards() throws SQLException {
@@ -126,5 +162,28 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public List<Board> getBoardByCategoryId(int categoryId) throws SQLException {
         return boardRepository.findByCategoryCategoryId(categoryId);
+    }
+    @Override
+    public void addHashtagToBoard(int boardId, int hashtagId) throws SQLException {
+        Board board = boardRepository.findById(boardId).orElse(null);
+        Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
+
+        if(board != null && hashtag != null) {
+            BoardHasHashtag boardHasHashtag = new BoardHasHashtag();
+            boardHasHashtag.setBoard(board);
+            boardHasHashtag.setHashtag(hashtag);
+
+            boardHasHashtagRepository.save(boardHasHashtag);
+        }
+    }
+    @Override
+    @Transactional
+    public void removeHashtagFromBoard(int boardId, int hashtagId) throws SQLException {
+        Board board = boardRepository.findById(boardId).orElse(null);
+        Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
+
+        if (board != null && hashtag != null) {
+            boardHasHashtagRepository.deleteByBoardAndHashtag(board, hashtag);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.domain.Board;
+import com.example.board.dto.BoardDTO;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -17,8 +18,8 @@ public class BoardController {
         this.boardService = boardService;
     }
     @PostMapping
-    public Board insertBoard(@RequestBody Board board) throws SQLException {
-        return boardService.insertBoard(board);
+    public Board insertBoard(@RequestBody BoardDTO boardDTO) throws SQLException {
+        return boardService.insertBoard(boardDTO);
     }
     @GetMapping
     public List<Board> getAllBoards() throws SQLException {
@@ -76,5 +77,14 @@ public class BoardController {
     @DeleteMapping("/{boardId}")
     public void deleteBoard(@PathVariable Integer boardId) throws SQLException {
         boardService.deleteBoard(boardId);
+    }
+    @PostMapping("/{boardId}/hashtag/{hashtagId}")
+    public void addHashtagToBoard(@PathVariable int boardId, @PathVariable int hashtagId) throws SQLException {
+        boardService.addHashtagToBoard(boardId, hashtagId);
+    }
+
+    @DeleteMapping("/{boardId}/hashtag/{hashtagId}")
+    public void removeHashtagFromBoard(@PathVariable int boardId, @PathVariable int hashtagId) throws SQLException {
+        boardService.removeHashtagFromBoard(boardId, hashtagId);
     }
 }
