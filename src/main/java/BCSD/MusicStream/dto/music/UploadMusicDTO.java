@@ -11,6 +11,7 @@ import java.sql.Time;
 public class UploadMusicDTO {
     private String name;
     private Integer categoryId;
+    private Integer weatherId;
     private String singerName;
     private String lyrics;
     private Time duration;

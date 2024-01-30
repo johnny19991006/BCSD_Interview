@@ -2,12 +2,14 @@ package BCSD.MusicStream.dto.music;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Time;
 
 @Getter
 @Builder
+@ToString
 public class RequestMusicDTO {
     private Integer id;
     private String name;

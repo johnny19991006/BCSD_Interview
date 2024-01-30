@@ -11,6 +11,7 @@ import java.sql.Time;
 public class ModifyMusicDTO {
     private Integer id;
     private Integer categoryId;
+    private Integer weatherId;
     private String name;
     private String singerName;
     private String lyrics;

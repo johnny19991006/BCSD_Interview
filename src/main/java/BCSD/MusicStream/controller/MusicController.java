@@ -4,6 +4,7 @@ import BCSD.MusicStream.api.GeoReader;
 import BCSD.MusicStream.api.OpenWeather;
 import BCSD.MusicStream.api.WeatherAPI;
 import BCSD.MusicStream.dto.lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.RequestMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
 import BCSD.MusicStream.security.JwtTokenProvider;
@@ -14,6 +15,9 @@ import com.maxmind.geoip2.record.Location;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,22 +34,29 @@ public class MusicController {
     private final MusicService musicService;
     private final GeoService geoService;
     private final WeatherAPI weatherAPI;
-    private final GeoReader geoReader;
-//    private final PlaylistService playlistService;
+    @GetMapping
+    public ResponseEntity<List<RequestMusicDTO>> getAllMusic(HttpServletRequest request, @PageableDefault Pageable pageable) {
+        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
+        Integer memberId = (Integer) cLaims.get("memberId");
+        return ResponseEntity.ok(musicService.getAllMusic(memberId.longValue(), pageable));
+    }
     @GetMapping("/{targetText}")
     public ResponseEntity<List<RequestMusicDTO>> getMusicByMusicName(@PathVariable String targetText) throws MalformedURLException {
         return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText));
     }
+
     @GetMapping("/music-weather")
-    public ResponseEntity<?> getMusicByWeather(HttpServletRequest request) throws IOException {
+    public ResponseEntity<List<RequestMusicDTO>> getMusicByWeather(HttpServletRequest request, @PageableDefault Pageable pageable) throws IOException {
        try {
            CityResponse cityResponse = geoService.findCity(geoService.getIpAddress());
            Location location = cityResponse.getLocation();
            OpenWeather weather = weatherAPI.getWeather(location.getLatitude().toString(), location.getLongitude().toString());
-
-           return ResponseEntity.ok(weather.getWeather().get(0).getMain());
+           String weatherName = weather.getWeather().get(0).getMain();
+           Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
+           Integer memberId = (Integer) cLaims.get("memberId");
+           return ResponseEntity.ok(musicService.getAllMusicByWeather(memberId.longValue(), weatherName, pageable));
        }catch(Exception e1) {
-           return ResponseEntity.ok("failed");
+           return ResponseEntity.ok(null);
        }
     }
     @GetMapping("/playMusic/{musicId}")
@@ -66,23 +77,16 @@ public class MusicController {
             throw new RuntimeException(e);
         }
     }
-//    @PutMapping
-//    public ResponseEntity<?> modefiedMusic(@ModelAttribute ModefiedMusicDTO modefiedMusicDTO) {
-//        try {
-//            if(!modefiedMusicDTO.getMusicFile().isEmpty()) {
-//                musicService.deleteMusicMP3(modefiedMusicDTO.getMusicId());
-//                musicService.uploadMusicMP3(modefiedMusicDTO.getMusicId(), modefiedMusicDTO.getMusicFile());
-//            }
-//            if(!modefiedMusicDTO.getMusicIcon().isEmpty()) {
-//                musicService.deleteMusicIcon(modefiedMusicDTO.getMusicId());
-//                musicService.uploadMusicIcon(modefiedMusicDTO.getMusicId(), modefiedMusicDTO.getMusicIcon());
-//            }
-//            musicService.modefiedMusic(modefiedMusicDTO);
-//            return ResponseEntity.ok("Music modefied and metadata saved successfully");
-//        } catch (IOException e) {
-//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-//        }
-//    }
+    @PutMapping
+    public ResponseEntity modefiedMusic(@ModelAttribute ModifyMusicDTO modifyMusicDTO) {
+        try {
+            return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO));
+        } catch (UnsupportedAudioFileException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
+    }
     @DeleteMapping("/{musicId}")
     public ResponseEntity<?> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) {
         Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));

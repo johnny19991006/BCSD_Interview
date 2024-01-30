@@ -9,6 +9,8 @@ import BCSD.MusicStream.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -32,6 +34,7 @@ public class MusicServiceImpl implements MusicService{
     private final LyricsRepository lyricsRepository;
     private final CategoryRepository categoryRepository;
     private final MemberRepository userRepository;
+    private final WeatherRepository weatherRepository;
 
     private static final String MUSIC_SOUND_DIR = "src/main/resources/static/musicSound/";
     private static final String MUSIC_IMAGE_DIR = "src/main/resources/static/musicImage/";
@@ -66,7 +69,7 @@ public class MusicServiceImpl implements MusicService{
     public Integer addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId) throws IOException, UnsupportedAudioFileException {
         Category category = categoryRepository.findById(uploadMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 카테고리를 찾지 못했습니다."));
         Member member = userRepository.findById(memberId.longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 유저를 찾지 못했습니다."));
-
+        Weather weather = weatherRepository.findById(uploadMusicDTO.getWeatherId().longValue()).orElseThrow(() -> new EntityNotFoundException("Weather not found"));
         Music music  = Music.builder()
                 .name(uploadMusicDTO.getName())
                 .singerName(uploadMusicDTO.getSingerName())
@@ -75,6 +78,7 @@ public class MusicServiceImpl implements MusicService{
                 .duration(uploadMusicDTO.getDuration())
                 .imageFileName("")
                 .soundFileName("")
+                .weather(weather)
                 .build();
         Integer musicId = musicRepository.save(music).getId();
         String soundFileName = uploadMusicDTO.getSoundFile().getOriginalFilename();
@@ -94,18 +98,39 @@ public class MusicServiceImpl implements MusicService{
     }
 
     @Override
-    public void modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
-        Category category = categoryRepository.findById(modifyMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 카테고리를 찾지 못했습니다."));
-        Music music  = Music.builder()
-                .name(modifyMusicDTO.getName())
-                .singerName(modifyMusicDTO.getSingerName())
-                .category(category)
-                .build();
-        Integer musicId = musicRepository.save(music).getId();
+    public ModifyMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
+        Music music = musicRepository.findById(modifyMusicDTO.getId().longValue()).orElseThrow(() -> new EntityNotFoundException("Music not found"));
+        Lyrics lyrics = lyricsRepository.findById(modifyMusicDTO.getId().longValue()).orElseThrow(() -> new EntityNotFoundException("Lyrics not found"));
+        Category category = categoryRepository.findById(modifyMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new  EntityNotFoundException("category not found"));
+        Weather weather = weatherRepository.findById(modifyMusicDTO.getWeatherId().longValue()).orElseThrow(() -> new EntityNotFoundException("Weather not found"));
+        if (modifyMusicDTO.getSoundFile().isEmpty()) new EntityNotFoundException("Sound file is empty");
+        if (modifyMusicDTO.getImageFile().isEmpty()) new EntityNotFoundException("Image file is empty");
+        if (modifyMusicDTO.getName().isBlank()) new EntityNotFoundException("Name is blank");
+        if (modifyMusicDTO.getLyrics().isBlank()) new EntityNotFoundException("Lyrics is blank");
+        if (modifyMusicDTO.getSingerName().isBlank()) new EntityNotFoundException("Signer name is blank");
         String soundFileName = modifyMusicDTO.getSoundFile().getName();
         String imageFileName = modifyMusicDTO.getImageFile().getName();
-        music.setImageFileName(musicId + imageFileName.substring(imageFileName.indexOf('.'), imageFileName.length()));
-        music.setSoundFileName(musicId + soundFileName.substring(soundFileName.indexOf('.'), soundFileName.length()));
+        soundFileName = modifyMusicDTO.getId() + soundFileName.substring(soundFileName.indexOf('.'), soundFileName.length());
+        imageFileName = modifyMusicDTO.getId() + imageFileName.substring(imageFileName.indexOf('.'), imageFileName.length());
+        music.setName(modifyMusicDTO.getName());
+        music.setCategory(category);
+        music.setSingerName(modifyMusicDTO.getSingerName());
+        music.setWeather(weather);
+
+        File soundFile = new File(MUSIC_SOUND_DIR + music.getSoundFileName());
+        File imageFile = new File(MUSIC_IMAGE_DIR + music.getImageFileName());
+        soundFile.delete();
+        imageFile.delete();
+
+        music.setSoundFileName(soundFileName);
+        music.setImageFileName(imageFileName);
+
+        Path soundFilePath = Paths.get(MUSIC_SOUND_DIR + soundFileName);
+        Path imageFilePath = Paths.get(MUSIC_IMAGE_DIR + imageFileName);
+        Files.copy(modifyMusicDTO.getSoundFile().getInputStream(), soundFilePath, StandardCopyOption.REPLACE_EXISTING);
+        Files.copy(modifyMusicDTO.getImageFile().getInputStream(), imageFilePath, StandardCopyOption.REPLACE_EXISTING);
+
+        return modifyMusicDTO;
     }
 
     @Override
@@ -119,21 +144,41 @@ public class MusicServiceImpl implements MusicService{
         imageFile.delete();
     }
 
-    private static final String WEATHER_API_KEY = "your_weather_api_key";
-    private static final String GEOIP_API_KEY = "your_geoip_api_key";
-    private static final String WEATHER_URL = "http://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={apiKey}";
-    private static final String GEOIP_URL = "http://api.ipgeolocation.io/ipgeo?apiKey={apiKey}&ip={ip}";
+    @Override
+    public List<RequestMusicDTO> getAllMusic(Long memberId, Pageable pageable) {
+        List<Music> musicList = musicRepository.findMusicWithWeight(memberId, pageable);
+        List<RequestMusicDTO> requestMusicDTOList = new ArrayList<>(musicList.size());
+        for(Music music: musicList) {
+            requestMusicDTOList.add(RequestMusicDTO.builder()
+                    .id(music.getId())
+                    .soundFilePath(music.getSoundFileName())
+                    .imageFilePath(music.getImageFileName())
+                    .duration(music.getDuration())
+                    .name(music.getName())
+                    .singerName(music.getSingerName())
+                    .build()
+            );
+        }
+        return requestMusicDTOList;
+    }
 
-    public String getCurrentWeather(String ipAddress) {
-        RestTemplate restTemplate = new RestTemplate();
-
-        ResponseEntity<String> locationResponse = restTemplate.getForEntity(GEOIP_URL, String.class, GEOIP_API_KEY, ipAddress);
-        // 위치 정보 파싱 (실제 구현에서는 JSON 파싱이 필요합니다)
-        String lat = ""; // 위도 추출
-        String lon = ""; // 경도 추출
-
-        // 위치 정보를 사용하여 날씨 정보 가져오기
-        ResponseEntity<String> weatherResponse = restTemplate.getForEntity(WEATHER_URL, String.class, lat, lon, WEATHER_API_KEY);
-        return weatherResponse.getBody();
+    @Override
+    public List<RequestMusicDTO> getAllMusicByWeather(Long memberId, String weather, Pageable pageable) {
+        Integer weatherId = weatherRepository.findWeatherByName(weather).get().getId();
+        List<Music> musicList = musicRepository.findMusicByWeatherWithWeight(memberId, weatherId.longValue(), pageable);
+        List<RequestMusicDTO> requestMusicDTOList = new ArrayList<>(musicList.size());
+        for(Music music: musicList) {
+            requestMusicDTOList.add(RequestMusicDTO.builder()
+                    .id(music.getId())
+                    .soundFilePath(music.getSoundFileName())
+                    .imageFilePath(music.getImageFileName())
+                    .duration(music.getDuration())
+                    .name(music.getName())
+                    .singerName(music.getSingerName())
+                    .build()
+            );
+        }
+        return requestMusicDTOList;
     }
 }
+

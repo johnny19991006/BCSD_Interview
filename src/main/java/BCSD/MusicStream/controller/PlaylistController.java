@@ -26,7 +26,6 @@ public class PlaylistController {
     }
     @PostMapping
     public void createPlaylist(HttpServletRequest request,  @RequestBody AddPlaylistDTO addPlaylistDTO) {
-        System.out.println("ds");
         Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
         Integer memberId = (Integer) cLaims.get("memberId");
         playlistService.addPlaylist(addPlaylistDTO, memberId);
