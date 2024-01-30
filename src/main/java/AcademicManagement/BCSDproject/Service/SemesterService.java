@@ -68,6 +68,7 @@ public class SemesterService {
         return semesterRepository.findByStudentId(studentId);
     }
 
+
     public void updateSemesterCredit(String studentId, SemesterGradeEnum semesterGradeEnum,
                                      SemesterEnum semesterEnum)
     {
@@ -78,6 +79,16 @@ public class SemesterService {
         int totalCredit = subjectScores.stream()
                 .mapToInt(subjectScore -> subjectRepository.findBySubjectName(subjectScore.getSubjectName()).get().getCredit())
                 .sum();
+
+        float scoreSum = 0;
+        float creditSum = 0;
+        for (SubjectScore subjectScore : subjectScores) {
+            scoreSum += subjectScore.getSubject().getCredit() * subjectScore.getSubjectScore();
+            creditSum += subjectScore.getSubject().getCredit();
+        }
+        // 성적 계산
+        float semesterScore = scoreSum / creditSum;
+
         // 스트림을 이용하여 리스트의 값에 있는 크레딧 값을 가져오고, 이를 합하도록 함(이때 subjectRepository의 크레딧을 가져옴)
 
         Semester semesterEntity = semesterRepository.findByStudentIdAndSemesterGradeEnumAndSemesterEnum
@@ -85,6 +96,7 @@ public class SemesterService {
         // 이를 새로운 학기를 생성하여 Set을 이용해, 총 학점을 넣도록 하였음.
 
         semesterEntity.setSemesterCredit(totalCredit);
+        semesterEntity.setSemesterScore(semesterScore);
 
         semesterRepository.save(semesterEntity);
     }
