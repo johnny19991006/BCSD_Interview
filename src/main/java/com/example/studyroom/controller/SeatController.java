@@ -1,5 +1,6 @@
 package com.example.studyroom.controller;
 
+import com.example.studyroom.auth.Authorization;
 import com.example.studyroom.domain.Seat;
 import com.example.studyroom.dto.*;
 import com.example.studyroom.service.SeatService;
@@ -39,28 +40,37 @@ public class SeatController {
         seatService.deleteSeat(seatId);
     }
 
-    @PatchMapping("/")
-    public Seat choiceSeat(@RequestBody UpdateSeatDTO choiceSeatDTO) {
-        return seatService.choiceSeat(choiceSeatDTO);
+    @PatchMapping("/choice")
+    public Seat choiceSeat(
+            @RequestBody UpdateSeatDTO choiceSeatDTO,
+            @Authorization Integer schoolId) {
+        return seatService.choiceSeat(choiceSeatDTO, schoolId);
     }
 
     @PatchMapping("/change")
-    public Seat changeSeat(@RequestBody UpdateSeatDTO changeSeatDTO){
-        return seatService.changeSeat(changeSeatDTO);
+    public Seat changeSeat(
+            @RequestBody UpdateSeatDTO changeSeatDTO,
+            @Authorization Integer schoolId) {
+        return seatService.changeSeat(changeSeatDTO, schoolId);
     }
 
     @PatchMapping("/cancel")
-    public Seat cancelSeat(@RequestBody UpdateSeatDTO cancelSeatDTO) {
-        return seatService.cancelSeat(cancelSeatDTO);
+    public Seat cancelSeat(
+            @RequestBody UpdateSeatDTO cancelSeatDTO,
+            @Authorization Integer schoolId
+    ) {
+        return seatService.cancelSeat(cancelSeatDTO, schoolId);
     }
 
     @PatchMapping("/extend")
-    public Seat extendSeat(@RequestBody UpdateSeatDTO extendSeatDTO){
-        return seatService.extendSeat(extendSeatDTO);
+    public Seat extendSeat(
+            @RequestBody UpdateSeatDTO extendSeatDTO,
+            @Authorization Integer schoolId) {
+        return seatService.extendSeat(extendSeatDTO, schoolId);
     }
 
     @Scheduled(fixedRate = 10000)
-    public void endExpiredSeat(){
+    public void endExpiredSeat() {
         seatService.endExpiredSeats();
         seatService.updateRoom();
     }

@@ -43,7 +43,6 @@ public class Seat {
 
     @OneToOne
     @JoinColumn(name = "school_id")
-    @JsonBackReference
     private User user;
 
     public Seat(Integer seatNum, Room room) {

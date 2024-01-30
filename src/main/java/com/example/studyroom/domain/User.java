@@ -7,7 +7,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
-@Builder
 @Table(name = "users")
 @Getter
 public class User {
@@ -25,28 +24,30 @@ public class User {
     @NotNull
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    /*@OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "school_id")
     @Nullable
     @JsonManagedReference
-    private Seat seat;
+    private Seat seat;*/
 
-    public User(Integer schoolId){
+
+    /*public User(Integer schoolId){
         this.schoolId = schoolId;
-    }
+    }*/
 
-    public User(Integer schoolId, String name, String password, Seat seat){
+    @Builder
+    public User(Integer schoolId, String name, String password){
         this.schoolId = schoolId;
         this.name = name;
         this.password = password;
-        this.seat = seat;
+        //this.seat = seat;
     }
 
-    public void useSeat(Seat seat){
+    /*public void useSeat(Seat seat){
         this.seat = seat;
     }
 
     public void endSeat(){
         this.seat = null;
-    }
+    }*/
 }

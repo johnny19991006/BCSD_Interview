@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -51,10 +52,14 @@ public class SeatService {
         seatRepository.delete(Seat.builder().seatId(seatId).build());
     }
 
-    public Seat choiceSeat(UpdateSeatDTO updateSeatDTO) {
+    public Seat choiceSeat(UpdateSeatDTO updateSeatDTO, Integer schoolId) {
 
         isUserUsing(updateSeatDTO.getSchoolId());
         isNotUse(seatRepository.findIsUsedBySeatId(updateSeatDTO.getSeatId()));
+
+        if(!Objects.equals(updateSeatDTO.getSchoolId(), schoolId)){
+            throw new IllegalArgumentException("다른 사용자입니다!");
+        }
 
         return useSeat(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
     }
@@ -87,23 +92,26 @@ public class SeatService {
         seat.choiceSeatUpdate(seatRepository.findSeatNumBySeatId(seatId), userRepository.findBySchoolId(schoolId), roomRepository.findByRoomId(roomId));
         seatRepository.save(seat);
 
-        user.useSeat(seat);
+        //user.useSeat(seat);
         userRepository.save(user);
 
         return seat;
     }
 
-    public Seat cancelSeat(UpdateSeatDTO updateSeatDTO) {
+    public Seat cancelSeat(UpdateSeatDTO updateSeatDTO, Integer schoolId) {
 
         Seat seat = seatRepository.findById(updateSeatDTO.getSeatId()).get();
-        User user = userRepository.findBySchoolId(updateSeatDTO.getSchoolId());
 
-        return endSeat(seat, user);
+        if(!Objects.equals(seat.getUser().getSchoolId(), schoolId)){
+            throw new IllegalArgumentException("다른 사용자입니다!");
+        }
+
+        //User user = userRepository.findBySchoolId(schoolId);
+
+        return endSeat(seat);
     }
 
-    private Seat endSeat(Seat seat, User user) {
-
-        user.endSeat();
+    private Seat endSeat(Seat seat) {
 
         seat.endSeatUpdate();
         seatRepository.save(seat);
@@ -118,15 +126,19 @@ public class SeatService {
         }
     }
 
-    public Seat changeSeat(UpdateSeatDTO updateSeatDTO) {
+    public Seat changeSeat(UpdateSeatDTO updateSeatDTO, Integer schoolId) {
 
         isNotUse(seatRepository.findIsUsedBySeatId(updateSeatDTO.getSeatId()));
         isSeatDifferent(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
 
         Seat seat = seatRepository.findBySeatId(seatRepository.findSeatIdByUserSchoolId(updateSeatDTO.getSchoolId()));
-        User user = userRepository.findBySchoolId(updateSeatDTO.getSchoolId());
 
-        endSeat(seat, user);
+        if(!Objects.equals(seat.getUser().getSchoolId(), schoolId)){
+            throw new IllegalArgumentException("다른 사용자입니다!");
+        }
+        //User user = userRepository.findBySchoolId(updateSeatDTO.getSchoolId());
+
+        endSeat(seat);
 
         Seat newSeat = useSeat(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
 
@@ -140,10 +152,14 @@ public class SeatService {
         }
     }
 
-    public Seat extendSeat(UpdateSeatDTO updateSeatDTO) {
+    public Seat extendSeat(UpdateSeatDTO updateSeatDTO, Integer schoolId) {
         isEquals(updateSeatDTO.getSchoolId(), updateSeatDTO.getSeatId());
 
         Seat seat = seatRepository.findById(updateSeatDTO.getSeatId()).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
+
+        if(!Objects.equals(seat.getUser().getSchoolId(), schoolId)){
+            throw new IllegalArgumentException("다른 사용자입니다!");
+        }
 
         seat.extendSeat();
         seatRepository.save(seat);
@@ -156,9 +172,10 @@ public class SeatService {
 
         for (Integer seatId : expiredSeatList) {
 
-            User user = userRepository.findBySchoolId(seatRepository.findSchoolIdBySeatId(seatId));
+            //User user = userRepository.findBySchoolId(seatRepository.findSchoolIdBySeatId(seatId));
             Seat seat = seatRepository.findById(seatId).get();
-            endSeat(seat, user);
+
+            endSeat(seat);
         }
     }
 

@@ -1,9 +1,9 @@
 package com.example.studyroom.controller;
 
 import com.example.studyroom.domain.User;
+import com.example.studyroom.dto.LoginDTO;
 import com.example.studyroom.dto.UserDTO;
 import com.example.studyroom.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,12 +11,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    @Autowired
-    UserService userService;
+    private final UserService userService;
 
-    @PostMapping("")
-    public User insertUser(@RequestBody UserDTO user) {
-        return userService.insertUser(user);
+    public UserController(UserService userService) {
+        this.userService = userService;
+    }
+
+    @PostMapping("/register")
+    public User registerUser(@RequestBody UserDTO userDTO) {
+        return userService.registerUser(userDTO);
     }
 
     @GetMapping("")
@@ -32,5 +35,10 @@ public class UserController {
     @DeleteMapping("/{schoolId}")
     public void deleteUser(@PathVariable int schoolId) {
         userService.deleteUser(schoolId);
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginDTO loginDTO){
+        return userService.loginUser(loginDTO);
     }
 }
