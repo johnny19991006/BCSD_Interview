@@ -34,4 +34,6 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
     @Query("SELECT DISTINCT s.room.roomId FROM Seat s")
     List<Integer> findAllRoomId();
+
+    Seat findBySeatId(@Param("seatId") Integer seatId);
 }

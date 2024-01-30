@@ -1,5 +1,6 @@
 package com.example.studyroom.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -11,7 +12,6 @@ import lombok.*;
 @Getter
 public class User {
     public User() {}
-
 
     @Id
     @Column(name = "school_id")
@@ -28,6 +28,7 @@ public class User {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "school_id")
     @Nullable
+    @JsonManagedReference
     private Seat seat;
 
     public User(Integer schoolId){
@@ -39,5 +40,13 @@ public class User {
         this.name = name;
         this.password = password;
         this.seat = seat;
+    }
+
+    public void useSeat(Seat seat){
+        this.seat = seat;
+    }
+
+    public void endSeat(){
+        this.seat = null;
     }
 }

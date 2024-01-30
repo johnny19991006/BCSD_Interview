@@ -40,22 +40,22 @@ public class SeatController {
     }
 
     @PatchMapping("/")
-    public Seat choiceSeat(@RequestBody ChoiceSeatDTO choiceSeatDTO) {
+    public Seat choiceSeat(@RequestBody UpdateSeatDTO choiceSeatDTO) {
         return seatService.choiceSeat(choiceSeatDTO);
     }
 
     @PatchMapping("/change")
-    public Seat changeSeat(@RequestBody ChangeSeatDTO changeSeatDTO){
+    public Seat changeSeat(@RequestBody UpdateSeatDTO changeSeatDTO){
         return seatService.changeSeat(changeSeatDTO);
     }
 
-    @PatchMapping("/cancle")
-    public Seat cancleSeat(@RequestBody CancleSeatDTO cancleSeatDTO) {
-        return seatService.cancleSeat(cancleSeatDTO);
+    @PatchMapping("/cancel")
+    public Seat cancelSeat(@RequestBody UpdateSeatDTO cancelSeatDTO) {
+        return seatService.cancelSeat(cancelSeatDTO);
     }
 
     @PatchMapping("/extend")
-    public Seat extendSeat(@RequestBody ExtendSeatDTO extendSeatDTO){
+    public Seat extendSeat(@RequestBody UpdateSeatDTO extendSeatDTO){
         return seatService.extendSeat(extendSeatDTO);
     }
 

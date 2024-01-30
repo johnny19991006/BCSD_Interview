@@ -1,5 +1,6 @@
 package com.example.studyroom.domain;
 
+import com.example.studyroom.Message;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -42,6 +43,7 @@ public class Seat {
 
     @OneToOne
     @JoinColumn(name = "school_id")
+    @JsonBackReference
     private User user;
 
     public Seat(Integer seatNum, Room room) {
@@ -65,6 +67,9 @@ public class Seat {
     }
 
     public void endSeatUpdate() {
+        if (!isUsed) {
+            throw new IllegalArgumentException(Message.NON_EXISTENT_USER.getMessage());
+        }
 
         this.user = null;
         this.startTime = null;
