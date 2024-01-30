@@ -1,10 +1,12 @@
 package com.example.board.controller;
 
+import com.example.board.domain.User;
 import com.example.board.domain.Usertype;
 import com.example.board.service.UsertypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.OneToMany;
 import java.sql.SQLException;
 import java.util.List;
 

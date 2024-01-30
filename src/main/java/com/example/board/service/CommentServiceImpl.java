@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 @Service
 public class CommentServiceImpl implements CommentService {
@@ -29,5 +30,9 @@ public class CommentServiceImpl implements CommentService {
             commentInf.setCommentContent(newContent);
             commentRepository.save(commentInf);
         }
+    }
+    @Override
+    public List<Comment> getCommentByUserId(int userId) throws SQLException {
+        return commentRepository.findByUserUserId(userId);
     }
 }

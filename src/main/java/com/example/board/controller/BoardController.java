@@ -40,7 +40,14 @@ public class BoardController {
     public List<Board> getBoardsByTitleContaining(@RequestParam String title) throws SQLException{
         return boardService.getBoardsByTitleContaining(title);
     }
-
+    @GetMapping("/user/{userId}")
+    public List<Board> getBoardByUserId(@PathVariable int userId) throws SQLException {
+        return boardService.getBoardByUserId(userId);
+    }
+    @GetMapping("/category/{categoryId}")
+    public List<Board> getBoardByCategoryId(@PathVariable int categoryId) throws SQLException {
+        return boardService.getBoardByCategoryId(categoryId);
+    }
     @PutMapping("/{boardId}/title")
     public void updateBoardTitle(@PathVariable Integer boardId, @RequestBody String newTitle) throws SQLException {
         boardService.updateBoardTitle(boardId, newTitle);

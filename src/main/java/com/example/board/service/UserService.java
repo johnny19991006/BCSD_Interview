@@ -15,4 +15,5 @@ public interface UserService {
     public void updateUserNn(Integer userId, String newNn) throws SQLException;
     public void updateUsertype(Integer userId, Integer newTypeNum) throws SQLException;
     public void deleteUser(Integer userId) throws SQLException;
+    public List<User> getUsersByUserType(int userTypeId) throws SQLException;
 }

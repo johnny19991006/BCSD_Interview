@@ -13,4 +13,6 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
     List<Board> findTop5ByOrderByCreatedAtDesc(Pageable pageable);
     List<Board> findTop5ByOrderByBoardViewsDesc(Pageable pageable);
     List<Board> findByBoardTitleContaining(String title);
+    List<Board> findByUserUserId(int userId);
+    List<Board> findByCategoryCategoryId(int categoryId);
 }

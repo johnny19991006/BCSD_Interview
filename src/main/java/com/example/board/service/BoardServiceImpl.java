@@ -72,6 +72,10 @@ public class BoardServiceImpl implements BoardService {
         }
         return boards;
     }
+    @Override
+    public List<Board> getBoardByUserId(int userId) throws SQLException {
+        return boardRepository.findByUserUserId(userId);
+    }
 
     @Override
     public void updateBoardTitle(Integer boardId, String newTitle) throws SQLException{
@@ -118,5 +122,9 @@ public class BoardServiceImpl implements BoardService {
     @Override
     public void deleteBoard(Integer boardId) throws SQLException { // 게시글 삭제
         boardRepository.deleteById(boardId);
+    }
+    @Override
+    public List<Board> getBoardByCategoryId(int categoryId) throws SQLException {
+        return boardRepository.findByCategoryCategoryId(categoryId);
     }
 }

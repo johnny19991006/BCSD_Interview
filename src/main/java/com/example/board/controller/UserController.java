@@ -49,4 +49,8 @@ public class UserController {
     public void deleteUser(@PathVariable Integer userId) throws SQLException {
         userService.deleteUser(userId);
     }
+    @GetMapping("/usertype/{userTypeId}")
+    public List<User> getUsersByUserType(@PathVariable int userTypeId) throws SQLException {
+        return userService.getUsersByUserType(userTypeId);
+    }
 }

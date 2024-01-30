@@ -1,6 +1,7 @@
 package com.example.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,7 +63,7 @@ public class Board {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @JsonIgnore
     @OneToMany(mappedBy = "board")
+    @JsonManagedReference
     private List<Comment> comments;
 }

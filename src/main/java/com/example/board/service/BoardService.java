@@ -12,6 +12,8 @@ public interface BoardService {
     public List<Board> getLatestBoards() throws SQLException;
     public List<Board> getPopularBoards() throws SQLException;
     public List<Board> getBoardsByTitleContaining(String title) throws SQLException;
+    public List<Board> getBoardByUserId(int userId) throws SQLException;
+    public List<Board> getBoardByCategoryId(int categoryId) throws SQLException;
     public void updateBoardTitle(Integer boardId, String newTitle) throws SQLException;
     public void updateBoardPrice(Integer boardId, String newPrice) throws SQLException;
     public void updateBoardContent(Integer boardId, String newContent) throws SQLException;

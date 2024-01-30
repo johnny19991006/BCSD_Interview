@@ -77,4 +77,9 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Integer userId) throws SQLException { // 회원삭제
         userRepository.deleteById(userId);
     }
+
+    @Override
+    public List<User> getUsersByUserType(int userTypeId) throws SQLException {
+        return userRepository.findByUserTypeUserTypeId(userTypeId);
+    }
 }
