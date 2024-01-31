@@ -3,6 +3,7 @@ package AcademicManagement.BCSDproject.Service;
 import AcademicManagement.BCSDproject.Domain.Semester;
 import AcademicManagement.BCSDproject.Domain.Subject;
 import AcademicManagement.BCSDproject.Domain.SubjectScore;
+import AcademicManagement.BCSDproject.Enum.CategoryEnum;
 import AcademicManagement.BCSDproject.Enum.SemesterEnum;
 import AcademicManagement.BCSDproject.Enum.SemesterGradeEnum;
 import AcademicManagement.BCSDproject.Repository.SemesterRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 // Semester 내에서 현재 필요한 기능
 // 성적 확인 가능하게 추가,
@@ -80,14 +82,32 @@ public class SemesterService {
                 .mapToInt(subjectScore -> subjectRepository.findBySubjectName(subjectScore.getSubjectName()).get().getCredit())
                 .sum();
 
-        float scoreSum = 0;
-        float creditSum = 0;
+        int totalCreditSum = 0; // 전체 학점
+        float totalScoreSum = 0; // 전체 성적
+        int totalMajorCreditSum = 0; // 전공 학점
+        float totalMajorScoreSum = 0; // 전공 성적
+        int totalGeneralCreditSum = 0; // 교양 학점
+        float totalGeneralScoreSum = 0; // 교양 성적
+
         for (SubjectScore subjectScore : subjectScores) {
-            scoreSum += subjectScore.getSubject().getCredit() * subjectScore.getSubjectScore();
-            creditSum += subjectScore.getSubject().getCredit();
+            totalScoreSum += subjectScore.getSubject().getCredit() * subjectScore.getSubjectScore();
+            totalCreditSum += subjectScore.getSubject().getCredit();
+
+            if(subjectScore.getSubject().getCategoryEnum() == CategoryEnum.MAJOR)
+            {
+                totalMajorCreditSum += subjectScore.getSubject().getCredit();
+                totalMajorScoreSum += subjectScore.getSubjectScore() * subjectScore.getSubject().getCredit();
+            }
+            else
+            {
+                totalGeneralCreditSum += subjectScore.getSubject().getCredit();
+                totalGeneralScoreSum += subjectScore.getSubjectScore() * subjectScore.getSubject().getCredit();
+            }
         }
-        // 성적 계산
-        float semesterScore = scoreSum / creditSum;
+        // 전체 성적 계산
+        float semesterScore = totalScoreSum / totalCreditSum;
+        float semesterMajorScore = totalMajorScoreSum / totalMajorCreditSum;
+        float semesterGeneralScore = totalGeneralScoreSum / totalGeneralCreditSum;
 
         // 스트림을 이용하여 리스트의 값에 있는 크레딧 값을 가져오고, 이를 합하도록 함(이때 subjectRepository의 크레딧을 가져옴)
 
@@ -97,6 +117,10 @@ public class SemesterService {
 
         semesterEntity.setSemesterCredit(totalCredit);
         semesterEntity.setSemesterScore(semesterScore);
+        semesterEntity.setSemesterMajorCredit(totalMajorCreditSum);
+        semesterEntity.setSemesterMajorScore(semesterMajorScore);
+        semesterEntity.setSemesterGeneralCredit(totalGeneralCreditSum);
+        semesterEntity.setSemesterGeneralScore(semesterGeneralScore);
 
         semesterRepository.save(semesterEntity);
     }

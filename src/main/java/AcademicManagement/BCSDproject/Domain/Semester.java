@@ -77,7 +77,8 @@ public class Semester {
     @Builder
     public Semester(int semesterId, String studentId, int semesterYear,
                     SemesterGradeEnum semesterGradeEnum, SemesterEnum semesterEnum,
-                    int semesterCredit, float semesterScore)
+                    int semesterCredit, float semesterScore, int semesterMajorCredit,
+                    float semesterMajorScore, int semesterGeneralCredit, float semesterGeneralScore)
     {
         this.semesterId = semesterId;
         this.studentId = studentId;
@@ -86,6 +87,10 @@ public class Semester {
         this.semesterEnum = semesterEnum;
         this.semesterCredit = semesterCredit;
         this.semesterScore = semesterScore;
+        this.semesterMajorCredit = semesterMajorCredit;
+        this.semesterMajorScore = semesterMajorScore;
+        this.semesterGeneralCredit = semesterGeneralCredit;
+        this.semesterGeneralScore = semesterGeneralScore;
     }
 
     public Semester(Semester semester) {
@@ -96,5 +101,9 @@ public class Semester {
         this.semesterEnum = semester.getSemesterEnum();
         this.semesterCredit = semester.getSemesterCredit();
         this.semesterScore = semester.getSemesterScore();
+        this.semesterMajorCredit = semester.getSemesterMajorCredit();
+        this.semesterMajorScore = semester.getSemesterMajorScore();
+        this.semesterGeneralCredit = semester.getSemesterGeneralCredit();
+        this.semesterGeneralScore = semester.getSemesterGeneralScore();
     }
 }

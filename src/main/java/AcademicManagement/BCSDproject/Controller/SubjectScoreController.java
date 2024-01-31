@@ -21,9 +21,9 @@ public class SubjectScoreController {
     }
 
     @PostMapping("")
-    public SubjectScore createSubjectScore(@RequestBody SubjectScore subjectScore)
+    public SubjectScore createSubjectScore(@RequestBody SubjectScore subjectScore, @RequestBody String subjectId)
     {
-        return service.createSubjectScore(subjectScore);
+        return service.createSubjectScore(subjectScore, subjectId);
     }
 
     @GetMapping("")
