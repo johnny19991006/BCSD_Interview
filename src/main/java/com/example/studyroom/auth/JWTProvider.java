@@ -18,7 +18,7 @@ public class JWTProvider {
     @Value("${jwt.expired_time}")
     private Integer expiredTime;
 
-    public String createToken(Integer schoolId) {    // schoolId로 토큰 생성
+    public String createToken(Integer schoolId) {
 
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
@@ -29,7 +29,7 @@ public class JWTProvider {
                 .compact();
     }
 
-    public Integer getSchoolId(String token) {      // 토큰이 들어오면 파싱해서 schoolId값을 가져옴
+    public Integer getSchoolId(String token) {
 
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 

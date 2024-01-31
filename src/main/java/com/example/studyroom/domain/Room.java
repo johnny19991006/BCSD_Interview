@@ -9,15 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
 @Table(name = "rooms")
 @Getter
 public class Room {
-    public Room(Integer roomId, Integer usedSeats, Integer remainSeats) {
-        this.roomId = roomId;
-        this.usedSeats = usedSeats;
-        this.remainSeats = remainSeats;
-    }
 
     public Room() {
     }
@@ -41,6 +35,7 @@ public class Room {
     @JsonManagedReference
     private List<Seat> seatList = new ArrayList<>();
 
+    @Builder
     public Room(Integer roomId, Integer seats, Integer usedSeats, Integer remainSeats, List<Seat> seatList) {
         this.roomId = roomId;
         this.seats = seats;

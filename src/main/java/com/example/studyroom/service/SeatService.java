@@ -168,7 +168,7 @@ public class SeatService {
         for (Integer roomNumber : roomList) {
             Room room = roomRepository.findByRoomId(roomNumber);
 
-            room.usedSeats(seatRepository.countByRoom_RoomIdAndIsUsed(roomNumber, true)); // 어떤 방의 사용중인 좌석
+            room.usedSeats(seatRepository.countByRoom_RoomIdAndIsUsed(roomNumber, true));
             roomRepository.save(room);
         }
     }
