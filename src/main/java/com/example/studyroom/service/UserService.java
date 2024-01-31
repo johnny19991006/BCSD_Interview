@@ -1,5 +1,6 @@
 package com.example.studyroom.service;
 
+import com.example.studyroom.Message;
 import com.example.studyroom.auth.JWTProvider;
 import com.example.studyroom.domain.User;
 import com.example.studyroom.dto.LoginDTO;
@@ -48,7 +49,7 @@ public class UserService {
         User user = userRepository.findBySchoolId(loginDTO.getSchoolId());
 
         if (!checkPass(loginDTO.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 틀렸습니다!");
+            throw new IllegalArgumentException(Message.WRONG_PASSWORD.getMessage());
         }
 
         return jwtProvider.createToken(user.getSchoolId());

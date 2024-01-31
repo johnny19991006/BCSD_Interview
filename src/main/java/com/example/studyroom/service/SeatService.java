@@ -1,13 +1,9 @@
 package com.example.studyroom.service;
 
 import com.example.studyroom.Message;
-import com.example.studyroom.domain.Room;
-import com.example.studyroom.domain.Seat;
-import com.example.studyroom.domain.User;
+import com.example.studyroom.domain.*;
 import com.example.studyroom.dto.*;
-import com.example.studyroom.repository.RoomRepository;
-import com.example.studyroom.repository.SeatRepository;
-import com.example.studyroom.repository.UserRepository;
+import com.example.studyroom.repository.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +13,7 @@ import java.util.Objects;
 
 @Slf4j
 @Service
-@Transactional // 자동으로 db의 변경 감지
+@Transactional
 public class SeatService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
@@ -58,7 +54,7 @@ public class SeatService {
         isNotUse(seatRepository.findIsUsedBySeatId(updateSeatDTO.getSeatId()));
 
         if(!Objects.equals(updateSeatDTO.getSchoolId(), schoolId)){
-            throw new IllegalArgumentException("다른 사용자입니다!");
+            throw new IllegalArgumentException(Message.DIFFERENT_USER.getMessage());
         }
 
         return useSeat(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
@@ -83,30 +79,20 @@ public class SeatService {
         Seat seat = seatRepository.findById(seatId).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
 
         Integer roomId = seatRepository.findRoomIdBySeatId(seatId);
-        User user = userRepository.findBySchoolId(schoolId);
-
-        if (!userRepository.existsBySchoolId(user.getSchoolId())) {
-            throw new IllegalArgumentException(Message.NON_EXISTENT_USER.getMessage());
-        }
 
         seat.choiceSeatUpdate(seatRepository.findSeatNumBySeatId(seatId), userRepository.findBySchoolId(schoolId), roomRepository.findByRoomId(roomId));
         seatRepository.save(seat);
-
-        //user.useSeat(seat);
-        userRepository.save(user);
 
         return seat;
     }
 
     public Seat cancelSeat(UpdateSeatDTO updateSeatDTO, Integer schoolId) {
 
-        Seat seat = seatRepository.findById(updateSeatDTO.getSeatId()).get();
+        Seat seat = seatRepository.findBySeatId(updateSeatDTO.getSeatId());
 
         if(!Objects.equals(seat.getUser().getSchoolId(), schoolId)){
-            throw new IllegalArgumentException("다른 사용자입니다!");
+            throw new IllegalArgumentException(Message.DIFFERENT_USER.getMessage());
         }
-
-        //User user = userRepository.findBySchoolId(schoolId);
 
         return endSeat(seat);
     }
@@ -119,12 +105,6 @@ public class SeatService {
         return seat;
     }
 
-    private void isEquals(Integer schoolId, Integer seatId) {
-
-        if (!(seatRepository.findSeatIdByUserSchoolId(schoolId).equals(seatId))) {
-            throw new IllegalArgumentException(Message.DIFFERENT_PREVIOUS_SEAT.getMessage());
-        }
-    }
 
     public Seat changeSeat(UpdateSeatDTO updateSeatDTO, Integer schoolId) {
 
@@ -134,14 +114,13 @@ public class SeatService {
         Seat seat = seatRepository.findBySeatId(seatRepository.findSeatIdByUserSchoolId(updateSeatDTO.getSchoolId()));
 
         if(!Objects.equals(seat.getUser().getSchoolId(), schoolId)){
-            throw new IllegalArgumentException("다른 사용자입니다!");
+
+            throw new IllegalArgumentException(Message.DIFFERENT_USER.getMessage());
         }
-        //User user = userRepository.findBySchoolId(updateSeatDTO.getSchoolId());
 
         endSeat(seat);
 
         Seat newSeat = useSeat(updateSeatDTO.getSeatId(), updateSeatDTO.getSchoolId());
-
         return newSeat;
     }
 
@@ -158,7 +137,7 @@ public class SeatService {
         Seat seat = seatRepository.findById(updateSeatDTO.getSeatId()).orElseThrow(() -> new NullPointerException(Message.INCORRECT_SEAT.getMessage()));
 
         if(!Objects.equals(seat.getUser().getSchoolId(), schoolId)){
-            throw new IllegalArgumentException("다른 사용자입니다!");
+            throw new IllegalArgumentException(Message.DIFFERENT_USER.getMessage());
         }
 
         seat.extendSeat();
@@ -167,15 +146,19 @@ public class SeatService {
         return seat;
     }
 
+    private void isEquals(Integer schoolId, Integer seatId) {
+
+        if (!(seatRepository.findSeatIdByUserSchoolId(schoolId).equals(seatId))) {
+            throw new IllegalArgumentException(Message.DIFFERENT_PREVIOUS_SEAT.getMessage());
+        }
+    }
+
     public void endExpiredSeats() {
         List<Integer> expiredSeatList = seatRepository.findExpiredSeats();
 
         for (Integer seatId : expiredSeatList) {
 
-            //User user = userRepository.findBySchoolId(seatRepository.findSchoolIdBySeatId(seatId));
-            Seat seat = seatRepository.findById(seatId).get();
-
-            endSeat(seat);
+            endSeat(seatRepository.findBySeatId(seatId));
         }
     }
 

@@ -25,9 +25,6 @@ public interface SeatRepository extends JpaRepository<Seat, Integer> {
 
     Integer countByRoom_RoomIdAndIsUsed(Integer roomId, Boolean isUsed);
 
-    @Query("SELECT s.user.schoolId FROM Seat s where s.seatId = :seatId")
-    Integer findSchoolIdBySeatId(Integer seatId);
-
     @Query("SELECT s.seatId FROM Seat s WHERE s.endTime < CURRENT_TIMESTAMP AND s.isUsed = true")
     List<Integer> findExpiredSeats();
 

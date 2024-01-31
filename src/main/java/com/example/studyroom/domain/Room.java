@@ -13,19 +13,10 @@ import java.util.List;
 @Table(name = "rooms")
 @Getter
 public class Room {
-    public Room(Integer roomId, Integer usedSeats, Integer remainSeats){
+    public Room(Integer roomId, Integer usedSeats, Integer remainSeats) {
         this.roomId = roomId;
         this.usedSeats = usedSeats;
         this.remainSeats = remainSeats;
-    }
-
-    public Room(Integer roomId, Integer seats){
-        this.roomId = roomId;
-        this.seats = seats;
-    }
-
-    public Room(Integer roomId){
-        this.roomId = roomId;
     }
 
     public Room() {
@@ -50,7 +41,7 @@ public class Room {
     @JsonManagedReference
     private List<Seat> seatList = new ArrayList<>();
 
-    public Room(Integer roomId, Integer seats, Integer usedSeats, Integer remainSeats, List<Seat> seatList){
+    public Room(Integer roomId, Integer seats, Integer usedSeats, Integer remainSeats, List<Seat> seatList) {
         this.roomId = roomId;
         this.seats = seats;
         this.usedSeats = usedSeats;

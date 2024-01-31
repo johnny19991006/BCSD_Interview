@@ -10,7 +10,8 @@ import lombok.*;
 @Table(name = "users")
 @Getter
 public class User {
-    public User() {}
+    public User() {
+    }
 
     @Id
     @Column(name = "school_id")
@@ -24,30 +25,11 @@ public class User {
     @NotNull
     private String password;
 
-    /*@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "school_id")
-    @Nullable
-    @JsonManagedReference
-    private Seat seat;*/
-
-
-    /*public User(Integer schoolId){
-        this.schoolId = schoolId;
-    }*/
-
     @Builder
-    public User(Integer schoolId, String name, String password){
+    public User(Integer schoolId, String name, String password) {
         this.schoolId = schoolId;
         this.name = name;
         this.password = password;
         //this.seat = seat;
     }
-
-    /*public void useSeat(Seat seat){
-        this.seat = seat;
-    }
-
-    public void endSeat(){
-        this.seat = null;
-    }*/
 }

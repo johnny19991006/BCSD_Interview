@@ -17,8 +17,8 @@ BCSD비기너 코스 회고 깃 저장소
 
 ## 화면
 
-- [ ] 로그인
-- [ ] 회원가입
+- [x] 로그인
+- [x] 회원가입
 - [ ] 메인 화면(사용자, 사용 현황, 좌석 선택, 사용 종료)
   - [ ] 열람실 선택
     - [ ] 1열람실
@@ -40,6 +40,8 @@ BCSD비기너 코스 회고 깃 저장소
 ### 좌석 선택(3시간)
   - [x] 선행 조건
     - [x] seats 테이블에서 User의 school_id를 검색했을 때 없음
+    - [x] 선택하려는 좌석의 is_used 가 false
+    
   - [x] 결과
     - [x] 선택한 좌석 번호 __seat_id__ 추가
     - [x] __room_Id__ 에 열람실 선택에서 저장한 번호 추가
@@ -50,7 +52,7 @@ BCSD비기너 코스 회고 깃 저장소
     
 ### 좌석 변경 
   - [x] 선행 조건
-    - [x] 해당 __seat_id__ 의 __is_used__ 가 false
+    - [x] seats 테이블에서 __school_id__ 를 검색했을때 없음
     - [x] 변경하려는 __seat_id__ 의 __is_used__ 가 false
   - [x] 결과
     - [x] 기존 좌석 __사용 종료__
@@ -82,7 +84,7 @@ BCSD비기너 코스 회고 깃 저장소
     - [x] User의 __school_id__ 와 좌석의 __school_id__ 가 같아야 함
   - [x] 결과
     - [x] 좌석의 __school_id__ 비우기
-    - [x] __start_time__, __end_time__, __remain_time__ 비우기
+    - [x] __start_time__, __end_time__ 비우기
     - [x] __is_used__ false로 변경
     - [x] __room_id__ 비우기
 

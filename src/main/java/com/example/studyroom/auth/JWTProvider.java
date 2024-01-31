@@ -19,6 +19,7 @@ public class JWTProvider {
     private Integer expiredTime;
 
     public String createToken(Integer schoolId) {    // schoolId로 토큰 생성
+
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
@@ -29,6 +30,7 @@ public class JWTProvider {
     }
 
     public Integer getSchoolId(String token) {      // 토큰이 들어오면 파싱해서 schoolId값을 가져옴
+
         SecretKey key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
 
         String schoolId = Jwts.parser()
