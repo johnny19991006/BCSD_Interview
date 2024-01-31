@@ -1,5 +1,6 @@
 package com.example.board.controller;
 
+import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
 import com.example.board.service.HashtagService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,9 @@ public class HashtagController {
     @DeleteMapping("/{hashtagId}")
     public void deleteHashtag(@PathVariable Integer hashtagId) throws SQLException {
         hashtagService.deleteHashtag(hashtagId);
+    }
+    @GetMapping("/{hashtagId}/boards")
+    public List<Board> getBoardsByHashtag(@PathVariable int hashtagId) throws SQLException{
+        return hashtagService.getBoardsByHashtagId(hashtagId);
     }
 }

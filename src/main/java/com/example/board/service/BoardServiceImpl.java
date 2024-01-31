@@ -186,4 +186,8 @@ public class BoardServiceImpl implements BoardService {
             boardHasHashtagRepository.deleteByBoardAndHashtag(board, hashtag);
         }
     }
+    @Override
+    public List<Hashtag> getHashtagsForBoard(int boardId) {
+        return boardRepository.findHashtagsByBoardId(boardId);
+    }
 }

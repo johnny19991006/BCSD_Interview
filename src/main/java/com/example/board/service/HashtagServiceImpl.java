@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
 import com.example.board.repository.HashtagRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +27,7 @@ public class HashtagServiceImpl implements HashtagService{
     public void deleteHashtag(Integer hashtagId) throws SQLException { // 해시태그 삭제
         hashtagRepository.deleteById(hashtagId);
     }
-    
+    public List<Board> getBoardsByHashtagId(int hashtagId) throws SQLException {
+        return hashtagRepository.findBoardsByHashtagId(hashtagId);
+    }
 }

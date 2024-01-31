@@ -1,6 +1,5 @@
 package com.example.board.controller;
 
-import com.example.board.domain.Board;
 import com.example.board.domain.Comment;
 import com.example.board.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;

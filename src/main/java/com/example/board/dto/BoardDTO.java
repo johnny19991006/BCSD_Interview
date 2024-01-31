@@ -1,8 +1,6 @@
 package com.example.board.dto;
 
 import com.example.board.domain.BoardStatus;
-import com.example.board.domain.Category;
-import com.example.board.domain.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

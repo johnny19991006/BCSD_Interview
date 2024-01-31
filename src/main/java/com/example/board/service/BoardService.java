@@ -1,6 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.domain.Board;
+import com.example.board.domain.Hashtag;
 import com.example.board.dto.BoardDTO;
 
 import java.sql.SQLException;
@@ -23,4 +24,5 @@ public interface BoardService {
     public void deleteBoard(Integer boardId) throws SQLException;
     public void addHashtagToBoard(int boardId, int hashtagId) throws SQLException;
     public void removeHashtagFromBoard(int boardId, int hashtagId) throws SQLException;
+    public List<Hashtag> getHashtagsForBoard(int boardId) throws SQLException;
 }
