@@ -2,9 +2,13 @@ package com.forum.forum_site.controller;
 
 import com.forum.forum_site.dto.SavePostDto;
 import com.forum.forum_site.dto.UpdatePostDto;
+import com.forum.forum_site.searchcond.SearchPostCondition;
 import com.forum.forum_site.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -36,5 +40,18 @@ public class PostController {
     @DeleteMapping("/{postId}")
     public void deletePost(@PathVariable("postId") Integer postId) {
         postService.deletePost(postId);
+    }
+
+    // 글 조회
+    @GetMapping("{postId}")
+    public ResponseEntity getInfo (@PathVariable("postId") Integer postId) {
+        return ResponseEntity.ok(postService.getPostInfo(postId));
+    }
+
+    // 글 검색
+    @GetMapping
+    public ResponseEntity search(Pageable pageable,
+                                 @ModelAttribute SearchPostCondition searchPostCondition) {
+        return ResponseEntity.ok(postService.getPostList(pageable,searchPostCondition));
     }
 }

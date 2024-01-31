@@ -79,14 +79,17 @@ public class User implements UserDetails{
 
     // 회원 탈퇴시 작성한 게시물 및 댓글, 스크랩 삭제
     @JsonIgnore
+    @Builder.Default // Builder.Defalt를 사용시 객체 생성 할때 리스트가 null이 아닌 빈 리스트로 초기화 됨
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> postList = new ArrayList<>();
 
     @JsonIgnore
+    @Builder.Default
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
     @JsonIgnore
+    @Builder.Default
     // ToDo (fetch = FetchType.EAGER) 성능에 문제가 발생할 수 있을 것 같은데 어떻게 처리 할지 고민
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "author", cascade = ALL, orphanRemoval = true)
     private List<Post> scrapList = new ArrayList<>();

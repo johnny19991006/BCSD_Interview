@@ -2,6 +2,8 @@ package com.forum.forum_site.service;
 
 import com.forum.forum_site.domain.Post;
 import com.forum.forum_site.domain.User;
+import com.forum.forum_site.dto.PostInfoDto;
+import com.forum.forum_site.dto.PostPagingDto;
 import com.forum.forum_site.dto.SavePostDto;
 import com.forum.forum_site.dto.UpdatePostDto;
 import com.forum.forum_site.exception.FileException;
@@ -9,7 +11,9 @@ import com.forum.forum_site.exception.PostException;
 import com.forum.forum_site.exception.UserException;
 import com.forum.forum_site.repository.PostRepository;
 import com.forum.forum_site.repository.UserRepository;
+import com.forum.forum_site.searchcond.SearchPostCondition;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -93,6 +97,17 @@ public class PostServiceImpl extends BaseService implements PostService{
         }
 
         postRepository.delete(post);
+    }
+
+    @Override
+    public PostInfoDto getPostInfo(Integer id) {
+        return new PostInfoDto(postRepository.findWithAuthorById(id)
+                .orElseThrow(() -> new PostException(PostException.Type.POST_NOT_FOUND)));
+    }
+
+    @Override
+    public PostPagingDto getPostList(Pageable pageable, SearchPostCondition searchPostCondition) {
+        return new PostPagingDto(postRepository.search(searchPostCondition, pageable));
     }
 
     // 권한 체크하기
