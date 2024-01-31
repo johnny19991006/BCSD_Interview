@@ -19,7 +19,8 @@ import static jakarta.persistence.FetchType.LAZY;
 @Entity
 public class Post{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) // 기본키 생성을 데이터베이스에 위임
-    private Integer post_id;
+    @Column(name = "post_id")
+    private Integer id;
 
     @Column(length = 40, nullable = false)
     private String title;

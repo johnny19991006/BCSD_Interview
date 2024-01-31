@@ -102,7 +102,7 @@ public class UserServiceImpl extends BaseService implements UserService {
         // 스크랩된 포스트를 ScrapPostDto 리스트로 변환
         return scrapRepository.findAllByAuthor(currentUser).stream()
                 .map(scrap -> new ScrapPostDto(
-                        scrap.getPost().getPost_id(),
+                        scrap.getPost().getId(),
                         scrap.getPost().getTitle(),
                         scrap.getPost().getContent(),
                         scrap.getPost().getCreated_at(),
