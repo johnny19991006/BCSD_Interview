@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.CreateAccessTokenRequest;
+import HSAnimal.demo.DTO.CreateAccessTokenRequestDTO;
 import HSAnimal.demo.configuration.JwtFactory;
 import HSAnimal.demo.configuration.JwtProperties;
 import HSAnimal.demo.domain.RefreshToken;
@@ -76,7 +76,7 @@ class TokenApiControllerTest {
 
         refreshTokenRepository.save(new RefreshToken(testUser.getUserId(), refreshToken));
 
-        CreateAccessTokenRequest request = new CreateAccessTokenRequest();
+        CreateAccessTokenRequestDTO request = new CreateAccessTokenRequestDTO();
         request.setRefreshToken(refreshToken);
         final String requestBody = objectMapper.writeValueAsString(request);
 

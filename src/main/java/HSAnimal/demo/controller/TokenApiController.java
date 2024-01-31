@@ -1,7 +1,7 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.CreateAccessTokenRequest;
-import HSAnimal.demo.DTO.CreateAccessTokenResponse;
+import HSAnimal.demo.DTO.CreateAccessTokenRequestDTO;
+import HSAnimal.demo.DTO.CreateAccessTokenResponseDTO;
 import HSAnimal.demo.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -17,10 +17,10 @@ public class TokenApiController {
     private final TokenService tokenService;
 
     @PostMapping("/api/token")
-    public ResponseEntity<CreateAccessTokenResponse> createNewAccessToken(@RequestBody CreateAccessTokenRequest request) {
+    public ResponseEntity<CreateAccessTokenResponseDTO> createNewAccessToken(@RequestBody CreateAccessTokenRequestDTO request) {
         String newAccessToken = tokenService.createNewAccessToken(request.getRefreshToken());
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreateAccessTokenResponse(newAccessToken));
+                .body(new CreateAccessTokenResponseDTO(newAccessToken));
     }
 }

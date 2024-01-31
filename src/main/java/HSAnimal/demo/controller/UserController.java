@@ -21,18 +21,21 @@ public class UserController {
         this.userService = userService;
     }
 
+    // 회원가입
+    @PostMapping("/signup")
+    public ResponseEntity<String> signup(@RequestBody UserDTO request) {
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("\"" + userService.signup(request) + "\"로 회원가입이 완료되었습니다!");
+    }
+
+    // 정보 조회
     @GetMapping("/{user_id}")
     public User read(@PathVariable String user_id) {
         return userRepository.findByUserId(user_id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody UserDTO request) {
-        String userId = userService.signup(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body("User with ID " + userId + " registered successfully.");
-    }
-
+    // 정보 수정
     @PutMapping("/{user_id}")
     public User update(@PathVariable String user_id, @RequestBody User updatedUser) {
         return userRepository.findByUserId(user_id)

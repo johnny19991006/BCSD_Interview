@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.ChatMessagePrompt;
+import HSAnimal.demo.DTO.ChatMessagePromptDTO;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.service.OpenAiService;
@@ -18,7 +18,7 @@ public class GptController {
     }
 
     @PostMapping("/chat")
-    public String getChatMessages(@RequestBody ChatMessagePrompt prompt) {
+    public String getChatMessages(@RequestBody ChatMessagePromptDTO prompt) {
         OpenAiService service = new OpenAiService(api_key);
         ChatCompletionRequest completionRequest = ChatCompletionRequest.builder().messages(prompt.getChatMessage()).model("gpt-3.5-turbo-16k").build();
         return service.createChatCompletion(completionRequest).getChoices().get(0).getMessage().getContent();
