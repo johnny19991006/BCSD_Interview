@@ -54,14 +54,10 @@ public class UserService {
                     .generateToken(userOptional.get(), Duration.ofMinutes(jwtProperties.getExpirationMinutes())));
             String refreshToken = tokenProvider.generateRefreshToken(
                     Duration.ofHours(jwtProperties.getRefreshExpirationHours()));	// 리프레시 토큰 생성
-            // 리프레시 토큰이 이미 있으면 토큰을 갱신하고 없으면 토큰을 추가
             refreshTokenRepository.findByUserId(userDTO.getUserId())
                     .ifPresentOrElse(
                             it -> it.update(refreshToken),
-                            () -> {
-                                RefreshToken newRefreshToken = new RefreshToken(userDTO.getUserId(), refreshToken);
-                                refreshTokenRepository.save(newRefreshToken);
-                            }
+                            () -> refreshTokenRepository.save(new RefreshToken(userDTO.getUserId(), refreshToken))
                     );
             return loginDTO.getAccessToken();
         }

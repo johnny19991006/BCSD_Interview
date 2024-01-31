@@ -14,7 +14,7 @@ public class WebSecurityConfig{
 
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/login","/login/proc", "/users/signup"};
+    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/login","/login/proc", "/users/signup", "/api/token"};
 
     public WebSecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
         this.tokenAuthenticationFilter = tokenAuthenticationFilter;
