@@ -50,29 +50,3 @@ public class WebSecurityConfig{
         return new BCryptPasswordEncoder();
     }
 }
-
-
-
-
-
-
-// 인증 관리자 커스텀 설정
-//    @Bean
-//    public DaoAuthenticationProvider daoAuthenticationProvider() throws Exception {
-//        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-//
-//        daoAuthenticationProvider.setUserDetailsService(userDetailsService);
-//        daoAuthenticationProvider.setPasswordEncoder(bCryptPasswordEncoder());
-//
-//        return daoAuthenticationProvider;
-//    }
-//
-//    @Bean
-//    public AuthenticationManager authenticationManager(HttpSecurity http, BCryptPasswordEncoder bCryptPasswordEncoder,
-//                                                       UserDetailsService userService) throws Exception{
-//        return http.getSharedObject(AuthenticationManagerBuilder.class)
-//                .userDetailsService(userService)
-//                .passwordEncoder(bCryptPasswordEncoder)
-//                .and()
-//                .build();
-//    }

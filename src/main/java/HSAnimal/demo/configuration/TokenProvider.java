@@ -27,10 +27,14 @@ public class TokenProvider {
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
     }
 
+    public String generateRefreshToken(Duration expiredAt){
+        Date now = new Date();
+        return makeRefreshToken(new Date(now.getTime() + expiredAt.toMillis()));
+    }
+
     // JWT 토큰 생성 메서드
     private String makeToken(Date expiry, User user) {
         Date now = new Date();
-
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
                 .setIssuer(jwtProperties.getIssuer())
@@ -38,6 +42,17 @@ public class TokenProvider {
                 .setExpiration(expiry)
                 .setSubject(user.getEmail())
                 .claim("id", user.getId())
+                .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
+                .compact();
+    }
+
+    private String makeRefreshToken(Date expiry) {
+        Date now = new Date();
+        return Jwts.builder()
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .setIssuer(jwtProperties.getIssuer())
+                .setIssuedAt(now)
+                .setExpiration(expiry)
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }

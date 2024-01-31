@@ -1,6 +1,5 @@
-package HSAnimal.demo.controller;
+package HSAnimal.demo.hold;
 
-import HSAnimal.demo.DTO.ChatMessagePromptDTO;
 import com.theokanning.openai.completion.CompletionRequest;
 import com.theokanning.openai.completion.chat.ChatCompletionRequest;
 import com.theokanning.openai.service.OpenAiService;

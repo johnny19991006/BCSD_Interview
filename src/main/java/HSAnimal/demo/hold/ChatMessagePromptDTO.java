@@ -1,4 +1,4 @@
-package HSAnimal.demo.DTO;
+package HSAnimal.demo.hold;
 
 import com.theokanning.openai.completion.chat.ChatMessage;
 
