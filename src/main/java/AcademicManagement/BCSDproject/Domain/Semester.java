@@ -19,6 +19,10 @@ Create Table Semester
     semester ENUM('FIRST', 'SECOND', 'SUMMER', 'WINTER'), // 위와 동일
     semester_credit INT NOT NULL, // 학기 상 학점 필드 추가
     semester_score FLOAT NOT NULL, // 학기 상 성적 필드 추가
+    semester_major_credit INT NOT NULL, // 학생 성적 정보에 계산이 필요하여 미리 추가했습니다.
+    semester_major_score FLOAT NOT NULL, //
+    semester_general_credit INT NOT NULL, //
+    semester_general_score FLOAT NOT NULL // 위와 동일
     FOREIGN KEY (student_id) references Student(student_id)
 );
 */
@@ -52,6 +56,18 @@ public class Semester {
 
     @Column(name = "semester_score")
     private float semesterScore;
+
+    @Column(name = "semester_major_credit")
+    private int semesterMajorCredit;
+
+    @Column(name = "semester_major_score")
+    private float semesterMajorScore;
+
+    @Column(name = "semester_general_credit")
+    private int semesterGeneralCredit;
+
+    @Column(name = "semester_general_score")
+    private float semesterGeneralScore;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
