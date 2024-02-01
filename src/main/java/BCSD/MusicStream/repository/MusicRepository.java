@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface MusicRepository extends JpaRepository<Music, Long> {
+public interface MusicRepository extends JpaRepository<Music, Integer> {
     List<Music> findByNameContainingOrSingerNameContaining(String name, String singerName);
 
     @Query(value = "SELECT m.*, ( (select if(count(*) > 0, 3, 0) from member_like l where l.music_id = m.id and l.is_like = 1) +\n" +
@@ -38,7 +38,7 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
             "\t\t(select if(count(*) = 0, 1, count(*)) from member_like l join music on music.id = l.music_id where l.member_id = :memberId  and is_like = false)) ) as weight FROM music m ORDER BY weight DESC",
             countQuery = "select count(*) from music",
             nativeQuery = true)
-    List<Music> findMusicWithWeight(@Param("memberId") Long memberId, Pageable pageable);
+    List<Music> findMusicWithWeight(@Param("memberId") Integer memberId, Pageable pageable);
 
     @Query(value = "SELECT m.*, ( (select if(count(*) > 0, 3, 0) from member_like l where l.music_id = m.id and l.is_like = 1) +\n" +
             "        \n" +
@@ -67,5 +67,5 @@ public interface MusicRepository extends JpaRepository<Music, Long> {
             "\t\t(select if(count(*) = 0, 1, count(*)) from member_like l join music on music.id = l.music_id where l.member_id = :memberId  and is_like = false)) ) as weight FROM music m where m.weather_id = :weatherId ORDER BY weight DESC",
             countQuery = "select count(*) from music",
             nativeQuery = true)
-    List<Music> findMusicByWeatherWithWeight(@Param("memberId") Long memberId, @Param("weatherId") Long weatherId, Pageable pageable);
+    List<Music> findMusicByWeatherWithWeight(@Param("memberId") Integer memberId, @Param("weatherId") Integer weatherId, Pageable pageable);
 }

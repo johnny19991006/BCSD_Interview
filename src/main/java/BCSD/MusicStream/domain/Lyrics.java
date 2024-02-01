@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Getter
+@Setter
 public class Lyrics {
     @Id
     @Column(name = "music_id")

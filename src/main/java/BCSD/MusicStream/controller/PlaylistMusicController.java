@@ -1,11 +1,11 @@
 package BCSD.MusicStream.controller;
 
-import BCSD.MusicStream.dto.playlist.AddPlaylistDTO;
 import BCSD.MusicStream.dto.playlistMusic.AddPlaylistMusicDTO;
-import BCSD.MusicStream.dto.playlistMusic.RequestPlaylistMusicDTO;
+import BCSD.MusicStream.dto.playlistMusic.ResponsePlaylistMusicDTO;
 import BCSD.MusicStream.service.PlaylistMusicsService;
-import BCSD.MusicStream.service.PlaylistService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,15 +18,16 @@ public class PlaylistMusicController {
     private final PlaylistMusicsService playlistMusicsService;
 
     @GetMapping("/{playlistId}")
-    public List<RequestPlaylistMusicDTO> getPlaylistMusicsByPlaylistId(@PathVariable Integer playlistId) {
-        return playlistMusicsService.findAllMusicByPlaylistId(playlistId);
+    public ResponseEntity<List<ResponsePlaylistMusicDTO>> getPlaylistMusicsByPlaylistId(@PathVariable Integer playlistId) {
+        return ResponseEntity.ok(playlistMusicsService.findAllMusicByPlaylistId(playlistId));
     }
     @PostMapping
-    public void addPlaylistMusic(@RequestBody AddPlaylistMusicDTO addPlaylistMusicDTO) {
-        playlistMusicsService.addMusic(addPlaylistMusicDTO);
+    public ResponseEntity<AddPlaylistMusicDTO> addPlaylistMusic(@RequestBody AddPlaylistMusicDTO addPlaylistMusicDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(playlistMusicsService.addMusic(addPlaylistMusicDTO));
     }
     @DeleteMapping("/{playlistMusicId}")
-    public void deletePlaylistMusicByPlaylistMusicId(@PathVariable Integer playlistMusicId) {
-        playlistMusicsService.removeMusicByPlaylistMusicId(playlistMusicId);
+    public ResponseEntity<Void> deletePlaylistMusicByPlaylistMusicId(@PathVariable Integer playlistMusicId) {
+        playlistMusicsService.deleteMusicByPlaylistMusicId(playlistMusicId);
+        return ResponseEntity.noContent().build();
     }
 }

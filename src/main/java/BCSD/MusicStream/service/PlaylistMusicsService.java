@@ -1,13 +1,13 @@
 package BCSD.MusicStream.service;
 
-import BCSD.MusicStream.domain.PlaylistMusic;
+import BCSD.MusicStream.dto.music.ResponseMusicDTO;
 import BCSD.MusicStream.dto.playlistMusic.AddPlaylistMusicDTO;
-import BCSD.MusicStream.dto.playlistMusic.RequestPlaylistMusicDTO;
+import BCSD.MusicStream.dto.playlistMusic.ResponsePlaylistMusicDTO;
 
 import java.util.List;
 
 public interface PlaylistMusicsService {
-    public void addMusic(AddPlaylistMusicDTO addPlaylistMusicDTO);
-    public void removeMusicByPlaylistMusicId(Integer playlistMusicId);
-    public List<RequestPlaylistMusicDTO> findAllMusicByPlaylistId(Integer playlistId);
+    public AddPlaylistMusicDTO addMusic(AddPlaylistMusicDTO addPlaylistMusicDTO);
+    public void deleteMusicByPlaylistMusicId(Integer playlistMusicId);
+    public List<ResponsePlaylistMusicDTO> findAllMusicByPlaylistId(Integer playlistId);
 }

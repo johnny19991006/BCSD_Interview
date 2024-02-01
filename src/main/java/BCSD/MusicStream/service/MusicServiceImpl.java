@@ -1,24 +1,28 @@
 package BCSD.MusicStream.service;
 
 import BCSD.MusicStream.domain.*;
-import BCSD.MusicStream.dto.lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.dto.lyrics.ResponseLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
-import BCSD.MusicStream.dto.music.RequestMusicDTO;
+import BCSD.MusicStream.dto.music.ResponseMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
+import BCSD.MusicStream.exception.CustomException;
+import BCSD.MusicStream.exception.ErrorCode;
 import BCSD.MusicStream.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -33,19 +37,23 @@ public class MusicServiceImpl implements MusicService{
     private final MusicRepository musicRepository;
     private final LyricsRepository lyricsRepository;
     private final CategoryRepository categoryRepository;
-    private final MemberRepository userRepository;
+    private final MemberRepository memberRepository;
     private final WeatherRepository weatherRepository;
 
-    private static final String MUSIC_SOUND_DIR = "src/main/resources/static/musicSound/";
-    private static final String MUSIC_IMAGE_DIR = "src/main/resources/static/musicImage/";
+    @Value("${sound-path}")
+    private String musicSoundDir;
+
+    @Value("${image-path}")
+    private String musicImageDir;
+
     @Override
-    public List<RequestMusicDTO> getMusicByMusicNameOrSingerName(String targetText) throws MalformedURLException {
+    public List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText) {
         List<Music> musicList = musicRepository.findByNameContainingOrSingerNameContaining(targetText, targetText);
-        List<RequestMusicDTO> musicDTOList = new ArrayList<>(musicList.size());
+        List<ResponseMusicDTO> musicDTOList = new ArrayList<>(musicList.size());
         for(Music music: musicList) {
-            String musicSoundUrl = MUSIC_SOUND_DIR + music.getSoundFileName();
-            String musicImageUrl = MUSIC_IMAGE_DIR + music.getImageFileName();
-            musicDTOList.add(RequestMusicDTO.builder()
+            String musicSoundUrl = musicSoundDir + music.getSoundFileName();
+            String musicImageUrl = musicImageDir + music.getImageFileName();
+            musicDTOList.add(ResponseMusicDTO.builder()
                     .id(music.getId())
                     .name(music.getName())
                     .singerName(music.getSingerName())
@@ -58,18 +66,21 @@ public class MusicServiceImpl implements MusicService{
     }
 
     @Override
-    public RequestLyricsDTO getLyricsByMusicId(Integer musicId) {
-        Lyrics lyrics = lyricsRepository.findById(musicId.longValue()).orElseThrow(() -> new EntityNotFoundException());
-        return RequestLyricsDTO.builder()
+    public ResponseLyricsDTO getLyricsByMusicId(Integer musicId) {
+        Lyrics lyrics = lyricsRepository.findById(musicId).orElseThrow(() -> new CustomException(ErrorCode.LYRICS_NOT_FOUND));
+        return ResponseLyricsDTO.builder()
                 .lyrics(lyrics.getContents())
                 .build();
     }
 
+    @Transactional
     @Override
-    public Integer addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId) throws IOException, UnsupportedAudioFileException {
-        Category category = categoryRepository.findById(uploadMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 카테고리를 찾지 못했습니다."));
-        Member member = userRepository.findById(memberId.longValue()).orElseThrow(() -> new  EntityNotFoundException("해당 id의 유저를 찾지 못했습니다."));
-        Weather weather = weatherRepository.findById(uploadMusicDTO.getWeatherId().longValue()).orElseThrow(() -> new EntityNotFoundException("Weather not found"));
+    public ResponseMusicDTO addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId) throws IOException {
+        Category category = categoryRepository.findById(uploadMusicDTO.getCategoryId()).orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        Weather weather = weatherRepository.findById(uploadMusicDTO.getWeatherId()).orElseThrow(() -> new CustomException(ErrorCode.WEATHER_NOT_FOUND));
+        if(uploadMusicDTO.getSoundFile().isEmpty()) throw new CustomException(ErrorCode.SOUND_FILE_NOT_CONTAIN);
+        if(uploadMusicDTO.getImageFile().isEmpty()) throw new CustomException(ErrorCode.IMAGE_FILE_NOT_CONTAIN);
         Music music  = Music.builder()
                 .name(uploadMusicDTO.getName())
                 .singerName(uploadMusicDTO.getSingerName())
@@ -88,26 +99,32 @@ public class MusicServiceImpl implements MusicService{
         music.setId(musicId);
         music.setImageFileName(imageFileName);
         music.setSoundFileName(soundFileName);
-        Path soundFilePath = Paths.get(MUSIC_SOUND_DIR + soundFileName);
-        Path imageFilePath = Paths.get(MUSIC_IMAGE_DIR + imageFileName);
-        Files.copy(uploadMusicDTO.getSoundFile().getInputStream(), soundFilePath, StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(uploadMusicDTO.getImageFile().getInputStream(), imageFilePath, StandardCopyOption.REPLACE_EXISTING);
+        saveFile(uploadMusicDTO.getSoundFile(), Paths.get(musicSoundDir + soundFileName));
+        saveFile(uploadMusicDTO.getSoundFile(), Paths.get(musicImageDir + imageFileName));
         musicRepository.save(music);
         lyricsRepository.save(Lyrics.builder().contents(uploadMusicDTO.getLyrics()).build());
-        return musicId;
+        return ResponseMusicDTO.builder()
+                .singerName(music.getSingerName())
+                .soundFilePath(musicSoundDir + music.getSoundFileName())
+                .imageFilePath(musicImageDir + music.getImageFileName())
+                .duration(music.getDuration())
+                .id(music.getId())
+                .name(music.getName())
+                .build();
     }
 
+    @Transactional
     @Override
-    public ModifyMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
-        Music music = musicRepository.findById(modifyMusicDTO.getId().longValue()).orElseThrow(() -> new EntityNotFoundException("Music not found"));
-        Lyrics lyrics = lyricsRepository.findById(modifyMusicDTO.getId().longValue()).orElseThrow(() -> new EntityNotFoundException("Lyrics not found"));
-        Category category = categoryRepository.findById(modifyMusicDTO.getCategoryId().longValue()).orElseThrow(() -> new  EntityNotFoundException("category not found"));
-        Weather weather = weatherRepository.findById(modifyMusicDTO.getWeatherId().longValue()).orElseThrow(() -> new EntityNotFoundException("Weather not found"));
-        if (modifyMusicDTO.getSoundFile().isEmpty()) new EntityNotFoundException("Sound file is empty");
-        if (modifyMusicDTO.getImageFile().isEmpty()) new EntityNotFoundException("Image file is empty");
-        if (modifyMusicDTO.getName().isBlank()) new EntityNotFoundException("Name is blank");
-        if (modifyMusicDTO.getLyrics().isBlank()) new EntityNotFoundException("Lyrics is blank");
-        if (modifyMusicDTO.getSingerName().isBlank()) new EntityNotFoundException("Signer name is blank");
+    public ResponseMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
+        Music music = musicRepository.findById(modifyMusicDTO.getId()).orElseThrow(() -> new CustomException(ErrorCode.MUSIC_NOT_FOUND));
+        Lyrics lyrics = lyricsRepository.findById(modifyMusicDTO.getId()).orElseThrow(() -> new CustomException(ErrorCode.LYRICS_NOT_FOUND));
+        Category category = categoryRepository.findById(modifyMusicDTO.getCategoryId()).orElseThrow(() -> new CustomException(ErrorCode.CATEGORY_NOT_FOUND));
+        Weather weather = weatherRepository.findById(modifyMusicDTO.getWeatherId()).orElseThrow(() -> new CustomException(ErrorCode.WEATHER_NOT_FOUND));
+        if (modifyMusicDTO.getSoundFile().isEmpty()) throw new CustomException(ErrorCode.SOUND_FILE_NOT_CONTAIN);
+        if (modifyMusicDTO.getImageFile().isEmpty()) throw new CustomException(ErrorCode.IMAGE_FILE_NOT_CONTAIN);
+        if (modifyMusicDTO.getName().isBlank()) throw new CustomException(ErrorCode.NAME_BLANK);
+        if (modifyMusicDTO.getLyrics().isBlank()) throw new CustomException(ErrorCode.LYRICS_BLANK);
+        if (modifyMusicDTO.getSingerName().isBlank()) throw new CustomException(ErrorCode.SINGER_NAME_BLANK);
         String soundFileName = modifyMusicDTO.getSoundFile().getName();
         String imageFileName = modifyMusicDTO.getImageFile().getName();
         soundFileName = modifyMusicDTO.getId() + soundFileName.substring(soundFileName.indexOf('.'), soundFileName.length());
@@ -117,39 +134,44 @@ public class MusicServiceImpl implements MusicService{
         music.setSingerName(modifyMusicDTO.getSingerName());
         music.setWeather(weather);
 
-        File soundFile = new File(MUSIC_SOUND_DIR + music.getSoundFileName());
-        File imageFile = new File(MUSIC_IMAGE_DIR + music.getImageFileName());
-        soundFile.delete();
-        imageFile.delete();
+        deleteFile(musicSoundDir + music.getSoundFileName());
+        deleteFile(musicImageDir + music.getImageFileName());
 
         music.setSoundFileName(soundFileName);
         music.setImageFileName(imageFileName);
 
-        Path soundFilePath = Paths.get(MUSIC_SOUND_DIR + soundFileName);
-        Path imageFilePath = Paths.get(MUSIC_IMAGE_DIR + imageFileName);
-        Files.copy(modifyMusicDTO.getSoundFile().getInputStream(), soundFilePath, StandardCopyOption.REPLACE_EXISTING);
-        Files.copy(modifyMusicDTO.getImageFile().getInputStream(), imageFilePath, StandardCopyOption.REPLACE_EXISTING);
+        lyrics.setContents(modifyMusicDTO.getLyrics());
 
-        return modifyMusicDTO;
+        saveFile(modifyMusicDTO.getSoundFile(), Paths.get(musicSoundDir + soundFileName));
+        saveFile(modifyMusicDTO.getImageFile(), Paths.get(musicImageDir + imageFileName));
+
+        musicRepository.save(music);
+        lyricsRepository.save(lyrics);
+        return ResponseMusicDTO.builder()
+                .singerName(music.getSingerName())
+                .soundFilePath(musicSoundDir + music.getSoundFileName())
+                .imageFilePath(musicImageDir + music.getImageFileName())
+                .duration(music.getDuration())
+                .id(music.getId())
+                .name(music.getName())
+                .build();
+    }
+
+    @Transactional
+    @Override
+    public void deleteMusic(Integer musicId, Integer memberId) throws IOException {
+        Music music = musicRepository.findById(musicId).orElseThrow(() -> new CustomException(ErrorCode.MUSIC_NOT_FOUND));
+        if(music.getMember().getId() != memberId) throw new CustomException(ErrorCode.MEMBER_NOT_FOUND);
+        deleteFile(musicSoundDir + music.getSoundFileName());
+        deleteFile(musicImageDir + music.getImageFileName());
     }
 
     @Override
-    public void deleteMusic(Integer musicId, Integer memberId) {
-        Music music = musicRepository.findById(musicId.longValue()).orElseThrow(() -> new EntityNotFoundException("음악을 찾을 수 없습니다."));
-        if(music.getMember().getId() != memberId) new EntityNotFoundException();
-        File soundFile = new File(MUSIC_SOUND_DIR + music.getSoundFileName());
-        File imageFile = new File(MUSIC_IMAGE_DIR + music.getImageFileName());
-        musicRepository.deleteById(musicId.longValue());
-        soundFile.delete();
-        imageFile.delete();
-    }
-
-    @Override
-    public List<RequestMusicDTO> getAllMusic(Long memberId, Pageable pageable) {
+    public List<ResponseMusicDTO> getAllMusic(Integer memberId, Pageable pageable) {
         List<Music> musicList = musicRepository.findMusicWithWeight(memberId, pageable);
-        List<RequestMusicDTO> requestMusicDTOList = new ArrayList<>(musicList.size());
+        List<ResponseMusicDTO> requestMusicDTOList = new ArrayList<>(musicList.size());
         for(Music music: musicList) {
-            requestMusicDTOList.add(RequestMusicDTO.builder()
+            requestMusicDTOList.add(ResponseMusicDTO.builder()
                     .id(music.getId())
                     .soundFilePath(music.getSoundFileName())
                     .imageFilePath(music.getImageFileName())
@@ -163,12 +185,12 @@ public class MusicServiceImpl implements MusicService{
     }
 
     @Override
-    public List<RequestMusicDTO> getAllMusicByWeather(Long memberId, String weather, Pageable pageable) {
-        Integer weatherId = weatherRepository.findWeatherByName(weather).get().getId();
-        List<Music> musicList = musicRepository.findMusicByWeatherWithWeight(memberId, weatherId.longValue(), pageable);
-        List<RequestMusicDTO> requestMusicDTOList = new ArrayList<>(musicList.size());
+    public List<ResponseMusicDTO> getAllMusicByWeather(Integer memberId, String weather, Pageable pageable) {
+        Integer weatherId = weatherRepository.findWeatherByName(weather).orElseThrow(() -> new CustomException(ErrorCode.WEATHER_NOT_FOUND)).getId();
+        List<Music> musicList = musicRepository.findMusicByWeatherWithWeight(memberId, weatherId, pageable);
+        List<ResponseMusicDTO> requestMusicDTOList = new ArrayList<>(musicList.size());
         for(Music music: musicList) {
-            requestMusicDTOList.add(RequestMusicDTO.builder()
+            requestMusicDTOList.add(ResponseMusicDTO.builder()
                     .id(music.getId())
                     .soundFilePath(music.getSoundFileName())
                     .imageFilePath(music.getImageFileName())
@@ -179,6 +201,15 @@ public class MusicServiceImpl implements MusicService{
             );
         }
         return requestMusicDTOList;
+    }
+    private void deleteFile(String path) throws IOException {
+        File file = new File(path);
+        file.delete();
+    }
+    private void saveFile(MultipartFile file, Path destination) throws IOException {
+        Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+    }
+    private String generateFileName(String originalName, Integer id) {
+        return id + originalName.substring(originalName.lastIndexOf('.'));
     }
 }
-

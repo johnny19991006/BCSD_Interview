@@ -1,6 +1,8 @@
 package BCSD.MusicStream.security;
 
 import BCSD.MusicStream.domain.Member;
+import BCSD.MusicStream.exception.CustomException;
+import BCSD.MusicStream.exception.ErrorCode;
 import BCSD.MusicStream.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.User;
@@ -17,10 +19,10 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     @Override
     public UserDetails loadUserByUsername(String memberEmail) throws UsernameNotFoundException {
-        Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new UsernameNotFoundException("해당하는 회원을 찾을 수 없습니다."));
+        Member member = memberRepository.findByEmail(memberEmail).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         CustomUserDetails customUserDetails = CustomUserDetails.builder()
                 .id(member.getId())
-                .password(passwordEncoder.encode(member.getPassword()))
+                .password(member.getPassword())
                 .email(member.getEmail())
                 .authorityType(member.getAuthority().getType())
                 .build();

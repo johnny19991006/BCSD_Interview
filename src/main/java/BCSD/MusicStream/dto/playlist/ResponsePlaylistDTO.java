@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class RequestPlaylistDTO {
+public class ResponsePlaylistDTO {
     private Integer id;
     private String name;
 }

@@ -28,7 +28,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests()
                 .requestMatchers("/member/sign-up").permitAll()
                 .requestMatchers("/member/sign-in").permitAll()
-                .requestMatchers("/music").hasAnyAuthority("Admin", "User")
+                .requestMatchers("/member/email-exists/{userEmail}").permitAll()
                 .requestMatchers("/member").hasAnyAuthority("Admin", "User")
                 .requestMatchers("/playlist").permitAll()
                 .requestMatchers("/playlistMusics").permitAll()

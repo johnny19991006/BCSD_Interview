@@ -1,6 +1,5 @@
 package BCSD.MusicStream.dto.playlistMusic;
 
-import BCSD.MusicStream.domain.Music;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -8,7 +7,7 @@ import java.sql.Time;
 
 @Getter
 @Builder
-public class RequestPlaylistMusicDTO {
+public class ResponsePlaylistMusicDTO {
     private Integer id;
     private Integer musicId;
     private String musicName;

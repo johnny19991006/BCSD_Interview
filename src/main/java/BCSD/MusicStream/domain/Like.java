@@ -3,12 +3,16 @@ package BCSD.MusicStream.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 @Getter
-public class UserLike {
+@Setter
+@Table(name = "member_like")
+public class Like {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -21,6 +25,5 @@ public class UserLike {
     @JoinColumn(name = "music_id", referencedColumnName = "id")
     private Music music;
 
-    @Column(name = "is_like")
     private Boolean isLike;
 }

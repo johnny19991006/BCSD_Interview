@@ -1,6 +1,8 @@
 package BCSD.MusicStream.controller;
 
+import BCSD.MusicStream.config.WebConfig;
 import BCSD.MusicStream.dto.member.ModifyMemberDTO;
+import BCSD.MusicStream.dto.member.ResponseMemberDTO;
 import BCSD.MusicStream.dto.token.JwtTokenDTO;
 import BCSD.MusicStream.dto.member.SignInMemberDTO;
 import BCSD.MusicStream.dto.member.SignUpMemberDTO;
@@ -22,39 +24,33 @@ public class MemberController {
 
     private final MemberService memberService;
     @PostMapping("/sign-in")
-    public JwtTokenDTO signIn(@RequestBody SignInMemberDTO signInMemberDTO) {
+    public ResponseEntity<JwtTokenDTO> signIn(@RequestBody SignInMemberDTO signInMemberDTO) {
         try {
             JwtTokenDTO jwtTokenDTO = memberService.signIn(signInMemberDTO);
             log.info("User signed in with email: {}", signInMemberDTO.getEmail());
-            return jwtTokenDTO;
-        }catch (Exception e) {
-            e.printStackTrace();
+            return ResponseEntity.ok(jwtTokenDTO);
+        } catch (Exception e) {
+            log.error("Sign-in error: {}", e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
-        return null;
     }
     @GetMapping("/email-exists/{userEmail}")
-    public Boolean existsUserEmail(@PathVariable String userEmail) {
-        return memberService.existsByMemberEmail(userEmail);
+    public ResponseEntity<Boolean> existsUserEmail(@PathVariable String userEmail) {
+        return ResponseEntity.ok(memberService.existsByMemberEmail(userEmail));
     }
 
-    @PostMapping
-    public ResponseEntity<SignUpMemberDTO> signUp(@RequestBody SignUpMemberDTO signUpMemberDTO) {
-        memberService.signUp(signUpMemberDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(signUpMemberDTO);
+    @PostMapping("/sign-up")
+    public ResponseEntity<ResponseMemberDTO> signUp(@RequestBody SignUpMemberDTO signUpMemberDTO) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signUp(signUpMemberDTO));
     }
 
     @PutMapping
-    public ResponseEntity<?> modifyMember(HttpServletRequest request, @RequestBody ModifyMemberDTO modifyMemberDTO) {
-        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
-        Integer memberId = (Integer) cLaims.get("memberId");
-        memberService.modifyMember(modifyMemberDTO, memberId);
-        return ResponseEntity.ok("수정완료");
+    public ResponseEntity<ResponseMemberDTO> modifyMember(HttpServletRequest request, @RequestBody ModifyMemberDTO modifyMemberDTO) {
+        return ResponseEntity.ok(memberService.modifyMember(modifyMemberDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @DeleteMapping
-    public ResponseEntity<?> deleteMember(HttpServletRequest request) {
-        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
-        Integer memberId = (Integer) cLaims.get("memberId");
-        memberService.deleteMemberByUserId(memberId);
-        return ResponseEntity.ok("Ok");
+    public ResponseEntity<Void> deleteMember(HttpServletRequest request) {
+        memberService.deleteMemberByMemberId(WebConfig.getMemberIdByRequest(request));
+        return ResponseEntity.noContent().build();
     }
 }

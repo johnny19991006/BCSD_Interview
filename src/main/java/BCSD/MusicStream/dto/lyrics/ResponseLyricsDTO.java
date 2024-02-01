@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class RequestLyricsDTO {
+public class ResponseLyricsDTO {
     private String lyrics;
 }

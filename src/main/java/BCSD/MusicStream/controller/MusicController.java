@@ -1,22 +1,21 @@
 package BCSD.MusicStream.controller;
 
-import BCSD.MusicStream.api.GeoReader;
 import BCSD.MusicStream.api.OpenWeather;
 import BCSD.MusicStream.api.WeatherAPI;
-import BCSD.MusicStream.dto.lyrics.RequestLyricsDTO;
+import BCSD.MusicStream.config.WebConfig;
+import BCSD.MusicStream.dto.lyrics.ResponseLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
-import BCSD.MusicStream.dto.music.RequestMusicDTO;
+import BCSD.MusicStream.dto.music.ResponseMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
-import BCSD.MusicStream.security.JwtTokenProvider;
 import BCSD.MusicStream.service.GeoService;
+import BCSD.MusicStream.service.LikeService;
 import BCSD.MusicStream.service.MusicService;
+import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.Location;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,66 +31,64 @@ import java.util.List;
 @AllArgsConstructor
 public class MusicController {
     private final MusicService musicService;
+    private final LikeService likeService;
     private final GeoService geoService;
     private final WeatherAPI weatherAPI;
     @GetMapping
-    public ResponseEntity<List<RequestMusicDTO>> getAllMusic(HttpServletRequest request, @PageableDefault Pageable pageable) {
-        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
-        Integer memberId = (Integer) cLaims.get("memberId");
-        return ResponseEntity.ok(musicService.getAllMusic(memberId.longValue(), pageable));
+    public ResponseEntity<List<ResponseMusicDTO>> getAllMusic(HttpServletRequest request, @PageableDefault Pageable pageable) {
+        return ResponseEntity.ok(musicService.getAllMusic(WebConfig.getMemberIdByRequest(request), pageable));
     }
     @GetMapping("/{targetText}")
-    public ResponseEntity<List<RequestMusicDTO>> getMusicByMusicName(@PathVariable String targetText) throws MalformedURLException {
+    public ResponseEntity<List<ResponseMusicDTO>> getMusicByMusicNameOrSingerName(@PathVariable String targetText) throws MalformedURLException {
         return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText));
     }
 
-    @GetMapping("/music-weather")
-    public ResponseEntity<List<RequestMusicDTO>> getMusicByWeather(HttpServletRequest request, @PageableDefault Pageable pageable) throws IOException {
-       try {
-           CityResponse cityResponse = geoService.findCity(geoService.getIpAddress());
-           Location location = cityResponse.getLocation();
-           OpenWeather weather = weatherAPI.getWeather(location.getLatitude().toString(), location.getLongitude().toString());
-           String weatherName = weather.getWeather().get(0).getMain();
-           Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
-           Integer memberId = (Integer) cLaims.get("memberId");
-           return ResponseEntity.ok(musicService.getAllMusicByWeather(memberId.longValue(), weatherName, pageable));
-       }catch(Exception e1) {
-           return ResponseEntity.ok(null);
-       }
+    @GetMapping("/weather")
+    public ResponseEntity<List<ResponseMusicDTO>> getMusicByWeather(HttpServletRequest request, @PageableDefault Pageable pageable) throws IOException, GeoIp2Exception {
+       CityResponse cityResponse = geoService.findCity(geoService.getIpAddress());
+       Location location = cityResponse.getLocation();
+       OpenWeather weather = weatherAPI.getWeather(location.getLatitude().toString(), location.getLongitude().toString());
+       String weatherName = weather.getWeather().get(0).getMain();
+       return ResponseEntity.ok(musicService.getAllMusicByWeather(WebConfig.getMemberIdByRequest(request), weatherName, pageable));
     }
-    @GetMapping("/playMusic/{musicId}")
-    public ResponseEntity<RequestLyricsDTO> getLyricsByMusicId(@PathVariable Integer musicId) throws IOException {
+    @GetMapping("/play/{musicId}")
+    public ResponseEntity<ResponseLyricsDTO> getLyricsByMusicId(@PathVariable Integer musicId) throws IOException {
         return ResponseEntity.ok(musicService.getLyricsByMusicId(musicId));
     }
     @PostMapping
-    public ResponseEntity<?> uploadMusic(HttpServletRequest request, @ModelAttribute UploadMusicDTO uploadMusicDTO) {
-        try {
-            if (uploadMusicDTO.getSoundFile().isEmpty() || uploadMusicDTO.getImageFile().isEmpty()) return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is empty");
-            Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
-            Integer memberId = (Integer) cLaims.get("memberId");
-            musicService.addMusic(uploadMusicDTO, memberId);
-            return ResponseEntity.ok("Music uploaded and metadata saved successfully");
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        } catch (UnsupportedAudioFileException e) {
-            throw new RuntimeException(e);
-        }
+    public ResponseEntity<ResponseMusicDTO> uploadMusic(HttpServletRequest request, @ModelAttribute UploadMusicDTO uploadMusicDTO) throws UnsupportedAudioFileException, IOException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(musicService.addMusic(uploadMusicDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @PutMapping
-    public ResponseEntity modefiedMusic(@ModelAttribute ModifyMusicDTO modifyMusicDTO) {
-        try {
-            return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO));
-        } catch (UnsupportedAudioFileException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        } catch (IOException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
-        }
+    public ResponseEntity<ResponseMusicDTO> modefiedMusic(@ModelAttribute ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
+        return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO));
     }
     @DeleteMapping("/{musicId}")
-    public ResponseEntity<?> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) {
-        Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
-        Integer memberId = (Integer) cLaims.get("memberId");
-        musicService.deleteMusic(musicId, memberId);
-        return ResponseEntity.ok("delete Ok!!");
+    public ResponseEntity<Void> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) throws IOException {
+        musicService.deleteMusic(musicId, WebConfig.getMemberIdByRequest(request));
+        return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/dislike/{musicId}")
+    public ResponseEntity<?> dislike(HttpServletRequest request, @PathVariable Integer musicId) {
+        likeService.dislike(musicId, WebConfig.getMemberIdByRequest(request));
+        return ResponseEntity.ok("음악 싫어요 완료.");
+    }
+
+    @PostMapping("/like/{musicId}")
+    public ResponseEntity<?> like(HttpServletRequest request, @PathVariable Integer musicId) {
+        likeService.like(musicId, WebConfig.getMemberIdByRequest(request));
+        return ResponseEntity.ok("음악 좋아요 완료.");
+    }
+
+    @DeleteMapping("/like/{musicId}")
+    public ResponseEntity<Void> deleteLike(HttpServletRequest request, @PathVariable Integer musicId) {
+        likeService.deleteLikeAndDislike(musicId, WebConfig.getMemberIdByRequest(request));
+        return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/dislike/{musicId}")
+    public ResponseEntity<Void> deleteDislike(HttpServletRequest request, @PathVariable Integer musicId) {
+        likeService.deleteLikeAndDislike(musicId, WebConfig.getMemberIdByRequest(request));
+        return ResponseEntity.noContent().build();
     }
 }

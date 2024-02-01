@@ -4,7 +4,9 @@ import BCSD.MusicStream.domain.Playlist;
 import BCSD.MusicStream.domain.Member;
 import BCSD.MusicStream.dto.playlist.AddPlaylistDTO;
 import BCSD.MusicStream.dto.playlist.ModifyPlaylistDTO;
-import BCSD.MusicStream.dto.playlist.RequestPlaylistDTO;
+import BCSD.MusicStream.dto.playlist.ResponsePlaylistDTO;
+import BCSD.MusicStream.exception.CustomException;
+import BCSD.MusicStream.exception.ErrorCode;
 import BCSD.MusicStream.repository.MusicRepository;
 import BCSD.MusicStream.repository.PlayListRepository;
 import BCSD.MusicStream.repository.PlaylistMusicRepository;
@@ -27,11 +29,11 @@ public class PlaylistServiceImpl implements PlaylistService{
     private final MemberRepository memberRepository;
 
     @Override
-    public List<RequestPlaylistDTO> getPlaylistByMemberId(Integer memberId) {
+    public List<ResponsePlaylistDTO> getPlaylistByMemberId(Integer memberId) {
         List<Playlist> playlists = playListRepository.findAllByMemberId(memberId);
-        List<RequestPlaylistDTO> requestPlaylistDTOS = new ArrayList<>(playlists.size());
+        List<ResponsePlaylistDTO> requestPlaylistDTOS = new ArrayList<>(playlists.size());
         for(Playlist playlist: playlists) {
-            requestPlaylistDTOS.add(RequestPlaylistDTO.builder()
+            requestPlaylistDTOS.add(ResponsePlaylistDTO.builder()
                     .id(playlist.getId())
                     .name(playlist.getName())
                     .build());
@@ -40,24 +42,31 @@ public class PlaylistServiceImpl implements PlaylistService{
     }
 
     @Override
-    public void addPlaylist(AddPlaylistDTO addPlaylistDTO, Integer memberId) {
-        Member member = memberRepository.findById(memberId.longValue()).orElseThrow(() -> new EntityNotFoundException("member not found with id " + memberId));
-        playListRepository.save(Playlist.builder()
+    public ResponsePlaylistDTO addPlaylist(AddPlaylistDTO addPlaylistDTO, Integer memberId) {
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+        Playlist playlist = playListRepository.save(Playlist.builder()
                 .name(addPlaylistDTO.getName())
                 .member(member)
                 .build());
+        return ResponsePlaylistDTO.builder()
+                .id(playlist.getId())
+                .name(playlist.getName())
+                .build();
     }
 
     @Override
     public void removePlaylist(Integer playlistId) {
-        // 키와 관련된 다른 테이블의 데이터도 같이 삭제해주기
-        playListRepository.deleteById(playlistId.longValue());
+        playListRepository.deleteById(playlistId);
     }
 
     @Override
-    public void modifyPlaylistName(ModifyPlaylistDTO modifyPlaylistDTO) {
-        Playlist playlist = playListRepository.findById(modifyPlaylistDTO.getId().longValue()).orElseThrow(() -> new EntityNotFoundException("Entity not found with id " + modifyPlaylistDTO.getId()));
+    public ResponsePlaylistDTO modifyPlaylistName(ModifyPlaylistDTO modifyPlaylistDTO) {
+        Playlist playlist = playListRepository.findById(modifyPlaylistDTO.getId()).orElseThrow(() -> new CustomException(ErrorCode.PLAYLIST_NOT_FOUND));
         playlist.setName(modifyPlaylistDTO.getName());
-        playListRepository.save(playlist);
+        playlist = playListRepository.save(playlist);
+        return ResponsePlaylistDTO.builder()
+                .id(playlist.getId())
+                .name(playlist.getName())
+                .build();
     }
 }
