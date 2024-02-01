@@ -8,6 +8,7 @@ import com.example.board.repository.UserRepository;
 import com.example.board.repository.UsertypeRepository;
 import com.example.board.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -97,16 +98,13 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public String login(LoginRequestDTO loginRequestDTO) throws SQLException {
-        String email = loginRequestDTO.getEmail();
-        String rawPassword = loginRequestDTO.getPassword();
-
-        User user = userRepository.findByUserEmail(email);
-
-        if(passwordEncoder.matches(rawPassword, user.getUserPw())) {
-            String jwtToken = jwtTokenProvider.generateJwtToken(user.getUserId(), user.getUserEmail(), user.getUserName());
-            return "로그인 성공 " + jwtToken;
+        User user = userRepository.findByUserEmail(loginRequestDTO.getEmail()).orElseThrow(()
+                -> new BadCredentialsException("잘못된 계정정보입니다."));
+        if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getUserPw())) {
+            throw new BadCredentialsException("잘못된 계정정보입니다.");
         }
 
-        return "로그인 실패";
+        String jwtToken = jwtTokenProvider.createToken(user.getUserEmail(), user.getUserType());
+        return "로그인 성공 " + jwtToken;
     }
 }
