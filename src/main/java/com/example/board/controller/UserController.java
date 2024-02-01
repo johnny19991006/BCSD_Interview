@@ -1,6 +1,7 @@
 package com.example.board.controller;
 
 import com.example.board.domain.User;
+import com.example.board.dto.LoginRequestDTO;
 import com.example.board.dto.UserDTO;
 import com.example.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +53,9 @@ public class UserController {
     @GetMapping("/usertype/{userTypeId}")
     public List<User> getUsersByUserType(@PathVariable int userTypeId) throws SQLException {
         return userService.getUsersByUserType(userTypeId);
+    }
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequestDTO loginRequestDTO) throws SQLException {
+        return userService.login(loginRequestDTO);
     }
 }

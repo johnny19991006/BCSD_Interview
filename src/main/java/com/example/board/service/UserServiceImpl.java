@@ -2,10 +2,14 @@ package com.example.board.service;
 
 import com.example.board.domain.User;
 import com.example.board.domain.Usertype;
+import com.example.board.dto.LoginRequestDTO;
 import com.example.board.dto.UserDTO;
 import com.example.board.repository.UserRepository;
 import com.example.board.repository.UsertypeRepository;
+import com.example.board.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,13 +21,22 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UsertypeRepository usertypeRepository;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final PasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    public UserServiceImpl(UserRepository userrepository, UsertypeRepository usertypeRepository) {
+    public UserServiceImpl(UserRepository userrepository, UsertypeRepository usertypeRepository, JwtTokenProvider jwtTokenProvider, PasswordEncoder passwordEncoder, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userrepository;
         this.usertypeRepository = usertypeRepository;
+        this.jwtTokenProvider = jwtTokenProvider;
+        this.passwordEncoder = passwordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     @Override
     public User insertUser(User user) throws SQLException { // 유저등록
+        String rawPassword = user.getUserPw();
+        String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
+        user.setUserPw(encodedPassword);
         return userRepository.save(user);
     }
     @Override
@@ -81,5 +94,19 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsersByUserType(int userTypeId) throws SQLException {
         return userRepository.findByUserTypeUserTypeId(userTypeId);
+    }
+    @Override
+    public String login(LoginRequestDTO loginRequestDTO) throws SQLException {
+        String email = loginRequestDTO.getEmail();
+        String rawPassword = loginRequestDTO.getPassword();
+
+        User user = userRepository.findByUserEmail(email);
+
+        if(passwordEncoder.matches(rawPassword, user.getUserPw())) {
+            String jwtToken = jwtTokenProvider.generateJwtToken(user.getUserId(), user.getUserEmail(), user.getUserName());
+            return "로그인 성공 " + jwtToken;
+        }
+
+        return "로그인 실패";
     }
 }

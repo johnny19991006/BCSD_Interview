@@ -3,6 +3,7 @@ package com.example.board.controller;
 import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
 import com.example.board.dto.BoardDTO;
+import com.example.board.dto.LoginRequestDTO;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -93,5 +94,4 @@ public class BoardController {
     public List<Hashtag> getHashtagsForBoard(@PathVariable int boardId) throws SQLException{
         return boardService.getHashtagsForBoard(boardId);
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.domain.User;
+import com.example.board.dto.LoginRequestDTO;
 import com.example.board.dto.UserDTO;
 
 import java.sql.SQLException;
@@ -16,4 +17,5 @@ public interface UserService {
     public void updateUsertype(Integer userId, Integer newTypeNum) throws SQLException;
     public void deleteUser(Integer userId) throws SQLException;
     public List<User> getUsersByUserType(int userTypeId) throws SQLException;
+    public String login(LoginRequestDTO loginRequestDTO) throws SQLException;
 }
