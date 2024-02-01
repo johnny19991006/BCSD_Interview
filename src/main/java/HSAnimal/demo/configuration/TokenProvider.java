@@ -8,13 +8,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Set;
 
-@Service
+@Component
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
@@ -81,9 +81,9 @@ public class TokenProvider {
     }
 
     // 토큰 기반으로 사용자 ID를 가져오는 메서드
-    public Long getUserId(String token){
+    public String getUserId(String token){
         Claims claims = getClaims(token);
-        return claims.get("userId", Long.class);
+        return claims.get("userId", String.class);
     }
 
     private Claims getClaims(String token) {

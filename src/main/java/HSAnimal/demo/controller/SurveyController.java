@@ -1,15 +1,12 @@
 package HSAnimal.demo.controller;
 
 import HSAnimal.demo.DTO.UserKeywordsDTO;
-import HSAnimal.demo.domain.Questions;
 import HSAnimal.demo.service.SurveyService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/users")
 public class SurveyController {
     private final SurveyService surveyService;
 
@@ -18,22 +15,13 @@ public class SurveyController {
     }
 
     @GetMapping("/{user_id}/survey")
-    public List<String> questionsList() {
-        List<Questions> questionsList = surveyService.getAllQuestions();
-        List<String> contentList = new ArrayList<>();
-
-        for (Questions question : questionsList) {
-            String content = question.getContent();
-            contentList.add(content);
-        }
-        return contentList;
+    public List<String> showQuestionList() {
+        return surveyService.getQuestionList();
     }
 
     @PostMapping("/{user_id}/survey")
-    public String getOptionsList(@RequestBody List<UserKeywordsDTO> userKeywordsList,@PathVariable String user_id) {
-        for (UserKeywordsDTO userKeywordsDTO : userKeywordsList) {
-            surveyService.keywordsRegister(userKeywordsDTO, user_id);
-        }
-        return "/{user_id}/match 링크로 이동 하고싶은데..";
+    public String saveOptionList(@RequestBody List<UserKeywordsDTO> userKeywordsList,@PathVariable String user_id) {
+        surveyService.saveOptions(userKeywordsList, user_id);
+        return "키워드가 등록되었습니다.\n/{user_id}/match 링크로 리디랙션";
     }
 }

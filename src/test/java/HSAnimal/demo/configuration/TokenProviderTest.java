@@ -89,7 +89,7 @@ class TokenProviderTest {
                 .build()
                 .createToken(jwtProperties);
 
-        Long userIdByToken = tokenProvider.getUserId(token);
+        String userIdByToken = tokenProvider.getUserId(token);
         assertThat(userIdByToken).isEqualTo(userId);
     }
 }

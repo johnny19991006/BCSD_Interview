@@ -8,30 +8,34 @@ import HSAnimal.demo.repository.UserKeywordsRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class SurveyService {
-    private final QuestionsRepository questionRepository;
+    private final QuestionsRepository questionsRepository;
     private final UserKeywordsRepository userKeywordsRepository;
 
-    public SurveyService(QuestionsRepository questionRepository, UserKeywordsRepository userKeywordsRepository){
-        this.questionRepository = questionRepository;
+    public SurveyService(QuestionsRepository questionsRepository, UserKeywordsRepository userKeywordsRepository){
+        this.questionsRepository = questionsRepository;
         this.userKeywordsRepository = userKeywordsRepository;
     }
 
-    // 질문 모두 불러오기
-    public List<Questions> getAllQuestions() {
-        return questionRepository.findAll();
+    public List<String> getQuestionList(){
+        List<Questions> questionsList = questionsRepository.findAll();
+        return questionsList.stream()
+                .map(Questions::getContent)
+                .collect(Collectors.toList());
     }
+
 
     // 사용자의 키워드 저장하기
-    public String keywordsRegister(UserKeywordsDTO dto, String user_id) {
-        UserKeywords userKeywords = UserKeywords.builder()
-                .userId(user_id)
-                .optionId(dto.getOptionId())
-                .build();
-        return userKeywordsRepository.save(userKeywords).getUserId();
+    public void saveOptions(List<UserKeywordsDTO> userKeywordsList, String user_id) {
+        for (UserKeywordsDTO userKeywordsDTO : userKeywordsList) {
+            UserKeywords userKeywords = UserKeywords.builder()
+                    .userId(user_id)
+                    .optionId(userKeywordsDTO.getOptionId())
+                    .build();
+            userKeywordsRepository.save(userKeywords);
+        }
     }
-
-
 }

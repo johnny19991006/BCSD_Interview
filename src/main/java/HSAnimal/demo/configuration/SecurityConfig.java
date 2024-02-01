@@ -10,13 +10,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-public class WebSecurityConfig{
+public class SecurityConfig {
 
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/login","/login/proc", "/users/signup", "/api/token"};
+    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/login", "signup", "/api/token"};
 
-    public WebSecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
+    public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
         this.tokenAuthenticationFilter = tokenAuthenticationFilter;
     }
 
