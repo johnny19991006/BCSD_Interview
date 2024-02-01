@@ -2,9 +2,10 @@ package HSAnimal.demo.repository;
 
 import HSAnimal.demo.domain.Questions;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.Optional;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 public interface QuestionsRepository extends JpaRepository<Questions, Long> {
-    Optional<Questions> findByQuestionId(int questionId);
+    @Query("SELECT q.weight FROM options o JOIN o.questions q WHERE o.optionId = :optionId")
+    Integer findWeightByOptionId(@Param("optionId") int optionId);
 }

@@ -7,22 +7,26 @@ import java.util.Objects;
 
 @Builder
 @Entity(name = "animals")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@NoArgsConstructor
 public class Animal {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "animal_id", nullable = false)
     private int animalId;
 
-    @Column(name = "animal_name", nullable = false, length = 255, unique = true)
-    private String animalName; //유저이름
+    @Column(name = "animal_name", nullable = false, unique = true)
+    private String animalName;
 
-    @Column(name = "animal_pref", nullable = false, length = 255)
-    private String animalPref; //비밀번호
+    @Column(name = "animal_pref")
+    private String animalPref;
+
+    public Animal(int animalId, String animalName, String animalPref){
+        this.animalId = animalId;
+        this.animalName = animalName;
+        this.animalPref = animalPref;
+    }
 
     @Override
     public boolean equals(Object o) {

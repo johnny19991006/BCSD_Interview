@@ -5,20 +5,25 @@ import lombok.*;
 
 @Builder
 @Entity(name = "user_keywords")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class UserKeywords {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "uk_id", nullable = false)
-    private Long ukId;
+    private int ukId;
 
     @Column(name = "user_id", nullable = false)
     private String userId;
 
     @Column(name = "option_id", nullable = false)
     private int optionId;
+
+    public UserKeywords(){}
+
+    public UserKeywords(int ukId, String userId, int optionId){
+        this.ukId = ukId;
+        this.userId = userId;
+        this.optionId = optionId;
+    }
 }

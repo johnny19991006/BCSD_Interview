@@ -12,17 +12,14 @@ import java.util.stream.Collectors;
 @Service
 public class MatchingService {
 
-    private final OptionsRepository optionsRepository;
     private final AnimalRepository animalRepository;
     private final UserKeywordsRepository userKeywordsRepository;
     private final AnimalKeywordsRepository animalKeywordsRepository;
     private final QuestionsRepository questionsRepository;
 
     @Autowired
-    public MatchingService (OptionsRepository optionsRepository, AnimalRepository animalRepository,
-                            UserKeywordsRepository userKeywordsRepository, AnimalKeywordsRepository animalKeywordsRepository,
-                            QuestionsRepository questionsRepository){
-        this.optionsRepository = optionsRepository;
+    public MatchingService (AnimalRepository animalRepository, UserKeywordsRepository userKeywordsRepository,
+                            AnimalKeywordsRepository animalKeywordsRepository, QuestionsRepository questionsRepository){
         this.animalRepository = animalRepository;
         this.userKeywordsRepository = userKeywordsRepository;
         this.animalKeywordsRepository = animalKeywordsRepository;
@@ -36,9 +33,9 @@ public class MatchingService {
                 .collect(Collectors.toList());
     }
 
-    public List<Integer> getMyOptionList(String userId){
+    public Set<Integer> getMyOptionList(String userId){
         List<UserKeywords> userKeywordsList = userKeywordsRepository.findAllByUserId(userId);
-        List<Integer> optionsList = new ArrayList<>();
+        Set<Integer> optionsList = new HashSet<>();
         for (UserKeywords option: userKeywordsList) {
             optionsList.add(option.getOptionId());
         }
@@ -46,7 +43,7 @@ public class MatchingService {
     }
 
     // 사용자와 겹치는 동물 리스트 생성
-    public Set<AnimalDTO> getAnimalDTOList(List<Integer> optionList){
+    public Set<AnimalDTO> getMyAnimalDTOList(Set<Integer> optionList){
         Set<AnimalDTO> animalDTOList = new HashSet<>();
         for(int option : optionList){
             List<AnimalKeywords> animalKeywordsList = animalKeywordsRepository.findAllByOptionId(option);
@@ -65,19 +62,18 @@ public class MatchingService {
 
 
     // 매칭된 동물들 반환
-    public List<AnimalDTO> sumWeights(List<Integer> optionList, Set<AnimalDTO> animalDTOSet){
+    public List<AnimalDTO> sumWeights(Set<Integer> myOptionList, Set<AnimalDTO> animalDTOSet){
         for(AnimalDTO animalDTO: animalDTOSet){
             List<Integer> optionIdList = animalKeywordsRepository.findAllByAnimalId(animalDTO.getAnimalId())
                     .stream()
                     .map(AnimalKeywords::getOptionId)
                     .collect(Collectors.toList());
-            Set<Integer> intersection = new HashSet<>(optionList);
+            Set<Integer> intersection = new HashSet<>(myOptionList);
             intersection.retainAll(optionIdList);
 
             int sum = 0;
             for (int optionId: intersection) {
-                int weight = questionsRepository.findByQuestionId(optionsRepository.findByOptionId(optionId)
-                        .get().getQuestionId()).get().getWeight();
+                int weight = questionsRepository.findWeightByOptionId(optionId);
                 sum += weight;
                 animalDTO.setMatchScore(sum);
             }

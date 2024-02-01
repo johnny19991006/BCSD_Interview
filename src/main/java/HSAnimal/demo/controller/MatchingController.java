@@ -23,8 +23,8 @@ public class MatchingController {
 
     @PostMapping("/{user_id}/match")
     public List<AnimalDTO> matchingAnimals(@PathVariable String user_id) {
-        List<Integer> optionList = matchingService.getMyOptionList(user_id);
-        Set<AnimalDTO> animalList = matchingService.getAnimalDTOList(optionList);
-        return matchingService.sumWeights(optionList, animalList);
+        Set<Integer> myOptionList = matchingService.getMyOptionList(user_id);
+        Set<AnimalDTO> animalList = matchingService.getMyAnimalDTOList(myOptionList);
+        return matchingService.sumWeights(myOptionList, animalList);
     }
 }

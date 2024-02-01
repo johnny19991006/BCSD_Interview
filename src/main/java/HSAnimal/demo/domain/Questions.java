@@ -3,13 +3,13 @@ package HSAnimal.demo.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Builder
 @Entity(name = "questions")
-@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 public class Questions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,16 @@ public class Questions {
     @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
-    @Column(name = "weight", nullable = true)
+    @Column(name = "weight")
     private int weight;
+
+    @OneToMany(mappedBy = "questions")
+    private List<Options> options;
+
+    public Questions(int questionId, String content, int weight, List<Options> options){
+        this.questionId = questionId;
+        this.content = content;
+        this.weight = weight;
+        this.options = options;
+    }
 }
