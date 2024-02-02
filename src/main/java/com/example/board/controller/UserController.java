@@ -5,6 +5,7 @@ import com.example.board.dto.LoginRequestDTO;
 import com.example.board.dto.UserDTO;
 import com.example.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;

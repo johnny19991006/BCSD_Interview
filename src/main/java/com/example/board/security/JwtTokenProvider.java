@@ -17,6 +17,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -35,7 +36,8 @@ public class JwtTokenProvider {
     }
     public String createToken(String account, Usertype userType) {
         Claims claims = Jwts.claims().setSubject(account);
-        claims.put("userType", userType);
+        String roleName = "ROLE_" + userType.getTypeName();
+        claims.put("authorities", Collections.singletonList(roleName));
         Date now = new Date();
         return Jwts.builder()
                 .setClaims(claims)

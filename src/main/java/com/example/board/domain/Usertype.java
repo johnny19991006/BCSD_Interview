@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import javax.persistence.*;
+import java.util.Collections;
 import java.util.List;
 
 @AllArgsConstructor
@@ -27,4 +30,9 @@ public class Usertype {
     @OneToMany(mappedBy = "userType")
     @JsonIgnore
     private List<User> users;
+
+    @JsonIgnore
+    public List<GrantedAuthority> getAuthorities() {
+        return Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + this.typeName));
+    }
 }
