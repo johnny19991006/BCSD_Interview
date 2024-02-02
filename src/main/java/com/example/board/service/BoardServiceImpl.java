@@ -2,10 +2,14 @@ package com.example.board.service;
 
 import com.example.board.domain.*;
 import com.example.board.dto.BoardDTO;
+import com.example.board.exception.UnauthorizedException;
 import com.example.board.repository.*;
+import com.example.board.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,34 +36,42 @@ public class BoardServiceImpl implements BoardService {
     @Override
     @Transactional
     public Board insertBoard(BoardDTO boardDTO) throws SQLException {
-        User user = userRepository.findById(boardDTO.getUserId()).orElse(null);
-        Category category = categoryRepository.findById(boardDTO.getCategoryId()).orElse(null);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        Board board = new Board();
-        board.setUser(user);
-        board.setCategory(category);
-        board.setBoardTitle(boardDTO.getBoardTitle());
-        board.setBoardPrice(boardDTO.getBoardPrice());
-        board.setBoardContent(boardDTO.getBoardContent());
-        board.setBoardstatus(boardDTO.getBoardStatus());
+        if(userDetails.getUser().getUserId() == boardDTO.getUserId()) {
+            User user = userRepository.findById(boardDTO.getUserId()).orElse(null);
+            Category category = categoryRepository.findById(boardDTO.getCategoryId()).orElse(null);
 
-        List<Integer> hashtagIds = boardDTO.getHashtagIds();
+            Board board = new Board();
+            board.setUser(user);
+            board.setCategory(category);
+            board.setBoardTitle(boardDTO.getBoardTitle());
+            board.setBoardPrice(boardDTO.getBoardPrice());
+            board.setBoardContent(boardDTO.getBoardContent());
+            board.setBoardstatus(boardDTO.getBoardStatus());
 
-        List<BoardHasHashtag> boardHasHashtags = new ArrayList<>();
+            List<Integer> hashtagIds = boardDTO.getHashtagIds();
 
-        for (Integer hashtagId : hashtagIds) {
-            Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
-            BoardHasHashtag boardHasHashtag = new BoardHasHashtag();
-            boardHasHashtag.setBoard(board);
-            boardHasHashtag.setHashtag(hashtag);
-            boardHasHashtags.add(boardHasHashtag);
+            List<BoardHasHashtag> boardHasHashtags = new ArrayList<>();
+
+            for (Integer hashtagId : hashtagIds) {
+                Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
+                BoardHasHashtag boardHasHashtag = new BoardHasHashtag();
+                boardHasHashtag.setBoard(board);
+                boardHasHashtag.setHashtag(hashtag);
+                boardHasHashtags.add(boardHasHashtag);
+            }
+            board.setBoardHashtags(boardHasHashtags);
+
+            boardRepository.save(board);  // Board 저장
+            boardHasHashtagRepository.saveAll(boardHasHashtags);
+
+            return board;
         }
-        board.setBoardHashtags(boardHasHashtags);
-
-        boardRepository.save(board);  // Board 저장
-        boardHasHashtagRepository.saveAll(boardHasHashtags);
-
-        return board;
+        else {
+            throw new UnauthorizedException("Unauthorized access");
+        }
     }
     @Override
     public List<Board> getAllBoards() throws SQLException {

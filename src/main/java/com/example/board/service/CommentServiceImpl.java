@@ -1,8 +1,12 @@
 package com.example.board.service;
 
 import com.example.board.domain.Comment;
+import com.example.board.exception.UnauthorizedException;
 import com.example.board.repository.CommentRepository;
+import com.example.board.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -17,7 +21,15 @@ public class CommentServiceImpl implements CommentService {
     }
     @Override
     public Comment insertComment(Comment comment) throws SQLException {
-        return commentRepository.save(comment);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+
+        if (userDetails.getUser().getUserId() == comment.getUser().getUserId()) {
+            return commentRepository.save(comment);
+        }
+        else {
+            throw new UnauthorizedException("Unauthorized access");
+        }
     }
     @Override
     public void deleteComment(Integer commentId) throws SQLException {
