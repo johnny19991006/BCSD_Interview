@@ -3,6 +3,12 @@ package bcsd.backend.project.pokku.service.Image;
 import bcsd.backend.project.pokku.dao.*;
 import bcsd.backend.project.pokku.domain.*;
 import bcsd.backend.project.pokku.dto.Image.ImageUploadRequest;
+import bcsd.backend.project.pokku.exception.DuplicateKeyException.DuplicateKeyException;
+import bcsd.backend.project.pokku.exception.NoSuchDataException.NoSuchDataException;
+import bcsd.backend.project.pokku.exception.NotSupportException.NotSupportException;
+import bcsd.backend.project.pokku.exception.NullValueException.NullValueException;
+import bcsd.backend.project.pokku.exception.ResCode;
+import bcsd.backend.project.pokku.exception.UnknownException.UnknownException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +33,7 @@ public class ImageServiceImpl implements ImageService {
     private final SkillsCertificationRepository skillsCertificationRepository;
 
     @Override
-    public Boolean upload(ImageUploadRequest request) throws Exception {
+    public Boolean upload(ImageUploadRequest request) throws RuntimeException {
 
         try{
             String absolutePath = new File("").getAbsolutePath() + "\\";
@@ -41,7 +47,7 @@ public class ImageServiceImpl implements ImageService {
                 String contentType = request.getImage().getContentType();
                 String originalFileExtension;
                 if (ObjectUtils.isEmpty(contentType)) {
-                    return false;
+                    throw new NullValueException("contentType이 존재하지 않습니다.", contentType, ResCode.NULL_VALUE.value());
                 } else {
                     if (contentType.contains("image/jpeg")) {
                         originalFileExtension = ".jpg";
@@ -51,7 +57,7 @@ public class ImageServiceImpl implements ImageService {
                         originalFileExtension = ".gif";
                     }
                     else {
-                        return false;
+                        throw new NotSupportException("해당 contentType은 지원하지 않습니다.", contentType, ResCode.NOT_SUPPORT.value());
                     }
                 }
 
@@ -59,6 +65,10 @@ public class ImageServiceImpl implements ImageService {
                         .skillName(request.getName() + originalFileExtension)
                         .imageUrl(path + originalFileExtension)
                         .build();
+
+                if (imageRepository.countByName(request.getName() + originalFileExtension) != 0){
+                    throw new DuplicateKeyException("이미 존재하는 이미지 또는 이름 입니다.", request.getName() + originalFileExtension, ResCode.DUPLICATE_KEY.value());
+                }
 
                 imageRepository.save(img);
 
@@ -98,14 +108,13 @@ public class ImageServiceImpl implements ImageService {
             }
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
+            throw new UnknownException(e.getMessage(), "unknown", ResCode.UNKNOWN.value());
         }
         return true;
     }
 
     @Override
-    public Boolean deleteImage(String imageName) throws Exception{
+    public Boolean deleteImage(String imageName) throws RuntimeException{
         try {
             // 이미지 파일의 절대 경로를 생성
             String absolutePath = new File("").getAbsolutePath() + "\\";
@@ -118,13 +127,13 @@ public class ImageServiceImpl implements ImageService {
                     imageRepository.deleteById(imageName);
                     return true;
                 } else {
-                    return false;
+                    throw new NoSuchDataException("해당 이미지 정보가 존재하지 않습니다.", imageName, ResCode.NO_SUCH_DATA.value());
                 }
             } else {
-                return false;
+                throw new NoSuchDataException("해당 이미지가 존재하지 않습니다.", path, ResCode.NO_SUCH_DATA.value());
             }
         } catch (Exception e) {
-            return false;
+            throw new UnknownException(e.getMessage(), "unknown", ResCode.UNKNOWN.value());
         }
     }
 
