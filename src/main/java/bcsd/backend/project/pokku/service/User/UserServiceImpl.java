@@ -12,6 +12,9 @@ import bcsd.backend.project.pokku.dto.User.UserRequest;
 import bcsd.backend.project.pokku.dto.User.UserResponse;
 import bcsd.backend.project.pokku.dto.UserSNS.UserSNSRequest;
 import bcsd.backend.project.pokku.dto.UserSNS.UserSNSResponse;
+import bcsd.backend.project.pokku.exception.DuplicateKeyException.DuplicateKeyException;
+import bcsd.backend.project.pokku.exception.NoSuchDataException.NoSuchDataException;
+import bcsd.backend.project.pokku.exception.ResCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -30,203 +33,206 @@ public class UserServiceImpl implements UserService {
     private final UserInfoInstagramRepository userInfoInstagramRepository;
 
     @Override
-    public UserResponse findUsers(String userId) throws Exception{
+    public UserResponse findUsers(String userId) throws RuntimeException{
         UserInfo userInfo = userInfoRepository.findById(userId)
-                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
         return new UserResponse(userInfo);
     }
 
     @Override
-    public boolean DeleteUsers(String userId) throws Exception{
+    public boolean DeleteUsers(String userId) throws RuntimeException{
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        try {
-            userInfoRepository.deleteById(userId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
-        }
+        userInfoRepository.deleteById(userId);
+
         return true;
     }
 
     @Override
-    public boolean UpdateUsers(String userId, UserRequest request) throws Exception{
-        try {
-            UserInfo userInfo = UserInfo.builder()
-                    .userId(userId)
-                    .userPassword(passwordEncoder.encode(request.getUserPassword()))
-                    .userName(request.getUserName())
-                    .userNickname(request.getUserNickname())
-                    .userBirth(request.getUserBirth())
-                    .userEmail(request.getUserEmail())
-                    .userTel(request.getUserTel())
-                    .userEducation(request.getUserEducation())
-                    .build();
+    public boolean UpdateUsers(String userId, UserRequest request) throws RuntimeException{
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-            userInfoRepository.save(userInfo);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
-        }
+        UserInfo userInfo = UserInfo.builder()
+                .userId(userId)
+                .userPassword(passwordEncoder.encode(request.getUserPassword()))
+                .userName(request.getUserName())
+                .userNickname(request.getUserNickname())
+                .userBirth(request.getUserBirth())
+                .userEmail(request.getUserEmail())
+                .userTel(request.getUserTel())
+                .userEducation(request.getUserEducation())
+                .build();
+
+        userInfoRepository.save(userInfo);
+
         return true;
     }
 
     @Override
-    public UserSNSResponse findBlog(String userId) throws Exception {
+    public UserSNSResponse findBlog(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         UserInfoBlog userInfoBlog = userInfoBlogRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new NoSuchDataException("사용자의 Blog정보가 존재하지 않습니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
         return new UserSNSResponse(userInfoBlog.getUserBlog());
     }
 
     @Override
-    public UserSNSResponse findGithub(String userId) throws Exception {
+    public UserSNSResponse findGithub(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         UserInfoGithub userInfoGithub = userInfoGithubRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new NoSuchDataException("사용자의 Github 정보가 존재하지 않습니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
         return new UserSNSResponse(userInfoGithub.getUserGithub());
     }
 
     @Override
-    public UserSNSResponse findInstagram(String userId) throws Exception {
+    public UserSNSResponse findInstagram(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         UserInfoInstagram userInfoInstagram = userInfoInstagramRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("존재하지 않는 사용자 입니다."));
+                .orElseThrow(() -> new NoSuchDataException("사용자의 Instagram정보가 존재하지 않습니다..", userId, ResCode.NO_SUCH_DATA.value()));
 
         return new UserSNSResponse(userInfoInstagram.getUserInstagram());
     }
 
     @Override
-    public Boolean updateBlog(String userId, UserSNSRequest request) throws Exception {
-        try {
-            UserInfoBlog userInfoBlog = UserInfoBlog.builder()
-                    .userBlog(request.getSnsName())
-                    .userInfo(UserInfo.builder().userId(userId).build())
-                    .build();
-            userInfoBlogRepository.save(userInfoBlog);
+    public Boolean updateBlog(String userId, UserSNSRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            throw new Exception("잘못된 요청입니다.");
-            return false;
-        }
+        UserInfoBlog userInfoBlog = UserInfoBlog.builder()
+                .userBlog(request.getSnsName())
+                .userInfo(UserInfo.builder().userId(userId).build())
+                .build();
+        userInfoBlogRepository.save(userInfoBlog);
+
         return true;
     }
 
     @Override
-    public Boolean updateGithub(String userId, UserSNSRequest request) throws Exception {
-        try {
-            UserInfoGithub userInfoGithub = UserInfoGithub.builder()
-                    .userGithub(request.getSnsName())
-                    .userInfo(UserInfo.builder().userId(userId).build())
-                    .build();
-            userInfoGithubRepository.save(userInfoGithub);
+    public Boolean updateGithub(String userId, UserSNSRequest request) throws RuntimeException {
 
-        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            throw new Exception("잘못된 요청입니다.");
-            return false;
-        }
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
+        UserInfoGithub userInfoGithub = UserInfoGithub.builder()
+                .userGithub(request.getSnsName())
+                .userInfo(UserInfo.builder().userId(userId).build())
+                .build();
+        userInfoGithubRepository.save(userInfoGithub);
+
         return true;
     }
 
     @Override
-    public Boolean updateInstagram(String userId, UserSNSRequest request) throws Exception {
-        try {
-            UserInfoInstagram userInfoInstagram = UserInfoInstagram.builder()
-                    .userInstagram(request.getSnsName())
-                    .userInfo(UserInfo.builder().userId(userId).build())
-                    .build();
-            userInfoInstagramRepository.save(userInfoInstagram);
+    public Boolean updateInstagram(String userId, UserSNSRequest request) throws RuntimeException {
 
-        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            throw new Exception("잘못된 요청입니다.");
-            return false;
-        }
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
+        UserInfoInstagram userInfoInstagram = UserInfoInstagram.builder()
+                .userInstagram(request.getSnsName())
+                .userInfo(UserInfo.builder().userId(userId).build())
+                .build();
+        userInfoInstagramRepository.save(userInfoInstagram);
+
         return true;
     }
 
     @Override
-    public Boolean deleteBlog(String userId) throws Exception {
-        try {
-            userInfoBlogRepository.deleteById(userId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
-        }
+    public Boolean deleteBlog(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
+        userInfoBlogRepository.deleteById(userId);
+
         return true;
     }
 
     @Override
-    public Boolean deleteGithub(String userId) throws Exception {
-        try {
-            userInfoGithubRepository.deleteById(userId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
-        }
+    public Boolean deleteGithub(String userId) throws RuntimeException {
+
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
+        userInfoGithubRepository.deleteById(userId);
+
         return true;
     }
 
     @Override
-    public Boolean deleteInstagram(String userId) throws Exception {
-        try {
-            userInfoInstagramRepository.deleteById(userId);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
-        }
+    public Boolean deleteInstagram(String userId) throws RuntimeException {
+
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
+        userInfoInstagramRepository.deleteById(userId);
+
         return true;
     }
 
     @Override
-    public Boolean addBlog(String userId, UserSNSRequest request) throws Exception {
-        try {
-            UserInfoBlog userInfoBlog = UserInfoBlog.builder()
-                    .userBlog(request.getSnsName())
-                    .userInfo(UserInfo.builder().userId(userId).build())
-                    .build();
+    public Boolean addBlog(String userId, UserSNSRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-            userInfoBlogRepository.save(userInfoBlog);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
+        if(userInfoBlogRepository.countById(request.getSnsName()) != 0){
+            throw new DuplicateKeyException("이미 존재하는 Blog정보 입니다.", request.getSnsName(), ResCode.DUPLICATE_KEY.value());
         }
+
+        UserInfoBlog userInfoBlog = UserInfoBlog.builder()
+                .userBlog(request.getSnsName())
+                .userInfo(UserInfo.builder().userId(userId).build())
+                .build();
+
+        userInfoBlogRepository.save(userInfoBlog);
+
         return true;
     }
 
     @Override
-    public Boolean addGithub(String userId, UserSNSRequest request) throws Exception {
-        try {
-            UserInfoGithub userInfoGithub = UserInfoGithub.builder()
-                    .userGithub(request.getSnsName())
-                    .userInfo(UserInfo.builder().userId(userId).build())
-                    .build();
+    public Boolean addGithub(String userId, UserSNSRequest request) throws RuntimeException {
 
-            userInfoGithubRepository.save(userInfoGithub);
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
+        if(userInfoGithubRepository.countById(request.getSnsName()) != 0){
+            throw new DuplicateKeyException("이미 존재하는 Github정보 입니다.", request.getSnsName(), ResCode.DUPLICATE_KEY.value());
         }
+
+        UserInfoGithub userInfoGithub = UserInfoGithub.builder()
+                .userGithub(request.getSnsName())
+                .userInfo(UserInfo.builder().userId(userId).build())
+                .build();
+
+        userInfoGithubRepository.save(userInfoGithub);
+
         return true;
     }
 
     @Override
-    public Boolean addInstagram(String userId, UserSNSRequest request) throws Exception {
-        try {
-            UserInfoInstagram userInfoInstagram = UserInfoInstagram.builder()
-                    .userInstagram(request.getSnsName())
-                    .userInfo(UserInfo.builder().userId(userId).build())
-                    .build();
+    public Boolean addInstagram(String userId, UserSNSRequest request) throws RuntimeException {
 
-            userInfoInstagramRepository.save(userInfoInstagram);
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            throw new Exception("잘못된 요청입니다.");
+        if(userInfoInstagramRepository.countById(request.getSnsName()) != 0){
+            throw new DuplicateKeyException("이미 존재하는 Instagram정보 입니다.", request.getSnsName(), ResCode.DUPLICATE_KEY.value());
         }
+
+        UserInfoInstagram userInfoInstagram = UserInfoInstagram.builder()
+                .userInstagram(request.getSnsName())
+                .userInfo(UserInfo.builder().userId(userId).build())
+                .build();
+
+        userInfoInstagramRepository.save(userInfoInstagram);
+
         return true;
     }
 }

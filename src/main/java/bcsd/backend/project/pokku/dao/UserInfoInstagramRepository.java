@@ -16,6 +16,9 @@ public interface UserInfoInstagramRepository extends JpaRepository<UserInfoInsta
     @Query("SELECT p FROM UserInfoInstagram p WHERE p.userInfo = :user_id")
     Optional<UserInfoInstagram> findByUserId(@Param("user_id") UserInfo user);
 
+    @Query("SELECT COUNT(p) FROM UserInfoInstagram p WHERE p.userInstagram = :sns")
+    Long countById(@Param("sns") String snsName);
+
     @Query("DELETE FROM UserInfoInstagram p WHERE p.userInfo = :user_id")
     @Modifying
     void deleteByUserId(@Param("user_id") UserInfo user);

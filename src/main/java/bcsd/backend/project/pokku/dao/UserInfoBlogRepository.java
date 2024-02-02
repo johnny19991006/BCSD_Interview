@@ -16,6 +16,9 @@ public interface UserInfoBlogRepository extends JpaRepository<UserInfoBlog, Stri
     @Query("SELECT p FROM UserInfoBlog p WHERE p.userInfo = :user_id")
     Optional<UserInfoBlog> findByUserId(@Param("user_id") UserInfo user);
 
+    @Query("SELECT COUNT(p) FROM UserInfoBlog p WHERE p.userBlog = :sns")
+    Long countById(@Param("sns") String snsName);
+
     @Query("DELETE FROM UserInfoBlog p WHERE p.userInfo = :user_id")
     @Modifying
     void deleteByUserId(@Param("user_id") UserInfo user);

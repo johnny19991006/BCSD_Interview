@@ -20,28 +20,28 @@ CREATE TABLE `authority`(
     `user_id` VARCHAR(16) NOT NULL,
     `auth_name` VARCHAR(16) NOT NULL,
     PRIMARY KEY (`auth_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `user_info`(`user_id`)
+    FOREIGN KEY (`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_info_instagram`(
 	`user_id` VARCHAR(16) NOT NULL,
 	`user_instagram` VARCHAR(128) NOT NULL,
 	PRIMARY KEY(`user_instagram`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_info_github`(
 	`user_id` VARCHAR(16) NOT NULL,
 	`user_github` VARCHAR(128) NOT NULL,
 	PRIMARY KEY(`user_github`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_info_blog`(
 	`user_id` VARCHAR(16) NOT NULL,
 	`user_blog` VARCHAR(128) NOT NULL,
 	PRIMARY KEY(`user_blog`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `image`(
@@ -58,14 +58,14 @@ CREATE TABLE `portfolio_about`(
 	`user_email_visible` BOOL DEFAULT FALSE,
 	`user_education_visible` BOOL DEFAULT FALSE,
 	PRIMARY KEY(`portfolio_about_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_frontend`(
 	`skills_frontend_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_frontend_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_frontend`(
@@ -73,15 +73,15 @@ CREATE TABLE `user_portfolio_skills_frontend`(
 	`skills_frontend_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_frontend_id`),
-	FOREIGN KEY(`skills_frontend_id`) REFERENCES `skills_frontend`(`skills_frontend_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`skills_frontend_id`) REFERENCES `skills_frontend`(`skills_frontend_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_backend`(
 	`skills_backend_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_backend_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_backend`(
@@ -89,15 +89,15 @@ CREATE TABLE `user_portfolio_skills_backend`(
 	`skills_backend_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_backend_id`),
-	FOREIGN KEY(`skills_backend_id`) REFERENCES `skills_backend`(`skills_backend_id`),
-    FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`skills_backend_id`) REFERENCES `skills_backend`(`skills_backend_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_mobileapp`(
 	`skills_mobileapp_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_mobileapp_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_mobileapp`(
@@ -105,15 +105,15 @@ CREATE TABLE `user_portfolio_skills_mobileapp`(
 	`skills_mobileapp_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_mobileapp_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
-   	FOREIGN KEY(`skills_mobileapp_id`) REFERENCES `skills_mobileapp`(`skills_mobileapp_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+   	FOREIGN KEY(`skills_mobileapp_id`) REFERENCES `skills_mobileapp`(`skills_mobileapp_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_deployment`(
 	`skills_deployment_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_deployment_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_deployment`(
@@ -121,15 +121,15 @@ CREATE TABLE `user_portfolio_skills_deployment`(
 	`skills_deployment_id` INT NOT NULL,
     `user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_deployment_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
-	FOREIGN KEY(`skills_deployment_id`) REFERENCES `skills_deployment`(`skills_deployment_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(`skills_deployment_id`) REFERENCES `skills_deployment`(`skills_deployment_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_versioncontrol`(
 	`skills_versioncontrol_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_versioncontrol_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_versioncontrol`(
@@ -137,15 +137,15 @@ CREATE TABLE `user_portfolio_skills_versioncontrol`(
 	`skills_versioncontrol_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_versioncontrol_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
-	FOREIGN KEY(`skills_versioncontrol_id`) REFERENCES `skills_versioncontrol`(`skills_versioncontrol_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+	FOREIGN KEY(`skills_versioncontrol_id`) REFERENCES `skills_versioncontrol`(`skills_versioncontrol_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_communication`(
 	`skills_communication_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_communication_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_communication`(
@@ -153,15 +153,15 @@ CREATE TABLE `user_portfolio_skills_communication`(
 	`skills_communication_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_communication_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
-    FOREIGN KEY(`skills_communication_id`) REFERENCES `skills_communication`(`skills_communication_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(`skills_communication_id`) REFERENCES `skills_communication`(`skills_communication_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `skills_certification`(
 	`skills_certification_id` INT AUTO_INCREMENT,
 	`skill_name` VARCHAR(32) NOT NULL,
 	PRIMARY KEY(`skills_certification_id`),
-	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`)
+	FOREIGN KEY(`skill_name`) REFERENCES `image`(`skill_name`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `user_portfolio_skills_certification`(
@@ -169,8 +169,8 @@ CREATE TABLE `user_portfolio_skills_certification`(
 	`skills_certification_id` INT NOT NULL,
 	`user_id` VARCHAR(16) NOT NULL,
 	PRIMARY KEY(`user_portfolio_skills_certification_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`),
-    FOREIGN KEY(`skills_certification_id`) REFERENCES `skills_certification`(`skills_certification_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY(`skills_certification_id`) REFERENCES `skills_certification`(`skills_certification_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `portfolio_archiving`(
@@ -179,7 +179,7 @@ CREATE TABLE `portfolio_archiving`(
 	`archiving_name` VARCHAR(32) NOT NULL,
 	`archiving_explanation` TEXT NOT NULL,
 	PRIMARY KEY(`portfolio_archiving_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `portfolio_project`(
@@ -188,7 +188,7 @@ CREATE TABLE `portfolio_project`(
 	`project_name` VARCHAR(32) NOT NULL,
 	`project_explanation` TEXT NOT NULL,
 	PRIMARY KEY(`portfolio_project_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;
 
 CREATE TABLE `portfolio_career`(
@@ -196,5 +196,5 @@ CREATE TABLE `portfolio_career`(
 	`user_id` VARCHAR(16) NOT NULL,
 	`career_explanation` TEXT NOT NULL,
 	PRIMARY KEY(`portfolio_career_id`),
-	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`)
+	FOREIGN KEY(`user_id`) REFERENCES `user_info`(`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
 )DEFAULT CHARSET = UTF8;

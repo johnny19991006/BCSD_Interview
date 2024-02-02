@@ -16,6 +16,9 @@ public interface UserInfoGithubRepository extends JpaRepository<UserInfoGithub, 
     @Query("SELECT p FROM UserInfoGithub p WHERE p.userInfo = :user_id")
     Optional<UserInfoGithub> findByUserId(@Param("user_id") UserInfo user);
 
+    @Query("SELECT COUNT(p) FROM UserInfoGithub p WHERE p.userGithub = :sns")
+    Long countById(@Param("sns") String snsName);
+
     @Query("DELETE FROM UserInfoGithub p WHERE p.userInfo = :user_id")
     @Modifying
     void deleteByUserId(@Param("user_id") UserInfo user);

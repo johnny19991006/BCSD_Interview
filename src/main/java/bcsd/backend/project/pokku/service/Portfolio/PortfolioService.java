@@ -18,33 +18,33 @@ import java.util.List;
 public interface PortfolioService {
 
     // about
-    public PortfolioAboutResponse findPortfolioAbout(String userId) throws Exception;
-    public Boolean updatePortfolioAbout(String userId, PortfolioAboutRequest request) throws Exception;
+    public PortfolioAboutResponse findPortfolioAbout(String userId) throws RuntimeException;
+    public Boolean updatePortfolioAbout(String userId, PortfolioAboutRequest request) throws RuntimeException;
 
     // skills
-    public PortfolioSkillsResponse findSkills(String userId) throws Exception;
-    public Boolean addSkills(String userId, PortfolioSkillsRequest request) throws Exception;
-    public Boolean deleteSkills(String userId, PortfolioSkillsRequest request) throws Exception;
-    public List<PortfolioSkillsListResponse> findSkillsList(String imageCategory) throws Exception;
+    public PortfolioSkillsResponse findSkills(String userId) throws RuntimeException;
+    public Boolean addSkills(String userId, PortfolioSkillsRequest request) throws RuntimeException;
+    public Boolean deleteSkills(String userId, PortfolioSkillsRequest request) throws RuntimeException;
+    public List<PortfolioSkillsListResponse> findSkillsList(String imageCategory) throws RuntimeException;
 
     // archiving
-    public List<PortfolioArchivingResponse> findArchiving(String userId) throws Exception;
-    public Boolean addArchiving(String userId, PortfolioArchivingRequest request) throws Exception;
-    public Boolean updateArchiving(String userId, PortfolioArchivingRequest request) throws Exception;
-    public Boolean deleteArchiving(String userId, PortfolioArchivingRequest request) throws Exception;
+    public List<PortfolioArchivingResponse> findArchiving(String userId) throws RuntimeException;
+    public Boolean addArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException;
+    public Boolean updateArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException;
+    public Boolean deleteArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException;
 
     // career
-    public List<PortfolioCareerResponse> findCareer(String userId) throws Exception;
-    public Boolean addCareer(String userId, PortfolioCareerRequest request) throws Exception;
-    public Boolean updateCareer(String userId, PortfolioCareerRequest request) throws Exception;
-    public Boolean deleteCareer(String userId, PortfolioCareerRequest request) throws Exception;
+    public List<PortfolioCareerResponse> findCareer(String userId) throws RuntimeException;
+    public Boolean addCareer(String userId, PortfolioCareerRequest request) throws RuntimeException;
+    public Boolean updateCareer(String userId, PortfolioCareerRequest request) throws RuntimeException;
+    public Boolean deleteCareer(String userId, PortfolioCareerRequest request) throws RuntimeException;
 
     // project
-    public List<PortfolioProjectResponse> findProject(String userId) throws Exception;
-    public Boolean addProject(String userId, PortfolioProjectRequest request) throws Exception;
-    public Boolean updateProject(String userId, PortfolioProjectRequest request) throws Exception;
-    public Boolean deleteProject(String userId, PortfolioProjectRequest request) throws Exception;
+    public List<PortfolioProjectResponse> findProject(String userId) throws RuntimeException;
+    public Boolean addProject(String userId, PortfolioProjectRequest request) throws RuntimeException;
+    public Boolean updateProject(String userId, PortfolioProjectRequest request) throws RuntimeException;
+    public Boolean deleteProject(String userId, PortfolioProjectRequest request) throws RuntimeException;
 
     // image
-    public ImageDownloadResponse download(String imageName) throws Exception;
+    public ImageDownloadResponse download(String imageName) throws RuntimeException;
 }
