@@ -101,6 +101,8 @@ public class ImageServiceImpl implements ImageService {
                     skillsCertificationRepository.save(SkillsCertification.builder()
                             .image(img)
                             .build());
+                }else{
+                    throw new NotSupportException("해당 카테고리는 존재하지 않습니다.", request.getCategory(), ResCode.NOT_SUPPORT.value());
                 }
 
                 File destination = new File(absolutePath + File.separator + path + originalFileExtension);
