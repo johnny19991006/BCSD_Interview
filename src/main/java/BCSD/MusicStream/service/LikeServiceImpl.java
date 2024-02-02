@@ -10,16 +10,18 @@ import BCSD.MusicStream.repository.MemberRepository;
 import BCSD.MusicStream.repository.MusicRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class LikeServiceImpl implements LikeService{
-    LikeRepository likeRepository;
-    MusicRepository musicRepository;
-    MemberRepository memberRepository;
+    private final LikeRepository likeRepository;
+    private final MusicRepository musicRepository;
+    private final MemberRepository memberRepository;
     @Override
     public void like(Integer musicId, Integer memberId) {
         deleteLikeAndDislike(musicId, memberId);
@@ -35,9 +37,9 @@ public class LikeServiceImpl implements LikeService{
 
     @Override
     public Boolean deleteLikeAndDislike(Integer musicId, Integer memberId) {
-        Optional<Like> like = likeRepository.findLikeByIdAndMemberId(musicId, memberId);
-        if(like.isPresent()) return false;
-        likeRepository.delete(like.get());
+        Optional<Like> like = likeRepository.findLikeByMusicIdAndMemberId(musicId, memberId);
+        if(!like.isPresent()) return false;
+        likeRepository.deleteById(like.get().getId());
         return true;
     }
 

@@ -39,8 +39,8 @@ public class MusicController {
         return ResponseEntity.ok(musicService.getAllMusic(WebConfig.getMemberIdByRequest(request), pageable));
     }
     @GetMapping("/{targetText}")
-    public ResponseEntity<List<ResponseMusicDTO>> getMusicByMusicNameOrSingerName(@PathVariable String targetText) throws MalformedURLException {
-        return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText));
+    public ResponseEntity<List<ResponseMusicDTO>> getMusicByMusicNameOrSingerName(@PathVariable String targetText, @PageableDefault Pageable pageable) throws MalformedURLException {
+        return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText, pageable));
     }
 
     @GetMapping("/weather")
@@ -55,15 +55,15 @@ public class MusicController {
     public ResponseEntity<ResponseLyricsDTO> getLyricsByMusicId(@PathVariable Integer musicId) throws IOException {
         return ResponseEntity.ok(musicService.getLyricsByMusicId(musicId));
     }
-    @PostMapping
+    @PostMapping("/upload")
     public ResponseEntity<ResponseMusicDTO> uploadMusic(HttpServletRequest request, @ModelAttribute UploadMusicDTO uploadMusicDTO) throws UnsupportedAudioFileException, IOException {
         return ResponseEntity.status(HttpStatus.CREATED).body(musicService.addMusic(uploadMusicDTO, WebConfig.getMemberIdByRequest(request)));
     }
-    @PutMapping
-    public ResponseEntity<ResponseMusicDTO> modefiedMusic(@ModelAttribute ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
+    @PutMapping("/modify")
+    public ResponseEntity<ResponseMusicDTO> modifyMusic(@ModelAttribute ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
         return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO));
     }
-    @DeleteMapping("/{musicId}")
+    @DeleteMapping("/delete/{musicId}")
     public ResponseEntity<Void> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) throws IOException {
         musicService.deleteMusic(musicId, WebConfig.getMemberIdByRequest(request));
         return ResponseEntity.noContent().build();

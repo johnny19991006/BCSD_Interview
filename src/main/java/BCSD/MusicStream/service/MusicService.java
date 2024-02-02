@@ -12,7 +12,7 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public interface MusicService {
-    List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText) throws MalformedURLException;
+    List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText, Pageable pageable) throws MalformedURLException;
     List<ResponseMusicDTO> getAllMusic(Integer memberId, Pageable pageable);
     List<ResponseMusicDTO> getAllMusicByWeather(Integer memberId, String weatherName, Pageable pageable);
     ResponseLyricsDTO getLyricsByMusicId(Integer musicId);

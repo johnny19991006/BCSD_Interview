@@ -47,8 +47,8 @@ public class MusicServiceImpl implements MusicService{
     private String musicImageDir;
 
     @Override
-    public List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText) {
-        List<Music> musicList = musicRepository.findByNameContainingOrSingerNameContaining(targetText, targetText);
+    public List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText, Pageable pageable) {
+        List<Music> musicList = musicRepository.findByNameContainingOrSingerNameContaining(targetText, targetText, pageable);
         List<ResponseMusicDTO> musicDTOList = new ArrayList<>(musicList.size());
         for(Music music: musicList) {
             String musicSoundUrl = musicSoundDir + music.getSoundFileName();
@@ -102,7 +102,10 @@ public class MusicServiceImpl implements MusicService{
         saveFile(uploadMusicDTO.getSoundFile(), Paths.get(musicSoundDir + soundFileName));
         saveFile(uploadMusicDTO.getSoundFile(), Paths.get(musicImageDir + imageFileName));
         musicRepository.save(music);
-        lyricsRepository.save(Lyrics.builder().contents(uploadMusicDTO.getLyrics()).build());
+        lyricsRepository.save(Lyrics.builder()
+                .musicId(music.getId())
+                .contents(uploadMusicDTO.getLyrics())
+                .build());
         return ResponseMusicDTO.builder()
                 .singerName(music.getSingerName())
                 .soundFilePath(musicSoundDir + music.getSoundFileName())

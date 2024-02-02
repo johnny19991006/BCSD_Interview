@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface MusicRepository extends JpaRepository<Music, Integer> {
-    List<Music> findByNameContainingOrSingerNameContaining(String name, String singerName);
+    List<Music> findByNameContainingOrSingerNameContaining(String name, String singerName, Pageable pageable);
 
     @Query(value = "SELECT m.*, ( (select if(count(*) > 0, 3, 0) from member_like l where l.music_id = m.id and l.is_like = 1) +\n" +
             "        \n" +

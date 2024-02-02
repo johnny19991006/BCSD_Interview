@@ -25,5 +25,6 @@ public class Like {
     @JoinColumn(name = "music_id", referencedColumnName = "id")
     private Music music;
 
+    @Column(name = "is_like")
     private Boolean isLike;
 }
