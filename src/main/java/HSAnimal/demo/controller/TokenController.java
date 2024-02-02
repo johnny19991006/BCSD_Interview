@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.CreateAccessTokenResponseDTO;
+import HSAnimal.demo.DTO.CreateAccessTokenDTO;
 import HSAnimal.demo.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,9 +16,8 @@ public class TokenController {
     private final TokenService tokenService;
 
     @PostMapping("/{user_id}/token")
-    public ResponseEntity<CreateAccessTokenResponseDTO> recreateAccessToken(@PathVariable String user_id) {
-        String newAccessToken = tokenService.recreateAccessToken(user_id);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(new CreateAccessTokenResponseDTO(newAccessToken));
+    public ResponseEntity<CreateAccessTokenDTO> recreateAccessToken(@PathVariable String user_id) {
+        CreateAccessTokenDTO newAccessToken = tokenService.recreateAccessToken(user_id);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newAccessToken);
     }
 }

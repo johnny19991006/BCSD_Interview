@@ -10,6 +10,7 @@ import java.util.List;
 
 @Builder
 @Entity(name = "users")
+@NoArgsConstructor
 @Getter
 public class User{
     @Id
@@ -28,8 +29,6 @@ public class User{
 
     @Column(name = "email", unique = true , nullable = false)
     private String email;
-
-    public User(){}
 
     public User(int id, String userId, String username, String password, String email){
         this.id = id;

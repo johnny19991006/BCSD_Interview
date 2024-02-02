@@ -1,14 +1,9 @@
 package HSAnimal.demo.configuration;
 
-import HSAnimal.demo.repository.RefreshTokenRepository;
-import HSAnimal.demo.repository.UserRepository;
-import HSAnimal.demo.service.TokenService;
-import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -16,11 +11,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-@RequiredArgsConstructor
 @Component
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final TokenProvider tokenProvider;
-    private final TokenService tokenService;
+
+    public TokenAuthenticationFilter (TokenProvider tokenProvider){
+        this.tokenProvider = tokenProvider;
+    }
 
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";

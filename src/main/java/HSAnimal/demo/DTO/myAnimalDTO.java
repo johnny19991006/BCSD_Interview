@@ -2,17 +2,19 @@ package HSAnimal.demo.DTO;
 
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Objects;
 
 @Getter
-@Setter
 @Builder
 public class myAnimalDTO {
     private int animalId;
     private String animalName;
-    private int matchScore;    // 추천 순위에 사용할 동물의 가중치 합
+    private int matchScore;
+
+    public void setMatchScore(int matchScore) {
+        this.matchScore = matchScore;
+    }
 
     @Override
     public boolean equals(Object o) {

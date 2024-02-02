@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.CreateAccessTokenResponseDTO;
+import HSAnimal.demo.DTO.CreateAccessTokenDTO;
 import HSAnimal.demo.DTO.UpdateUserDTO;
 import HSAnimal.demo.DTO.UserDTO;
 import HSAnimal.demo.DTO.UserKeywordsDTO;
@@ -41,8 +41,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CreateAccessTokenResponseDTO> login(@RequestBody UserDTO userDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.authenticateUser(userDTO));
+    public ResponseEntity<CreateAccessTokenDTO> login(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.login(userDTO));
     }
 
     @PostMapping("/{user_id}/logout")

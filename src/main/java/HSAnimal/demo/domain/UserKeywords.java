@@ -5,6 +5,7 @@ import lombok.*;
 
 @Builder
 @Entity(name = "user_keywords")
+@NoArgsConstructor
 @Getter
 public class UserKeywords {
     @Id
@@ -17,8 +18,6 @@ public class UserKeywords {
 
     @Column(name = "option_id", nullable = false)
     private int optionId;
-
-    public UserKeywords(){}
 
     public UserKeywords(int ukId, String userId, int optionId){
         this.ukId = ukId;
