@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import java.io.File;
+import java.io.IOException;
 
 @Service
 @Transactional
@@ -107,7 +108,9 @@ public class ImageServiceImpl implements ImageService {
 
             }
 
-        } catch (Exception e) {
+        } catch (IOException e) {
+            throw new UnknownException(e.getMessage(), "unknown", ResCode.UNKNOWN.value());
+        } catch (IllegalStateException e){
             throw new UnknownException(e.getMessage(), "unknown", ResCode.UNKNOWN.value());
         }
         return true;
@@ -115,25 +118,21 @@ public class ImageServiceImpl implements ImageService {
 
     @Override
     public Boolean deleteImage(String imageName) throws RuntimeException{
-        try {
-            // 이미지 파일의 절대 경로를 생성
-            String absolutePath = new File("").getAbsolutePath() + "\\";
-            String path = absolutePath + "images/" + imageName;
+        // 이미지 파일의 절대 경로를 생성
+        String absolutePath = new File("").getAbsolutePath() + "\\";
+        String path = absolutePath + "images/" + imageName;
 
-            // File 객체를 생성하여 이미지 파일을 삭제
-            File imageFile = new File(path);
-            if (imageFile.exists()) {
-                if (imageFile.delete()) {
-                    imageRepository.deleteById(imageName);
-                    return true;
-                } else {
-                    throw new NoSuchDataException("해당 이미지 정보가 존재하지 않습니다.", imageName, ResCode.NO_SUCH_DATA.value());
-                }
+        // File 객체를 생성하여 이미지 파일을 삭제
+        File imageFile = new File(path);
+        if (imageFile.exists()) {
+            if (imageFile.delete()) {
+                imageRepository.deleteById(imageName);
+                return true;
             } else {
-                throw new NoSuchDataException("해당 이미지가 존재하지 않습니다.", path, ResCode.NO_SUCH_DATA.value());
+                throw new NoSuchDataException("해당 이미지 정보가 존재하지 않습니다.", imageName, ResCode.NO_SUCH_DATA.value());
             }
-        } catch (Exception e) {
-            throw new UnknownException(e.getMessage(), "unknown", ResCode.UNKNOWN.value());
+        } else {
+            throw new NoSuchDataException("해당 이미지가 존재하지 않습니다.", path, ResCode.NO_SUCH_DATA.value());
         }
     }
 
