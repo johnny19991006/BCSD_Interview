@@ -60,7 +60,6 @@ public class MatchingService {
         return animalDTOList;
     }
 
-
     // 매칭된 동물들 반환
     public List<AnimalDTO> sumWeights(Set<Integer> myOptionList, Set<AnimalDTO> animalDTOSet){
         for(AnimalDTO animalDTO: animalDTOSet){

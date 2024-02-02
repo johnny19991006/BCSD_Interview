@@ -1,6 +1,7 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.DTO.LoginResponseDTO;
+import HSAnimal.demo.DTO.CreateAccessTokenResponseDTO;
+import HSAnimal.demo.DTO.UpdateUserDTO;
 import HSAnimal.demo.DTO.UserDTO;
 import HSAnimal.demo.configuration.JwtProperties;
 import HSAnimal.demo.configuration.TokenProvider;
@@ -9,8 +10,10 @@ import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.RefreshTokenRepository;
 import HSAnimal.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -46,28 +49,33 @@ public class UserService {
     }
 
     // 사용자 인증
-    public String authenticateUser(UserDTO userDTO) {
+    public CreateAccessTokenResponseDTO authenticateUser(UserDTO userDTO) {
         Optional<User> userOptional = userRepository.findByUserId(userDTO.getUserId());
         if (userOptional.isPresent() && bCryptPasswordEncoder.matches(userDTO.getPassword(),
                 userOptional.get().getPassword())) {
-            LoginResponseDTO loginDTO = new LoginResponseDTO(tokenProvider
+            CreateAccessTokenResponseDTO tokenDTO = new CreateAccessTokenResponseDTO(tokenProvider
                     .generateToken(userOptional.get(), Duration.ofMinutes(jwtProperties.getExpirationMinutes())));
             String refreshToken = tokenProvider.generateRefreshToken(
                     Duration.ofHours(jwtProperties.getRefreshExpirationHours()));	// 리프레시 토큰 생성
             refreshTokenRepository.findByUserId(userDTO.getUserId())
                     .ifPresentOrElse(
-                            it -> it.update(refreshToken),
+                            it -> it.updateRefreshToken(refreshToken),
                             () -> refreshTokenRepository.save(new RefreshToken(userDTO.getUserId(), refreshToken))
                     );
-            return loginDTO.getAccessToken();
+            return tokenDTO;
+        } else {
+            throw new IllegalArgumentException("로그인 오류");
         }
-        return "로그인 오류";
     }
 
-
-
-    public User findById(String userId){
-        return userRepository.findByUserId(userId)
-                .orElseThrow(() -> new IllegalArgumentException("Unexpected user"));
+    public void updateUser(String userId, UpdateUserDTO updateUserDTO){
+        userRepository.findByUserId(userId)
+                .map(user -> {
+                    user.changeName(updateUserDTO.getUsername());
+                    user.changeEmail(updateUserDTO.getEmail());
+                    user.changePassword(updateUserDTO.getPassword());
+                    return userRepository.save(user);
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
     }
 }

@@ -25,7 +25,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final static String HEADER_AUTHORIZATION = "Authorization";
     private final static String TOKEN_PREFIX = "Bearer ";
 
-    // 액세스 토큰을 입력받고, 유효하면 인증 정보를 설정하는 메서드
     @Override
     protected void doFilterInternal(
             HttpServletRequest request,

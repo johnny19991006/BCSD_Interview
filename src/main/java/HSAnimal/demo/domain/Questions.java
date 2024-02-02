@@ -9,7 +9,6 @@ import java.util.List;
 @Entity(name = "questions")
 @NoArgsConstructor
 @Getter
-@Setter
 public class Questions {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -7,7 +7,6 @@ import lombok.*;
 @Entity(name = "animal_keywords")
 @NoArgsConstructor
 @Getter
-@Setter
 public class AnimalKeywords {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

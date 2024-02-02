@@ -8,10 +8,9 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import java.util.Collection;
 import java.util.List;
 
-@Builder        // SQL 파라미터에 값을 쉽게 넣어주기 위함
-@Entity(name = "users")  // 해당 class에서 사용할 테이블 명
-@Getter             // get 메소드를 자동 생성
-@Setter             // set 메소드를 자동 생성
+@Builder
+@Entity(name = "users")
+@Getter
 public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,16 +18,16 @@ public class User{
     private int id;
 
     @Column(name = "user_id", unique = true, nullable = false, length = 100)
-    private String userId; //유저id
+    private String userId;
 
-    @Column(name = "username", nullable = false, length = 255)
-    private String username; //유저이름
+    @Column(name = "username", nullable = false)
+    private String username;
 
     @Column(name = "password", nullable = false)
-    private String password; //비밀번호
+    private String password;
 
     @Column(name = "email", unique = true , nullable = false)
-    private String email; //비밀번호
+    private String email;
 
     public User(){}
 
@@ -37,6 +36,18 @@ public class User{
         this.userId = userId;
         this.username = username;
         this.password = password;
+        this.email = email;
+    }
+
+    public void changeName (String username){
+        this.username = username;
+    }
+
+    public void changePassword (String password){
+        this.password = password;
+    }
+
+    public void changeEmail (String email){
         this.email = email;
     }
 

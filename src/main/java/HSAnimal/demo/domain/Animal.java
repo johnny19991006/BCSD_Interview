@@ -8,7 +8,6 @@ import java.util.Objects;
 @Builder
 @Entity(name = "animals")
 @Getter
-@Setter
 @NoArgsConstructor
 public class Animal {
     @Id

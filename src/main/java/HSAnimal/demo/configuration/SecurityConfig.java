@@ -14,7 +14,7 @@ public class SecurityConfig {
 
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
 
-    private final String[] allowedUrls = {"/", "/swagger-ui/**", "/v3/**", "/login", "signup", "/api/token"};
+    private final String[] allowedUrls = {"/login", "signup", "/{user_id}/token"};
 
     public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
         this.tokenAuthenticationFilter = tokenAuthenticationFilter;

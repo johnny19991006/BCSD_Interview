@@ -6,7 +6,6 @@ import lombok.*;
 @Builder
 @Entity(name = "user_keywords")
 @Getter
-@Setter
 public class UserKeywords {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
