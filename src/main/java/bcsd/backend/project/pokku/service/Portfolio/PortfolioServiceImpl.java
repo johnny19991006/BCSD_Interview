@@ -14,6 +14,10 @@ import bcsd.backend.project.pokku.dto.PortfolioProject.PortfolioProjectResponse;
 import bcsd.backend.project.pokku.dto.PortfolioSkills.PortfolioSkillsListResponse;
 import bcsd.backend.project.pokku.dto.PortfolioSkills.PortfolioSkillsRequest;
 import bcsd.backend.project.pokku.dto.PortfolioSkills.PortfolioSkillsResponse;
+import bcsd.backend.project.pokku.exception.DuplicateKeyException.DuplicateKeyException;
+import bcsd.backend.project.pokku.exception.NoSuchDataException.NoSuchDataException;
+import bcsd.backend.project.pokku.exception.ResCode;
+import bcsd.backend.project.pokku.exception.UnknownException.UnknownException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -63,36 +67,39 @@ public class PortfolioServiceImpl implements PortfolioService {
 
     private final ImageRepository imageRepository;
 
+    private final UserInfoRepository userInfoRepository;
+
 
     @Override
-    public PortfolioAboutResponse findPortfolioAbout(String userId) throws Exception {
+    public PortfolioAboutResponse findPortfolioAbout(String userId) throws RuntimeException {
+
         PortfolioAbout portfolioAbout = portfolioAboutRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("잘못된 계정 정보 입니다."));
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
         return new PortfolioAboutResponse(portfolioAbout);
     }
 
     @Override
-    public Boolean updatePortfolioAbout(String userId, PortfolioAboutRequest request) throws Exception {
-        try {
-            portfolioAboutRepository.updateById(UserInfo.builder()
-                            .userId(userId)
-                            .build(),
-                    request.getUserEducationVisible(),
-                    request.getUserEmailVisible(),
-                    request.getUserNameVisible(),
-                    request.getUserTelVisible());
-        } catch (Exception e) {
+    public Boolean updatePortfolioAbout(String userId, PortfolioAboutRequest request) throws RuntimeException {
 
-//            System.out.println(e.getMessage());
-//            throw new Exception("Wrong" + e.getMessage());
-            return false;
-        }
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
+        portfolioAboutRepository.updateById(UserInfo.builder()
+                        .userId(userId)
+                        .build(),
+                request.getUserEducationVisible(),
+                request.getUserEmailVisible(),
+                request.getUserNameVisible(),
+                request.getUserTelVisible());
+
         return true;
     }
 
     @Override
-    public PortfolioSkillsResponse findSkills(String userId) throws Exception {
+    public PortfolioSkillsResponse findSkills(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         PortfolioSkillsResponse response = new PortfolioSkillsResponse();
         response.setSkillsFrontendIdList(userPortfolioSkillsFrontendRepository.findByUserId(UserInfo.builder().userId(userId).build()));
         response.setSkillsBackendIdList(userPortfolioSkillsBackendRepository.findByUserId(UserInfo.builder().userId(userId).build()));
@@ -105,10 +112,13 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean addSkills(String userId, PortfolioSkillsRequest request) throws Exception {
+    public Boolean addSkills(String userId, PortfolioSkillsRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
         if (request.getCategory().equals("frontend")){
             skillsFrontendRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_frontend_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_frontend_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsFrontendRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -120,11 +130,11 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }else if(request.getCategory().equals("backend")){
             skillsBackendRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_backend_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_backend_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsBackendRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -136,11 +146,11 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }else if(request.getCategory().equals("deployment")){
             skillsDeploymentRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_deployment_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_deployment_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsDeploymentRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -152,11 +162,11 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }else if(request.getCategory().equals("mobileapp")){
             skillsMobileappRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_mobileapp_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_mobileapp_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsMobileappRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -168,11 +178,11 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }else if(request.getCategory().equals("versioncontrol")){
             skillsVersioncontrolRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_versioncontrol_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_versioncontrol_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsVersioncontrolRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -184,11 +194,11 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }else if(request.getCategory().equals("communication")){
             skillsCommunicationRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_communication_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_communication_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsCommunicationRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -200,11 +210,11 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }else if(request.getCategory().equals("certification")){
             skillsCertificationRepository.findById(request.getSkillsId())
-                    .orElseThrow(() -> new Exception("존재하지 않는 skills_communication_id 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_certification_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             Optional<Long> exists = userPortfolioSkillsCertificationRepository.findEntityCnt(
                     UserInfo.builder().userId(userId).build(),
@@ -216,19 +226,19 @@ public class PortfolioServiceImpl implements PortfolioService {
                         .userInfo(UserInfo.builder().userId(userId).build())
                         .build());
             }else{
-                return false;
+                throw new DuplicateKeyException("이미 존재하는 정보입니다.", request.getSkillsId().toString(), ResCode.DUPLICATE_KEY.value());
             }
         }
         return true;
     }
 
     @Override
-    public Boolean deleteSkills(String userId, PortfolioSkillsRequest request) throws Exception {
+    public Boolean deleteSkills(String userId, PortfolioSkillsRequest request) throws RuntimeException {
         if (request.getCategory().equals("frontend")) {
             UserPortfolioSkillsFrontend exists = userPortfolioSkillsFrontendRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsFrontend.builder().skillsFontendId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_communication_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsFrontendRepository.deleteById(exists.getUserPortfolioSkillsFrontendId());
 
@@ -236,7 +246,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             UserPortfolioSkillsBackend exists = userPortfolioSkillsBackendRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsBackend.builder().skillsBackendId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_backend_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsBackendRepository.deleteById(exists.getUserPortfolioSkillsBackendId());
 
@@ -244,7 +254,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             UserPortfolioSkillsDeployment exists = userPortfolioSkillsDeploymentRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsDeployment.builder().skillsDeploymentId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_deployment_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsDeploymentRepository.deleteById(exists.getUserPortfolioSkillsDeploymentId());
 
@@ -252,7 +262,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             UserPortfolioSkillsMobileapp exists = userPortfolioSkillsMobileappRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsMobileapp.builder().skillsMobileappId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_mobileapp_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsMobileappRepository.deleteById(exists.getUserPortfolioSkillsMobileappId());
 
@@ -260,7 +270,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             UserPortfolioSkillsVersioncontrol exists = userPortfolioSkillsVersioncontrolRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsVersioncontrol.builder().skillsVersioncontrolId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_versioncontrol_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsVersioncontrolRepository.deleteById(exists.getUserPortfolioSkillsVersioncontrolId());
 
@@ -268,7 +278,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             UserPortfolioSkillsCommunication exists = userPortfolioSkillsCommunicationRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsCommunication.builder().skillsCommunicationId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_communication_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsCommunicationRepository.deleteById(exists.getUserPortfolioSkillsCommunicationId());
 
@@ -276,7 +286,7 @@ public class PortfolioServiceImpl implements PortfolioService {
             UserPortfolioSkillsCertification exists = userPortfolioSkillsCertificationRepository.findEntity(
                             UserInfo.builder().userId(userId).build(),
                             SkillsCertification.builder().skillsCertificationId(request.getSkillsId()).build())
-                    .orElseThrow(() -> new BadCredentialsException("유효하지 않은 데이터 입니다."));
+                    .orElseThrow(() -> new NoSuchDataException("존재하지 않는 skills_certification_id 입니다.", request.getSkillsId().toString(), ResCode.NO_SUCH_DATA.value()));
 
             userPortfolioSkillsCertificationRepository.deleteById(exists.getUserPortfolioSkillsCertificationId());
 
@@ -286,22 +296,57 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public List<PortfolioSkillsListResponse> findSkillsList(String imageCategory) throws Exception {
+    public List<PortfolioSkillsListResponse> findSkillsList(String imageCategory) throws RuntimeException {
+
         List<PortfolioSkillsListResponse> response = new ArrayList<>();
         if(imageCategory.equals("frontend")){
             List<SkillsFrontend> skillsFrontendList = skillsFrontendRepository.findAll();
             for(SkillsFrontend s: skillsFrontendList){
                 response.add(new PortfolioSkillsListResponse(s.getSkillsFontendId(), s.getImage().getSkillName()));
             }
+        }else if(imageCategory.equals("backend")){
+            List<SkillsBackend> skillsBackendList = skillsBackendRepository.findAll();
+            for(SkillsBackend s: skillsBackendList){
+                response.add(new PortfolioSkillsListResponse(s.getSkillsBackendId(), s.getImage().getSkillName()));
+            }
+        }else if(imageCategory.equals("deployment")){
+            List<SkillsDeployment> skillsDeploymentList = skillsDeploymentRepository.findAll();
+            for(SkillsDeployment s: skillsDeploymentList){
+                response.add(new PortfolioSkillsListResponse(s.getSkillsDeploymentId(), s.getImage().getSkillName()));
+            }
+        }else if(imageCategory.equals("mobileapp")){
+            List<SkillsMobileapp> skillsMobileappList = skillsMobileappRepository.findAll();
+            for(SkillsMobileapp s: skillsMobileappList){
+                response.add(new PortfolioSkillsListResponse(s.getSkillsMobileappId(), s.getImage().getSkillName()));
+            }
+        }else if(imageCategory.equals("communication")){
+            List<SkillsCommunication> skillsCommunicationList = skillsCommunicationRepository.findAll();
+            for(SkillsCommunication s: skillsCommunicationList){
+                response.add(new PortfolioSkillsListResponse(s.getSkillsCommunicationId(), s.getImage().getSkillName()));
+            }
+        }else if(imageCategory.equals("certification")){
+            List<SkillsCertification> skillsCertificationList = skillsCertificationRepository.findAll();
+            for(SkillsCertification s: skillsCertificationList){
+                response.add(new PortfolioSkillsListResponse(s.getSkillsCertificationId(), s.getImage().getSkillName()));
+            }
+        }else if(imageCategory.equals("versioncontrol")){
+            List<SkillsVersioncontrol> skillsVersioncontrolList = skillsVersioncontrolRepository.findAll();
+            for(SkillsVersioncontrol s: skillsVersioncontrolList){
+                response.add(new PortfolioSkillsListResponse(s.getSkillsVersioncontrolId(), s.getImage().getSkillName()));
+            }
+        }else{
+            throw new NoSuchDataException("해당 카테고리는 존재하지 않습니다.", imageCategory, ResCode.NO_SUCH_DATA.value());
         }
 
         return response;
     }
 
     @Override
-    public List<PortfolioArchivingResponse> findArchiving(String userId) throws Exception {
+    public List<PortfolioArchivingResponse> findArchiving(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         List<PortfolioArchiving> portfolioArchivingList = portfolioArchivingRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("false"));
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         List<PortfolioArchivingResponse> response = new ArrayList<>();
         for (PortfolioArchiving p: portfolioArchivingList){
             response.add(new PortfolioArchivingResponse(p.getPortfolioArchivingId(), p.getArchivingName(), p.getArchivingExplanation()));
@@ -311,7 +356,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean addArchiving(String userId, PortfolioArchivingRequest request) throws Exception {
+    public Boolean addArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioArchivingRepository.save(PortfolioArchiving.builder()
                 .archivingExplanation(request.getArchivingExplanation())
                 .archivingName(request.getArchivingName())
@@ -321,7 +368,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean updateArchiving(String userId, PortfolioArchivingRequest request) throws Exception {
+    public Boolean updateArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioArchivingRepository.findByUserId(UserInfo.builder().userId(userId).build())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioArchivingRepository.save(PortfolioArchiving.builder()
                 .portfolioArchivingId(request.getPortfolioArchivingId())
                 .archivingExplanation(request.getArchivingExplanation())
@@ -332,7 +383,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean deleteArchiving(String userId, PortfolioArchivingRequest request) throws Exception {
+    public Boolean deleteArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioArchivingRepository.findByUserId(UserInfo.builder().userId(userId).build())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioArchivingRepository.deleteByUserIdAndName(
                 UserInfo.builder().userId(userId).build(),
                 request.getArchivingName());
@@ -340,9 +395,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public List<PortfolioCareerResponse> findCareer(String userId) throws Exception {
+    public List<PortfolioCareerResponse> findCareer(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         List<PortfolioCareer> portfolioCareerList = portfolioCareerRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("false"));
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         List<PortfolioCareerResponse> response = new ArrayList<>();
         for (PortfolioCareer p: portfolioCareerList){
             response.add(new PortfolioCareerResponse(p.getPortfolioCareerId(), p.getCareerExplanation()));
@@ -352,7 +409,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean addCareer(String userId, PortfolioCareerRequest request) throws Exception {
+    public Boolean addCareer(String userId, PortfolioCareerRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioCareerRepository.save(PortfolioCareer.builder()
                 .careerExplanation(request.getCareerExplanation())
                 .userInfo(UserInfo.builder().userId(userId).build())
@@ -361,7 +420,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean updateCareer(String userId, PortfolioCareerRequest request) throws Exception {
+    public Boolean updateCareer(String userId, PortfolioCareerRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioCareerRepository.findByUserId(UserInfo.builder().userId(userId).build())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioCareerRepository.save(PortfolioCareer.builder()
                 .portfolioCareerId(request.getPortfolioCareerId())
                 .careerExplanation(request.getCareerExplanation())
@@ -371,8 +434,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean deleteCareer(String userId, PortfolioCareerRequest request) throws Exception {
-
+    public Boolean deleteCareer(String userId, PortfolioCareerRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioCareerRepository.findByUserId(UserInfo.builder().userId(userId).build())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioCareerRepository.deleteByUserIdAndExplanation(
                 UserInfo.builder().userId(userId).build(),
                 request.getCareerExplanation());
@@ -382,9 +448,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public List<PortfolioProjectResponse> findProject(String userId) throws Exception {
+    public List<PortfolioProjectResponse> findProject(String userId) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         List<PortfolioProject> portfolioProjectList = portfolioProjectRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new BadCredentialsException("false"));
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         List<PortfolioProjectResponse> response = new ArrayList<>();
         for (PortfolioProject p: portfolioProjectList){
             response.add(new PortfolioProjectResponse(p.getPortfolioProjectId(), p.getProjectName(), p.getProjectExplanation()));
@@ -394,7 +462,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean addProject(String userId, PortfolioProjectRequest request) throws Exception {
+    public Boolean addProject(String userId, PortfolioProjectRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioProjectRepository.save(PortfolioProject.builder()
                 .projectExplanation(request.getProjectExplanation())
                 .projectName(request.getProjectName())
@@ -404,7 +474,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean updateProject(String userId, PortfolioProjectRequest request) throws Exception {
+    public Boolean updateProject(String userId, PortfolioProjectRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioProjectRepository.findByUserId(UserInfo.builder().userId(userId).build())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioProjectRepository.save(PortfolioProject.builder()
                 .portfolioProjectId(request.getPortfolioProjectId())
                 .projectExplanation(request.getProjectExplanation())
@@ -415,7 +489,11 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public Boolean deleteProject(String userId, PortfolioProjectRequest request) throws Exception {
+    public Boolean deleteProject(String userId, PortfolioProjectRequest request) throws RuntimeException {
+        userInfoRepository.findById(userId)
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioProjectRepository.findByUserId(UserInfo.builder().userId(userId).build())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
         portfolioProjectRepository.deleteByUserIdAndName(
                 UserInfo.builder().userId(userId).build(),
                 request.getProjectName());
@@ -423,11 +501,18 @@ public class PortfolioServiceImpl implements PortfolioService {
     }
 
     @Override
-    public ImageDownloadResponse download(String imageName) throws Exception{
+    public ImageDownloadResponse download(String imageName) throws RuntimeException{
         Optional<Image> image = imageRepository.findById(imageName);
-        ImageDownloadResponse response = new ImageDownloadResponse();
-        byte[] imageBytes = Files.readAllBytes(Paths.get(new File("").getAbsolutePath() + File.separator + image.get().getImageUrl()));
-        response.setBase64Images(Base64.getEncoder().encodeToString(imageBytes));
-        return response;
+        if(image.isEmpty()){
+            throw new NoSuchDataException("해당 이미지가 존재하지 않습니다.", imageName, ResCode.NO_SUCH_DATA.value());
+        }
+        try {
+            ImageDownloadResponse response = new ImageDownloadResponse();
+            byte[] imageBytes = Files.readAllBytes(Paths.get(new File("").getAbsolutePath() + File.separator + image.get().getImageUrl()));
+            response.setBase64Images(Base64.getEncoder().encodeToString(imageBytes));
+            return response;
+        }catch (Exception ex){
+            throw new UnknownException(ex.getMessage(), "unknown", ResCode.UNKNOWN.value());
+        }
     }
 }
