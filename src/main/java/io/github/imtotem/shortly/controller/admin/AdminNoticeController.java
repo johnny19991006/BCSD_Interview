@@ -4,12 +4,13 @@ import io.github.imtotem.shortly.domain.Notice;
 import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.dto.notice.NoticeRequest;
 import io.github.imtotem.shortly.dto.notice.NoticeResponse;
+import io.github.imtotem.shortly.mapper.NoticeMapper;
 import io.github.imtotem.shortly.service.notice.NoticeService;
+import io.github.imtotem.shortly.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,38 +20,30 @@ import java.util.List;
 @RequestMapping("/api/admin/notice")
 public class AdminNoticeController {
 
-    private final NoticeService service;
+    private final NoticeService noticeService;
+    private final UserService userService;
+
+    private final NoticeMapper mapper;
 
     @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<NoticeResponse> createNotice(
-            @AuthenticationPrincipal User user,
-            @RequestBody @Valid NoticeRequest request) {
+    public ResponseEntity<NoticeResponse> createNotice(@RequestBody @Valid NoticeRequest request) {
+        User user = userService.findUser(request.getEmail());
 
-        Notice notice = service.createNotice(
-                Notice.builder()
-                        .user(user)
-                        .title(request.getTitle())
-                        .content(request.getContent())
-                        .originUrl(request.getOriginUrl())
-                        .description(request.getDescription())
-                        .build()
-        );
+        Notice notice = mapper.toNotice(user, request);
 
-        return ResponseEntity.ok(
-                NoticeResponse.builder()
-                        .email(notice.getUser().getEmail())
-                        .title(notice.getTitle())
-                        .content(notice.getContent())
-                        .originUrl(notice.getOriginUrl())
-                        .description(notice.getDescription())
-                        .build()
-        );
+        NoticeResponse response = mapper.toResponse(noticeService.createNotice(notice));
+
+        return ResponseEntity.ok(response);
     }
 
     @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     @GetMapping
-    public ResponseEntity<List<Notice>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+    public ResponseEntity<List<NoticeResponse>> findAll() {
+        List<Notice> notices = noticeService.findAll();
+
+        return ResponseEntity.ok(
+                notices.stream().map(mapper::toResponse).toList()
+        );
     }
 }

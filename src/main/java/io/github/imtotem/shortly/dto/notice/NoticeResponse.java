@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class NoticeResponse {
+    private long id;
+
     private String email;
 
     private String title;

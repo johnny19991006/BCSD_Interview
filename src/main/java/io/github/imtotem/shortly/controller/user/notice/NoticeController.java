@@ -4,6 +4,7 @@ import io.github.imtotem.shortly.domain.Notice;
 import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.dto.notice.NoticeRequest;
 import io.github.imtotem.shortly.dto.notice.NoticeResponse;
+import io.github.imtotem.shortly.mapper.NoticeMapper;
 import io.github.imtotem.shortly.service.notice.NoticeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -19,20 +20,15 @@ import java.util.List;
 public class NoticeController {
     private final NoticeService service;
 
+    private final NoticeMapper mapper;
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<NoticeResponse>> findAll(@AuthenticationPrincipal User user) {
         List<Notice> notices = service.findAllByUser(user);
 
         return ResponseEntity.ok(
-                notices.stream().map(notice -> NoticeResponse.builder()
-                        .email(notice.getUser().getEmail())
-                        .title(notice.getTitle())
-                        .content(notice.getContent())
-                        .originUrl(notice.getOriginUrl())
-                        .description(notice.getDescription())
-                        .build()
-                ).toList()
+                notices.stream().map(mapper::toResponse).toList()
         );
     }
 
