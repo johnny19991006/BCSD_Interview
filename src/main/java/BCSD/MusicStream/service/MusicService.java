@@ -3,6 +3,7 @@ package BCSD.MusicStream.service;
 import BCSD.MusicStream.dto.lyrics.ResponseLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.ResponseMusicDTO;
+import BCSD.MusicStream.dto.music.ResponsePlayMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
 import org.springframework.data.domain.Pageable;
 
@@ -15,7 +16,7 @@ public interface MusicService {
     List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText, Pageable pageable) throws MalformedURLException;
     List<ResponseMusicDTO> getAllMusic(Integer memberId, Pageable pageable);
     List<ResponseMusicDTO> getAllMusicByWeather(Integer memberId, String weatherName, Pageable pageable);
-    ResponseLyricsDTO getLyricsByMusicId(Integer musicId);
+    ResponsePlayMusicDTO getLyricsAndLikeByMusicId(Integer musicId, Integer memberId);
     ResponseMusicDTO addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId) throws IOException, UnsupportedAudioFileException;
     ResponseMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException;
     void deleteMusic(Integer musicId, Integer memberId) throws IOException;

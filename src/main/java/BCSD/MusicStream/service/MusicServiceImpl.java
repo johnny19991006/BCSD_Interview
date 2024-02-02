@@ -4,6 +4,7 @@ import BCSD.MusicStream.domain.*;
 import BCSD.MusicStream.dto.lyrics.ResponseLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.ResponseMusicDTO;
+import BCSD.MusicStream.dto.music.ResponsePlayMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
 import BCSD.MusicStream.exception.CustomException;
 import BCSD.MusicStream.exception.ErrorCode;
@@ -29,6 +30,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
@@ -39,6 +41,7 @@ public class MusicServiceImpl implements MusicService{
     private final CategoryRepository categoryRepository;
     private final MemberRepository memberRepository;
     private final WeatherRepository weatherRepository;
+    private final LikeRepository likeRepository;
 
     @Value("${sound-path}")
     private String musicSoundDir;
@@ -66,10 +69,14 @@ public class MusicServiceImpl implements MusicService{
     }
 
     @Override
-    public ResponseLyricsDTO getLyricsByMusicId(Integer musicId) {
+    public ResponsePlayMusicDTO getLyricsAndLikeByMusicId(Integer musicId, Integer memberId) {
         Lyrics lyrics = lyricsRepository.findById(musicId).orElseThrow(() -> new CustomException(ErrorCode.LYRICS_NOT_FOUND));
-        return ResponseLyricsDTO.builder()
+        Optional<Like> like = likeRepository.findLikeByMusicIdAndMemberId(musicId, memberId);
+        Boolean isLike = null;
+        if(like.isPresent()) isLike = like.get().getIsLike();
+        return ResponsePlayMusicDTO.builder()
                 .lyrics(lyrics.getContents())
+                .isLike(isLike)
                 .build();
     }
 

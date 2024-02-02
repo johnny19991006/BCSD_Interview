@@ -6,6 +6,7 @@ import BCSD.MusicStream.config.WebConfig;
 import BCSD.MusicStream.dto.lyrics.ResponseLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.ResponseMusicDTO;
+import BCSD.MusicStream.dto.music.ResponsePlayMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
 import BCSD.MusicStream.service.GeoService;
 import BCSD.MusicStream.service.LikeService;
@@ -52,8 +53,8 @@ public class MusicController {
        return ResponseEntity.ok(musicService.getAllMusicByWeather(WebConfig.getMemberIdByRequest(request), weatherName, pageable));
     }
     @GetMapping("/play/{musicId}")
-    public ResponseEntity<ResponseLyricsDTO> getLyricsByMusicId(@PathVariable Integer musicId) throws IOException {
-        return ResponseEntity.ok(musicService.getLyricsByMusicId(musicId));
+    public ResponseEntity<ResponsePlayMusicDTO> getLyricsAndLikeByMusicId(HttpServletRequest request, @PathVariable Integer musicId) throws IOException {
+        return ResponseEntity.ok(musicService.getLyricsAndLikeByMusicId(musicId, WebConfig.getMemberIdByRequest(request)));
     }
     @PostMapping("/upload")
     public ResponseEntity<ResponseMusicDTO> uploadMusic(HttpServletRequest request, @ModelAttribute UploadMusicDTO uploadMusicDTO) throws UnsupportedAudioFileException, IOException {

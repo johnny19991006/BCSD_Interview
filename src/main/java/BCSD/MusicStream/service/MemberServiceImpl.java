@@ -41,7 +41,6 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseMemberDTO signUp(SignUpMemberDTO signUpMemberDTO) {
         Authority authority = authorityRepository.findById(signUpMemberDTO.getAuthorityId()).orElseThrow(() -> new CustomException(ErrorCode.AUTHORITY_NOT_FOUND));
-        System.out.println(passwordEncoder.encode(signUpMemberDTO.getPassword()));
         Member member = memberRepository.save(Member.builder()
                 .name(signUpMemberDTO.getName())
                 .email(signUpMemberDTO.getEmail())
