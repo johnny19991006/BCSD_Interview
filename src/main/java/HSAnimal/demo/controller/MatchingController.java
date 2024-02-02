@@ -1,30 +1,27 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.AnimalDTO;
-import HSAnimal.demo.service.MatchingService;
+import HSAnimal.demo.DTO.myAnimalDTO;
+import HSAnimal.demo.service.MatchService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Set;
 
 @RestController
 public class MatchingController {
 
-    private final MatchingService matchingService;
+    private final MatchService matchService;
 
-    public MatchingController(MatchingService matchingService){
-        this.matchingService = matchingService;
+    public MatchingController(MatchService matchService){
+        this.matchService = matchService;
     }
 
     @GetMapping("/{user_id}/match")
     public List<String> showAnimalList() {
-        return matchingService.getAnimalList();
+        return matchService.getAnimalList();
     }
 
     @PostMapping("/{user_id}/match")
-    public List<AnimalDTO> matchingAnimals(@PathVariable String user_id) {
-        Set<Integer> myOptionList = matchingService.getMyOptionList(user_id);
-        Set<AnimalDTO> animalList = matchingService.getMyAnimalDTOList(myOptionList);
-        return matchingService.sumWeights(myOptionList, animalList);
+    public List<myAnimalDTO> matchAnimals(@PathVariable String user_id) {
+        return matchService.sumWeights(user_id);
     }
 }

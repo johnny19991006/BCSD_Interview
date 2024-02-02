@@ -3,8 +3,10 @@ package HSAnimal.demo.controller;
 import HSAnimal.demo.DTO.CreateAccessTokenResponseDTO;
 import HSAnimal.demo.DTO.UpdateUserDTO;
 import HSAnimal.demo.DTO.UserDTO;
+import HSAnimal.demo.DTO.UserKeywordsDTO;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.UserRepository;
+import HSAnimal.demo.service.MatchService;
 import HSAnimal.demo.service.TokenService;
 import HSAnimal.demo.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -12,24 +14,30 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+import java.util.Set;
+
 @RestController
 public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
     private final TokenService tokenService;
+    private final MatchService matchService;
 
-    public UserController(UserRepository userRepository, UserService userService, TokenService tokenService){
+    public UserController(UserRepository userRepository, UserService userService,
+                          TokenService tokenService, MatchService matchService){
         this.userRepository = userRepository;
         this.userService = userService;
         this.tokenService = tokenService;
+        this.matchService = matchService;
     }
 
     // 회원가입
     @PostMapping("/signup")
     public ResponseEntity<String> signup(@RequestBody UserDTO request) {
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body("\"" + userService.signup(request) + "\"로 회원가입이 완료되었습니다!");
+                .body("\"" + userService.signup(request) + "\" 회원가입이 완료되었습니다!");
     }
 
     @PostMapping("/login")
@@ -57,11 +65,20 @@ public class UserController {
 
     @DeleteMapping("/{user_id}")
     public ResponseEntity<String> deleteUser(@PathVariable String user_id) {
-        return userRepository.findByUserId(user_id)
-                .map(user -> {
-                    userRepository.delete(user);
-                    return ResponseEntity.ok("회원탈퇴가 완료되었습니다.");
-                })
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+        userService.deleteUser(user_id);
+        return ResponseEntity.status(HttpStatus.OK).body("회원탈퇴가 완료되었습니다.");
     }
+
+    @GetMapping("/{user_id}/keywords")
+    public ResponseEntity<Set<Integer>> showUserKeywords(@PathVariable String user_id) {
+        return ResponseEntity.status(HttpStatus.OK).body(matchService.getMyOptionList(user_id));
+    }
+
+    @DeleteMapping("/{user_id}/keywords")
+    public ResponseEntity<Set<Integer>> deleteUserKeywords(@PathVariable String user_id,
+                                                           @RequestBody List<UserKeywordsDTO> userKeywordsList) {
+        userService.deleteUserKeywords(user_id, userKeywordsList);
+        return ResponseEntity.status(HttpStatus.OK).body(matchService.getMyOptionList(user_id));
+    }
+
 }

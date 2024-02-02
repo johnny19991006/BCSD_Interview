@@ -27,7 +27,6 @@ public class SurveyService {
                 .collect(Collectors.toList());
     }
 
-
     // 사용자의 키워드 저장하기
     public void saveOptions(List<UserKeywordsDTO> userKeywordsList, String user_id) {
         for (UserKeywordsDTO userKeywordsDTO : userKeywordsList) {

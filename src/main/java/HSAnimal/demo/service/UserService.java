@@ -1,13 +1,13 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.DTO.CreateAccessTokenResponseDTO;
-import HSAnimal.demo.DTO.UpdateUserDTO;
-import HSAnimal.demo.DTO.UserDTO;
+import HSAnimal.demo.DTO.*;
 import HSAnimal.demo.configuration.JwtProperties;
 import HSAnimal.demo.configuration.TokenProvider;
 import HSAnimal.demo.domain.RefreshToken;
 import HSAnimal.demo.domain.User;
+import HSAnimal.demo.domain.UserKeywords;
 import HSAnimal.demo.repository.RefreshTokenRepository;
+import HSAnimal.demo.repository.UserKeywordsRepository;
 import HSAnimal.demo.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -26,15 +27,16 @@ public class UserService {
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JwtProperties jwtProperties;
-
+    private final UserKeywordsRepository userKeywordsRepository;
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
                         TokenProvider tokenProvider, RefreshTokenRepository refreshTokenRepository,
-                       JwtProperties jwtProperties){
+                       JwtProperties jwtProperties, UserKeywordsRepository userKeywordsRepository){
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.tokenProvider = tokenProvider;
         this.refreshTokenRepository = refreshTokenRepository;
         this.jwtProperties = jwtProperties;
+        this.userKeywordsRepository = userKeywordsRepository;
     }
 
     // 회원가입
@@ -73,9 +75,24 @@ public class UserService {
                 .map(user -> {
                     user.changeName(updateUserDTO.getUsername());
                     user.changeEmail(updateUserDTO.getEmail());
-                    user.changePassword(updateUserDTO.getPassword());
+                    user.changePassword(bCryptPasswordEncoder.encode(updateUserDTO.getPassword()));
                     return userRepository.save(user);
                 })
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+    }
+
+    public void deleteUser(String userId) {
+        User user = userRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+        userRepository.delete(user);
+    }
+
+    public void deleteUserKeywords(String userId, List<UserKeywordsDTO> userKeywordsDTOList) {
+        for (UserKeywordsDTO userKeywordsDTO: userKeywordsDTOList) {
+            int optionId = userKeywordsDTO.getOptionId();
+            UserKeywords userKeywords = userKeywordsRepository.findByUserIdAndOptionId(userId, optionId)
+                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+            userKeywordsRepository.delete(userKeywords);
+        }
     }
 }

@@ -9,7 +9,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @Builder
-public class AnimalDTO {
+public class myAnimalDTO {
     private int animalId;
     private String animalName;
     private int matchScore;    // 추천 순위에 사용할 동물의 가중치 합
@@ -18,8 +18,8 @@ public class AnimalDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        AnimalDTO animalDTO = (AnimalDTO) o;
-        return animalId == animalDTO.animalId;
+        myAnimalDTO myAnimalDTO = (myAnimalDTO) o;
+        return animalId == myAnimalDTO.animalId;
     }
 
     @Override

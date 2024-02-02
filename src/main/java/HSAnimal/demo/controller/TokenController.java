@@ -16,8 +16,8 @@ public class TokenController {
     private final TokenService tokenService;
 
     @PostMapping("/{user_id}/token")
-    public ResponseEntity<CreateAccessTokenResponseDTO> createNewAccessToken(@PathVariable String user_id) {
-        String newAccessToken = tokenService.createNewAccessToken(user_id);
+    public ResponseEntity<CreateAccessTokenResponseDTO> recreateAccessToken(@PathVariable String user_id) {
+        String newAccessToken = tokenService.recreateAccessToken(user_id);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new CreateAccessTokenResponseDTO(newAccessToken));
     }

@@ -5,7 +5,12 @@ import HSAnimal.demo.domain.RefreshToken;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.RefreshTokenRepository;
 import HSAnimal.demo.repository.UserRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.time.Duration;
 import java.util.Optional;
 
@@ -23,7 +28,7 @@ public class TokenService {
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
-    public String createNewAccessToken(String userId) {
+    public String recreateAccessToken(String userId) {
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByUserId(userId);
             String refreshToken = optionalRefreshToken
                     .orElseThrow(() -> new IllegalArgumentException("Unexpected token"))
@@ -38,7 +43,9 @@ public class TokenService {
     }
 
     public void deleteRefreshToken(String userId) {
-        refreshTokenRepository.findByUserId(userId).ifPresent(refreshTokenRepository::delete);
+        RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+        refreshTokenRepository.delete(refreshToken);
     }
 
 
