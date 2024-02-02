@@ -1,8 +1,8 @@
 package io.github.imtotem.shortly.controller.user;
 
-import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.dto.JwtToken;
 import io.github.imtotem.shortly.dto.user.UserInfoRequest;
+import io.github.imtotem.shortly.mapper.UserMapper;
 import io.github.imtotem.shortly.service.user.login.LoginService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,14 +19,11 @@ public class LoginController {
 
     private final LoginService service;
 
+    private final UserMapper mapper;
+
     @PostMapping
     public ResponseEntity<JwtToken> login(@RequestBody @Valid UserInfoRequest request) {
-        JwtToken token = service.login(
-                User.builder()
-                    .email(request.getEmail())
-                    .password(request.getPassword())
-                    .build()
-        );
+        JwtToken token = service.login(mapper.toUser(request));
 
         return ResponseEntity.ok(token);
     }
