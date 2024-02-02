@@ -25,4 +25,5 @@ public interface BoardService {
     public void addHashtagToBoard(int boardId, int hashtagId) throws SQLException;
     public void removeHashtagFromBoard(int boardId, int hashtagId) throws SQLException;
     public List<Hashtag> getHashtagsForBoard(int boardId) throws SQLException;
+    public Board getBoardById(Integer boardId);
 }

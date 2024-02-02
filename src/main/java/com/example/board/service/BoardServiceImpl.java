@@ -190,4 +190,8 @@ public class BoardServiceImpl implements BoardService {
     public List<Hashtag> getHashtagsForBoard(int boardId) {
         return boardRepository.findHashtagsByBoardId(boardId);
     }
+    @Override
+    public Board getBoardById(Integer boardId) {
+        return boardRepository.findById(boardId).orElse(null);
+    }
 }

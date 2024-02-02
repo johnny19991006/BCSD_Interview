@@ -35,4 +35,8 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> getCommentByUserId(int userId) throws SQLException {
         return commentRepository.findByUserUserId(userId);
     }
+    @Override
+    public Comment getCommentById(Integer commentId) {
+        return commentRepository.findById(commentId).orElse(null);
+    }
 }

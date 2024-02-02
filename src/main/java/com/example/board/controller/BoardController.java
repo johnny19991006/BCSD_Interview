@@ -4,8 +4,11 @@ import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
 import com.example.board.dto.BoardDTO;
 import com.example.board.dto.LoginRequestDTO;
+import com.example.board.security.AuthorizeBoard;
+import com.example.board.security.AuthorizeUser;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -43,6 +46,7 @@ public class BoardController {
     public List<Board> getBoardsByTitleContaining(@RequestParam String title) throws SQLException{
         return boardService.getBoardsByTitleContaining(title);
     }
+    @AuthorizeUser
     @GetMapping("/user/{userId}")
     public List<Board> getBoardByUserId(@PathVariable int userId) throws SQLException {
         return boardService.getBoardByUserId(userId);
@@ -52,40 +56,48 @@ public class BoardController {
         return boardService.getBoardByCategoryId(categoryId);
     }
     @PutMapping("/{boardId}/title")
+    @AuthorizeBoard
     public void updateBoardTitle(@PathVariable Integer boardId, @RequestBody String newTitle) throws SQLException {
         boardService.updateBoardTitle(boardId, newTitle);
     }
 
     @PutMapping("/{boardId}/price")
+    @AuthorizeBoard
     public void updateBoardPrice(@PathVariable Integer boardId, @RequestBody String newPrice) throws SQLException {
         boardService.updateBoardPrice(boardId, newPrice);
     }
 
     @PutMapping("/{boardId}/content")
+    @AuthorizeBoard
     public void updateBoardContent(@PathVariable Integer boardId, @RequestBody String newContent) throws SQLException {
         boardService.updateBoardContent(boardId, newContent);
     }
 
     @PutMapping("/{boardId}/status")
+    @AuthorizeBoard
     public void updateBoardStatus(@PathVariable Integer boardId, @RequestBody String newStatus) throws SQLException {
         boardService.updateBoardStatus(boardId, newStatus);
     }
 
     @PutMapping("/{boardId}/category")
+    @AuthorizeBoard
     public void updateBoardCategory(@PathVariable Integer boardId, @RequestBody Integer newCgNum) throws SQLException {
         boardService.updateBoardCategory(boardId, newCgNum);
     }
 
     @DeleteMapping("/{boardId}")
+    @AuthorizeBoard
     public void deleteBoard(@PathVariable Integer boardId) throws SQLException {
         boardService.deleteBoard(boardId);
     }
     @PostMapping("/{boardId}/hashtag/{hashtagId}")
+    @AuthorizeBoard
     public void addHashtagToBoard(@PathVariable int boardId, @PathVariable int hashtagId) throws SQLException {
         boardService.addHashtagToBoard(boardId, hashtagId);
     }
 
     @DeleteMapping("/{boardId}/hashtag/{hashtagId}")
+    @AuthorizeBoard
     public void removeHashtagFromBoard(@PathVariable int boardId, @PathVariable int hashtagId) throws SQLException {
         boardService.removeHashtagFromBoard(boardId, hashtagId);
     }

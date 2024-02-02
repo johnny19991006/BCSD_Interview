@@ -10,4 +10,5 @@ public interface CommentService {
     public void deleteComment(Integer commentId) throws SQLException; // 댓글 삭제
     public void updateCommentContent(Integer commentId, String newContent) throws SQLException; // 댓글
     public List<Comment> getCommentByUserId(int userId) throws SQLException;
+    public Comment getCommentById(Integer commentId);
 }

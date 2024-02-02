@@ -11,13 +11,12 @@ import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
-public class AuthorizationAspect {
-    @Pointcut("@annotation(com.example.board.security.Authorize) && args(userId,..)")
-    public void authorizePointcut(Integer userId) {
+public class AuthorizationAspectUser {
+    @Pointcut("@annotation(com.example.board.security.AuthorizeUser) && args(userId, ..)")
+    public void authorizeUserIdPointcut(Integer userId) {
     }
-
-    @Before("authorizePointcut(userId)")
-    public void beforeAuthorize(Integer userId) {
+    @Before("authorizeUserIdPointcut(userId)")
+    public void beforeAuthorizeUserId(Integer userId) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();

@@ -3,7 +3,7 @@ package com.example.board.controller;
 import com.example.board.domain.User;
 import com.example.board.dto.LoginRequestDTO;
 import com.example.board.dto.UserDTO;
-import com.example.board.security.Authorize;
+import com.example.board.security.AuthorizeUser;
 import com.example.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -37,12 +37,12 @@ public class UserController {
     public UserDTO getUserSimpleInfoByUserId(@PathVariable Integer userId) throws SQLException {
         return userService.getUserSimpleInfoByUserId(userId);
     }
-    @Authorize
+    @AuthorizeUser
     @PutMapping("/{userId}/password") //DTO 사용하는 방식도 있음
     public void updateUserPw(@PathVariable Integer userId, @RequestBody String newPw) throws SQLException {
         userService.updateUserPw(userId, newPw);
     }
-    @Authorize
+    @AuthorizeUser
     @PutMapping("/{userId}/nickname")
     public void updateUserNn(@PathVariable Integer userId, @RequestBody String newNn) throws SQLException {
         userService.updateUserNn(userId, newNn);
@@ -51,7 +51,7 @@ public class UserController {
     public void updateUsertype(@PathVariable Integer userId, @RequestBody Integer newTypeNum) throws SQLException {
         userService.updateUsertype(userId, newTypeNum);
     }
-    @Authorize
+    @AuthorizeUser
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Integer userId) throws SQLException {
         userService.deleteUser(userId);
