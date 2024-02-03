@@ -15,6 +15,7 @@ import java.util.Collection;
 @Builder
 @Getter
 @Setter
+@EqualsAndHashCode
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

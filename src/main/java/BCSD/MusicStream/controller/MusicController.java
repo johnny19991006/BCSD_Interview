@@ -3,11 +3,13 @@ package BCSD.MusicStream.controller;
 import BCSD.MusicStream.api.OpenWeather;
 import BCSD.MusicStream.api.WeatherAPI;
 import BCSD.MusicStream.config.WebConfig;
-import BCSD.MusicStream.dto.lyrics.ResponseLyricsDTO;
 import BCSD.MusicStream.dto.music.ModifyMusicDTO;
 import BCSD.MusicStream.dto.music.ResponseMusicDTO;
 import BCSD.MusicStream.dto.music.ResponsePlayMusicDTO;
 import BCSD.MusicStream.dto.music.UploadMusicDTO;
+import BCSD.MusicStream.exception.CustomErrorCodeException;
+import BCSD.MusicStream.exception.CustomException;
+import BCSD.MusicStream.exception.ErrorCode;
 import BCSD.MusicStream.service.GeoService;
 import BCSD.MusicStream.service.LikeService;
 import BCSD.MusicStream.service.MusicService;
@@ -15,16 +17,16 @@ import com.maxmind.geoip2.exception.GeoIp2Exception;
 import com.maxmind.geoip2.model.CityResponse;
 import com.maxmind.geoip2.record.Location;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.sound.sampled.UnsupportedAudioFileException;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 
 @RestController
@@ -36,32 +38,38 @@ public class MusicController {
     private final GeoService geoService;
     private final WeatherAPI weatherAPI;
     @GetMapping
-    public ResponseEntity<List<ResponseMusicDTO>> getAllMusic(HttpServletRequest request, @PageableDefault Pageable pageable) {
-        return ResponseEntity.ok(musicService.getAllMusic(WebConfig.getMemberIdByRequest(request), pageable));
+    public ResponseEntity<List<ResponseMusicDTO>> getAllMusic(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(musicService.getAllMusic(WebConfig.getMemberIdByRequest(request), PageRequest.of(page, 10)));
     }
     @GetMapping("/{targetText}")
-    public ResponseEntity<List<ResponseMusicDTO>> getMusicByMusicNameOrSingerName(@PathVariable String targetText, @PageableDefault Pageable pageable) throws MalformedURLException {
-        return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText, pageable));
+    public ResponseEntity<List<ResponseMusicDTO>> getMusicByMusicNameOrSingerName(@PathVariable String targetText, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText, PageRequest.of(page, 10)));
     }
 
     @GetMapping("/weather")
-    public ResponseEntity<List<ResponseMusicDTO>> getMusicByWeather(HttpServletRequest request, @PageableDefault Pageable pageable) throws IOException, GeoIp2Exception {
-       CityResponse cityResponse = geoService.findCity(geoService.getIpAddress());
-       Location location = cityResponse.getLocation();
-       OpenWeather weather = weatherAPI.getWeather(location.getLatitude().toString(), location.getLongitude().toString());
-       String weatherName = weather.getWeather().get(0).getMain();
-       return ResponseEntity.ok(musicService.getAllMusicByWeather(WebConfig.getMemberIdByRequest(request), weatherName, pageable));
+    public ResponseEntity<List<ResponseMusicDTO>> getMusicByWeather(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
+        try {
+            CityResponse cityResponse = geoService.findCity(geoService.getIpAddress());
+            Location location = cityResponse.getLocation();
+            OpenWeather weather = weatherAPI.getWeather(location.getLatitude().toString(), location.getLongitude().toString());
+            String weatherName = weather.getWeather().get(0).getMain();
+            return ResponseEntity.ok(musicService.getAllMusicByWeather(WebConfig.getMemberIdByRequest(request), weatherName, PageRequest.of(page, 10)));
+        }catch(IOException ioException){
+            throw new CustomException(HttpStatus.BAD_GATEWAY, "API-502", ioException.getMessage());
+        }catch(GeoIp2Exception geoIp2Exception) {
+            throw new CustomException(HttpStatus.BAD_GATEWAY, "API-502", geoIp2Exception.getMessage());
+        }
     }
     @GetMapping("/play/{musicId}")
-    public ResponseEntity<ResponsePlayMusicDTO> getLyricsAndLikeByMusicId(HttpServletRequest request, @PathVariable Integer musicId) throws IOException {
+    public ResponseEntity<ResponsePlayMusicDTO> getLyricsAndLikeByMusicId(HttpServletRequest request, @PathVariable Integer musicId) {
         return ResponseEntity.ok(musicService.getLyricsAndLikeByMusicId(musicId, WebConfig.getMemberIdByRequest(request)));
     }
     @PostMapping("/upload")
-    public ResponseEntity<ResponseMusicDTO> uploadMusic(HttpServletRequest request, @ModelAttribute UploadMusicDTO uploadMusicDTO) throws UnsupportedAudioFileException, IOException {
+    public ResponseEntity<ResponseMusicDTO> uploadMusic(HttpServletRequest request, @Valid @ModelAttribute UploadMusicDTO uploadMusicDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(musicService.addMusic(uploadMusicDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @PutMapping("/modify")
-    public ResponseEntity<ResponseMusicDTO> modifyMusic(@ModelAttribute ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException {
+    public ResponseEntity<ResponseMusicDTO> modifyMusic(@Valid @ModelAttribute ModifyMusicDTO modifyMusicDTO) {
         return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO));
     }
     @DeleteMapping("/delete/{musicId}")

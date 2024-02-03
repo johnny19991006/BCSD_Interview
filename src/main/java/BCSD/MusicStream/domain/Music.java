@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.sql.Time;
+import java.util.Objects;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,4 +44,11 @@ public class Music {
 
     @Column(name = "sound_file_name")
     private String soundFileName;
+
+    public void setFilesName(String soundFileName, String imageFileName) {
+        Objects.requireNonNull(soundFileName);
+        Objects.requireNonNull(imageFileName);
+        this.soundFileName = soundFileName;
+        this.imageFileName = imageFileName;
+    }
 }

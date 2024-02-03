@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class DetailRequestMusicDTO {
+public class DetailResponseMusicDTO {
     private LikeType likeType;
     private String lyrics;
 }

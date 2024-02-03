@@ -8,7 +8,9 @@ import BCSD.MusicStream.security.JwtTokenProvider;
 import BCSD.MusicStream.service.PlaylistService;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,15 +24,15 @@ public class PlaylistController {
 
     private final PlaylistService playlistService;
     @GetMapping
-    public ResponseEntity<List<ResponsePlaylistDTO>> getPlaylist(HttpServletRequest request) {
-        return ResponseEntity.ok(playlistService.getPlaylistByMemberId(WebConfig.getMemberIdByRequest(request)));
+    public ResponseEntity<List<ResponsePlaylistDTO>> getPlaylist(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
+        return ResponseEntity.ok(playlistService.getPlaylistByMemberId(WebConfig.getMemberIdByRequest(request), PageRequest.of(page, 10)));
     }
     @PostMapping
-    public ResponseEntity<ResponsePlaylistDTO> createPlaylist(HttpServletRequest request,  @RequestBody AddPlaylistDTO addPlaylistDTO) {
+    public ResponseEntity<ResponsePlaylistDTO> createPlaylist(HttpServletRequest request,  @Valid @RequestBody AddPlaylistDTO addPlaylistDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(playlistService.addPlaylist(addPlaylistDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @PutMapping
-    public ResponseEntity<ResponsePlaylistDTO> modefiedPlaylistName(HttpServletRequest request, @RequestBody ModifyPlaylistDTO modifyPlaylistDTO) {
+    public ResponseEntity<ResponsePlaylistDTO> modifyPlaylistName(HttpServletRequest request, @Valid @RequestBody ModifyPlaylistDTO modifyPlaylistDTO) {
         return ResponseEntity.ok(playlistService.modifyPlaylistName(modifyPlaylistDTO));
     }
     @DeleteMapping("/{playlistId}")

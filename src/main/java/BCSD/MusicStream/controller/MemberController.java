@@ -1,15 +1,11 @@
 package BCSD.MusicStream.controller;
 
 import BCSD.MusicStream.config.WebConfig;
-import BCSD.MusicStream.dto.member.ModifyMemberDTO;
-import BCSD.MusicStream.dto.member.ResponseMemberDTO;
+import BCSD.MusicStream.dto.member.*;
 import BCSD.MusicStream.dto.token.JwtTokenDTO;
-import BCSD.MusicStream.dto.member.SignInMemberDTO;
-import BCSD.MusicStream.dto.member.SignUpMemberDTO;
-import BCSD.MusicStream.security.JwtTokenProvider;
 import BCSD.MusicStream.service.MemberService;
-import io.jsonwebtoken.Claims;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -24,7 +20,7 @@ public class MemberController {
 
     private final MemberService memberService;
     @PostMapping("/sign-in")
-    public ResponseEntity<JwtTokenDTO> signIn(@RequestBody SignInMemberDTO signInMemberDTO) {
+    public ResponseEntity<JwtTokenDTO> signIn(@Valid @RequestBody SignInMemberDTO signInMemberDTO) {
         try {
             JwtTokenDTO jwtTokenDTO = memberService.signIn(signInMemberDTO);
             log.info("User signed in with email: {}", signInMemberDTO.getEmail());
@@ -39,16 +35,27 @@ public class MemberController {
         return ResponseEntity.ok(memberService.existsByMemberEmail(userEmail));
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<ResponseMemberDTO> getMemberInfo(HttpServletRequest request) {
+        return ResponseEntity.ok(memberService.getMemberInfo(WebConfig.getMemberIdByRequest(request)));
+    }
+
     @PostMapping("/sign-up")
-    public ResponseEntity<ResponseMemberDTO> signUp(@RequestBody SignUpMemberDTO signUpMemberDTO) {
+    public ResponseEntity<ResponseMemberDTO> signUp(@Valid @RequestBody SignUpMemberDTO signUpMemberDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.signUp(signUpMemberDTO));
     }
 
-    @PutMapping
-    public ResponseEntity<ResponseMemberDTO> modifyMember(HttpServletRequest request, @RequestBody ModifyMemberDTO modifyMemberDTO) {
+    @PutMapping("/modify-info")
+    public ResponseEntity<ResponseMemberDTO> modifyMember(HttpServletRequest request, @Valid @RequestBody ModifyMemberInfoDTO modifyMemberDTO) {
         return ResponseEntity.ok(memberService.modifyMember(modifyMemberDTO, WebConfig.getMemberIdByRequest(request)));
     }
-    @DeleteMapping
+
+    @PutMapping("/modify-password")
+    public ResponseEntity<Boolean> modifyMember(HttpServletRequest request, @Valid @RequestBody ModifyMemberPasswordDTO modifyMemberPasswordDTO) {
+        return ResponseEntity.ok(memberService.modifyPassword(modifyMemberPasswordDTO, WebConfig.getMemberIdByRequest(request)));
+    }
+
+    @DeleteMapping("/delete")
     public ResponseEntity<Void> deleteMember(HttpServletRequest request) {
         memberService.deleteMemberByMemberId(WebConfig.getMemberIdByRequest(request));
         return ResponseEntity.noContent().build();

@@ -12,5 +12,5 @@ public class ResponseMemberDTO {
     private String name;
     private String email;
     private LocalDate birthDate;
-    private String authorityName;
+    private Integer authorityId;
 }

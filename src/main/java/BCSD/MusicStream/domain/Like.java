@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Builder
 @Getter
-@Setter
 @Table(name = "member_like")
 public class Like {
     @Id

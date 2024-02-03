@@ -13,11 +13,11 @@ import java.net.MalformedURLException;
 import java.util.List;
 
 public interface MusicService {
-    List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText, Pageable pageable) throws MalformedURLException;
+    List<ResponseMusicDTO> getMusicByMusicNameOrSingerName(String targetText, Pageable pageable);
     List<ResponseMusicDTO> getAllMusic(Integer memberId, Pageable pageable);
     List<ResponseMusicDTO> getAllMusicByWeather(Integer memberId, String weatherName, Pageable pageable);
     ResponsePlayMusicDTO getLyricsAndLikeByMusicId(Integer musicId, Integer memberId);
-    ResponseMusicDTO addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId) throws IOException, UnsupportedAudioFileException;
-    ResponseMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO) throws UnsupportedAudioFileException, IOException;
-    void deleteMusic(Integer musicId, Integer memberId) throws IOException;
+    ResponseMusicDTO addMusic(UploadMusicDTO uploadMusicDTO, Integer memberId);
+    ResponseMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO);
+    void deleteMusic(Integer musicId, Integer memberId);
 }
