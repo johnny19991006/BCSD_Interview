@@ -1,6 +1,9 @@
 package bcsd.backend.project.pokku.security;
 
 import bcsd.backend.project.pokku.domain.Authority;
+import bcsd.backend.project.pokku.exception.InputMismatchException.InputMismatchException;
+import bcsd.backend.project.pokku.exception.ResCode;
+import bcsd.backend.project.pokku.exception.UnknownException.UnknownException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
@@ -22,6 +25,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 @Component
 public class JwtProvider {
@@ -32,6 +36,7 @@ public class JwtProvider {
     private Key secretKey;
 
     private final long exp = 1000L * 60 * 60;
+//    private final long exp = 1L;
     private final JpaUserInfoDetailsService userInfoDetailsService;
 
     @PostConstruct
@@ -68,22 +73,24 @@ public class JwtProvider {
     public boolean validateToken(String token){
         try {
             if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
-                return false;
+                throw new InputMismatchException("토큰 형식이 일치하지 않습니다.", "token", ResCode.INPUT_MISMATCH.value());
             } else {
                 token = token.split(" ")[1].trim();
             }
 
             Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
             return !claims.getBody().getExpiration().before(new Date());
+        } catch (InputMismatchException e){
+            throw new InputMismatchException(e.getMessage(), e.getHint(), e.getErrorCode());
         } catch (Exception e){
-            return false;
+            throw e;
         }
     }
 
     public boolean invalidateToken(String token, String accountId){
         try {
             if (!token.substring(0, "BEARER ".length()).equalsIgnoreCase("BEARER ")) {
-                return false;
+                throw new InputMismatchException("토큰 형식이 일치하지 않습니다.", "token", ResCode.INPUT_MISMATCH.value());
             } else {
                 token = token.split(" ")[1].trim();
             }
@@ -92,14 +99,16 @@ public class JwtProvider {
 
             String tokenAccountId = claims.getBody().getSubject();
             if (!tokenAccountId.equals(accountId)) {
-                return false;
+                throw new InputMismatchException("계정이 일치하지 않습니다.", "userId", ResCode.INPUT_MISMATCH.value());
             }
 
-            claims.getBody().setExpiration(new Date(System.currentTimeMillis() - 1000));
+            claims.getBody().setExpiration(new Date(System.currentTimeMillis() - (1000 * 60 * 60)));
 
             return true;
+        } catch (InputMismatchException e){
+            throw new InputMismatchException(e.getMessage(), e.getHint(), e.getErrorCode());
         } catch (Exception e){
-            return false;
+            throw e;
         }
     }
 

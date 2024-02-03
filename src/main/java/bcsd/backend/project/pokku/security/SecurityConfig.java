@@ -26,6 +26,7 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtProvider jwtProvider;
+    private final AuthenticationEntryPoint entryPoint;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -54,30 +55,8 @@ public class SecurityConfig {
                                 .anyRequest().denyAll()
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((config) ->
-                        config.accessDeniedHandler(accessDeniedHandler()).authenticationEntryPoint(unauthorizedEntryPoint())
-                );
+                .exceptionHandling((config) -> config.authenticationEntryPoint(entryPoint));
         return http.build();
-    }
-
-    @Bean
-    public AuthenticationEntryPoint unauthorizedEntryPoint() {
-        return (request, response, authException) -> {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 상태 코드
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("text/html; charset=UTF-8");
-            response.getWriter().write("인증되지 않은 요청입니다.");
-        };
-    }
-
-    @Bean
-    public AccessDeniedHandler accessDeniedHandler() {
-        return (request, response, accessDeniedException) -> {
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN); // 403 상태 코드
-            response.setCharacterEncoding("utf-8");
-            response.setContentType("text/html; charset=UTF-8");
-            response.getWriter().write("권한이 없는 요청입니다.");
-        };
     }
 
     @Bean

@@ -13,6 +13,9 @@ import bcsd.backend.project.pokku.exception.NullValueException.NullValueExceptio
 import bcsd.backend.project.pokku.exception.UnknownException.UnknownException;
 import bcsd.backend.project.pokku.exception.UnknownException.UnknownExceptionModel;
 import com.google.protobuf.NullValue;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -55,6 +58,24 @@ public class CustomExceptionInterceptor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(UnknownException.class)
     public final ResponseEntity<Object> handleNotSupportException(UnknownException ex){
         UnknownExceptionModel exceptionResponse = new UnknownExceptionModel(ex.getErrorCode(), ex.getMessage(), ex.getHint());
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(SignatureException.class)
+    public ResponseEntity<Object> handleSignatureException(SignatureException ex) {
+        SignatureExceptionModel exceptionResponse = new SignatureExceptionModel(ResCode.SIGNATURE.value(), ex.getMessage(), "토큰이 변조되었습니다.");
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MalformedJwtException.class)
+    public ResponseEntity<Object> handleMalformedJwtException(MalformedJwtException ex) {
+        MalformedJwtExceptionModel exceptionResponse = new MalformedJwtExceptionModel(ResCode.MALFORMED.value(), ex.getMessage(), "아무 토큰 값이 들어왔습니다.");
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(ExpiredJwtException.class)
+    public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex) {
+        ExpiredJwtExceptionModel exceptionResponse = new ExpiredJwtExceptionModel(ResCode.EXPIRED.value(), ex.getMessage(), "토큰이 만료되었습니다.");
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
