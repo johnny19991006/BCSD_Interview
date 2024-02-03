@@ -2,6 +2,7 @@ package io.github.imtotem.shortly.controller.admin;
 
 import io.github.imtotem.shortly.domain.Url;
 import io.github.imtotem.shortly.dto.admin.AdminRequest;
+import io.github.imtotem.shortly.mapper.UrlMapper;
 import io.github.imtotem.shortly.service.admin.AdminService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,8 @@ import java.util.List;
 public class AdminController {
     private final AdminService service;
 
+    private final UrlMapper mapper;
+
     @PreAuthorize("isAuthenticated() and hasRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<Url>> findAll() {
@@ -27,13 +30,7 @@ public class AdminController {
     @DeleteMapping
     public ResponseEntity<Boolean> deleteUrl(@RequestBody @Valid AdminRequest request) {
         return ResponseEntity.ok(
-                service.deleteUrl(
-                        Url.builder()
-                            .id(request.getId())
-                            .shortUrl(request.getShortUrl())
-                            .originUrl(request.getOriginUrl())
-                            .build()
-                )
+                service.deleteUrl(mapper.toUrl(request))
         );
     }
 }

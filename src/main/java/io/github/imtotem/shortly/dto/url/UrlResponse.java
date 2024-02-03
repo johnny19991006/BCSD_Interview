@@ -16,6 +16,6 @@ public class UrlResponse {
     private String shortUrl;
     private String originUrl;
     private String description;
-    private boolean isDeletable;
+    private boolean deletable;
     private LocalDateTime createdAt;
 }

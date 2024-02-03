@@ -4,6 +4,7 @@ import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.domain.UserUrl;
 import io.github.imtotem.shortly.dto.url.UrlRequest;
 import io.github.imtotem.shortly.dto.url.UrlResponse;
+import io.github.imtotem.shortly.mapper.UrlMapper;
 import io.github.imtotem.shortly.service.url.UrlService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @RestController
@@ -21,22 +21,15 @@ import java.util.stream.Collectors;
 public class UrlController {
     private final UrlService service;
 
+    private final UrlMapper mapper;
+
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<List<UrlResponse>> findAll(@AuthenticationPrincipal User user) {
+        List<UserUrl> userUrls = service.findAll(user.getEmail());
+
         return ResponseEntity.ok(
-            service.findAll(user.getEmail())
-                    .stream()
-                    .map(userUrl -> UrlResponse.builder()
-                            .id(userUrl.getId())
-                            .originUrl(userUrl.getUrl().getOriginUrl())
-                            .shortUrl(userUrl.getUrl().getShortUrl())
-                            .description(userUrl.getDescription())
-                            .isDeletable(userUrl.isDeletable())
-                            .createdAt(userUrl.getCreatedAt())
-                            .build()
-                    )
-                    .collect(Collectors.toList())
+            userUrls.stream().map(mapper::toResponse).toList()
         );
     }
 
@@ -46,17 +39,9 @@ public class UrlController {
             @AuthenticationPrincipal User user,
             @RequestBody @Valid UrlRequest request) {
 
-        UserUrl userUrl = service.createUrl(request.toEntity(user));
-        return ResponseEntity.ok(
-                UrlResponse.builder()
-                        .id(userUrl.getId())
-                        .originUrl(userUrl.getUrl().getOriginUrl())
-                        .shortUrl(userUrl.getUrl().getShortUrl())
-                        .description(userUrl.getDescription())
-                        .isDeletable(userUrl.isDeletable())
-                        .createdAt(userUrl.getCreatedAt())
-                        .build()
-        );
+        UserUrl userUrl = service.createUrl(mapper.toUserUrl(user, request));
+
+        return ResponseEntity.ok(mapper.toResponse(userUrl));
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -65,17 +50,9 @@ public class UrlController {
             @AuthenticationPrincipal User user,
             @RequestBody @Valid UrlRequest request) {
 
-        UserUrl userUrl = service.updateUrl(request.toEntity(user));
-        return ResponseEntity.ok(
-                UrlResponse.builder()
-                        .id(userUrl.getId())
-                        .originUrl(userUrl.getUrl().getOriginUrl())
-                        .shortUrl(userUrl.getUrl().getShortUrl())
-                        .description(userUrl.getDescription())
-                        .isDeletable(userUrl.isDeletable())
-                        .createdAt(userUrl.getCreatedAt())
-                        .build()
-        );
+        UserUrl userUrl = service.updateUrl(mapper.toUserUrl(user, request));
+
+        return ResponseEntity.ok(mapper.toResponse(userUrl));
     }
 
     @PreAuthorize("isAuthenticated()")
@@ -84,7 +61,7 @@ public class UrlController {
             @AuthenticationPrincipal User user,
             @RequestBody @Valid UrlRequest request) {
         return ResponseEntity.ok(
-                service.deleteUrl(request.toEntity(user))
+                service.deleteUrl(mapper.toUserUrl(user, request))
         );
     }
 }
