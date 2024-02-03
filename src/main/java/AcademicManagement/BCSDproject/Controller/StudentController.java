@@ -1,9 +1,12 @@
 package AcademicManagement.BCSDproject.Controller;
 
 import AcademicManagement.BCSDproject.Domain.Student;
+import AcademicManagement.BCSDproject.Domain.TokenInfo;
+import AcademicManagement.BCSDproject.Dto.SignInDTO;
 import AcademicManagement.BCSDproject.Dto.StudentDTO;
 import AcademicManagement.BCSDproject.Service.StudentService;
 
+import org.h2.command.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +52,14 @@ public class StudentController {
     public void deleteStudent(@PathVariable String studentId)
     {
         service.deleteStudent(studentId);
+    }
+
+    @PostMapping("/{signin}")
+    public TokenInfo signIn(@RequestBody SignInDTO signInDTO)
+    {
+        String studentId = signInDTO.getStudentId();
+        String studentPw = signInDTO.getStudentPw();
+        TokenInfo tokenInfo = service.signIn(studentId, studentPw);
+        return tokenInfo;
     }
 }

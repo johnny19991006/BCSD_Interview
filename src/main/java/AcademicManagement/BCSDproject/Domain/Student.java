@@ -8,10 +8,16 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import java.time.LocalDateTime;
+import java.util.stream.Collectors;
 /*
    Create Table Student
 (
@@ -31,7 +37,7 @@ update_at은 현재 빼두고, 추후에 수정시 추가
 @Getter // 도메인 내 Setter 사용 지양
 @Entity
 @Table(name = "Student")
-public class Student {
+public class Student implements UserDetails {
     @Id
     @Column(name = "student_id", length = 20, nullable = false) // 학생이 사용 할 아이디
     private String studentId;
@@ -55,6 +61,52 @@ public class Student {
     @Column(name = "student_attend", length = 10, nullable = false) // 학적 상황
     private String studentAttend;
 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "student_roles",
+            joinColumns = @JoinColumn(name = "student_id")
+    )
+    @Column(name = "roles")
+    private List<String> roles = new ArrayList<>();
+
+    @Override // 회원 가입 구현을 위해
+    public Collection<? extends GrantedAuthority> getAuthorities()
+    {
+        return this.roles.stream()
+                    .map(SimpleGrantedAuthority::new)
+                    .collect(Collectors.toList());
+    }
+
+    @Override
+    public String getUsername() {
+        return studentId;
+    }
+
+    @Override
+    public String getPassword() {
+        return studentPw;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
     //@Column(name = "update_at") // 업데이트 시간
     //private LocalDateTime updateAt;
 
@@ -63,7 +115,7 @@ public class Student {
 
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
-                   int studentGrade, int studentSemester, String studentAttend) {
+                   int studentGrade, int studentSemester, String studentAttend, List<String> roles) {
         this.studentId = studentId;
         this.studentPw = studentPw;
         this.studentName = studentName;
@@ -71,8 +123,8 @@ public class Student {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
+        this.roles = roles;
     }
-
     public void setStudentPw(String studentPw) {
         this.studentPw = studentPw;
     }

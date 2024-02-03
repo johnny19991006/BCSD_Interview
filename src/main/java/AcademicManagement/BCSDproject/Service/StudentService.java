@@ -1,11 +1,16 @@
 package AcademicManagement.BCSDproject.Service;
 
 import AcademicManagement.BCSDproject.Domain.Student;
+import AcademicManagement.BCSDproject.Domain.TokenInfo;
 import AcademicManagement.BCSDproject.Dto.StudentDTO;
 import AcademicManagement.BCSDproject.Repository.StudentRepository;
 
+import AcademicManagement.BCSDproject.Security.JwtTokenProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
@@ -17,6 +22,8 @@ import java.util.List;
 @RequiredArgsConstructor // StudentRepository의 생성자 주입, final 혹은 @Notnull 붙은 것 포함
 public class StudentService implements StudentServiceInterface{
     private final StudentRepository studentRepository;
+    private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     // 엔티티를 DTO로 변환하기, 이를 이용하면 필드값 변환 없이 복사 가능, 영향 x
     // 필요 유무 따져보고, 필요 없다면 삭제할 것
@@ -81,5 +88,12 @@ public class StudentService implements StudentServiceInterface{
         studentRepository.deleteById(studentId);
     }
 
+    public TokenInfo signIn(String studentId, String studentPw)
+    {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(studentId, studentPw);
+        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
 
+        return tokenInfo;
+    }
 }
