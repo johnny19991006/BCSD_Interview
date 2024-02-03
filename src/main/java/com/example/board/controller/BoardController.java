@@ -2,13 +2,11 @@ package com.example.board.controller;
 
 import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
-import com.example.board.dto.BoardDTO;
-import com.example.board.dto.LoginRequestDTO;
+import com.example.board.dto.BoardRequestDTO;
 import com.example.board.security.AuthorizeBoard;
 import com.example.board.security.AuthorizeUser;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -23,8 +21,8 @@ public class BoardController {
         this.boardService = boardService;
     }
     @PostMapping
-    public Board insertBoard(@RequestBody BoardDTO boardDTO) throws SQLException {
-        return boardService.insertBoard(boardDTO);
+    public Board insertBoard(@RequestBody BoardRequestDTO boardRequestDTO) throws SQLException {
+        return boardService.insertBoard(boardRequestDTO);
     }
     @GetMapping
     public List<Board> getAllBoards() throws SQLException {

@@ -4,7 +4,6 @@ import com.example.board.domain.Comment;
 import com.example.board.dto.CommentRequestDTO;
 import com.example.board.dto.CommentResponseDTO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface CommentService {

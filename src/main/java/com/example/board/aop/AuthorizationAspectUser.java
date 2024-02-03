@@ -4,7 +4,6 @@ import com.example.board.domain.User;
 import com.example.board.exception.NotFoundException;
 import com.example.board.exception.UnauthorizedException;
 import com.example.board.security.CustomUserDetails;
-import com.example.board.service.CommentService;
 import com.example.board.service.UserService;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;

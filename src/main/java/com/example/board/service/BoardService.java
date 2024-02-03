@@ -2,13 +2,13 @@ package com.example.board.service;
 
 import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
-import com.example.board.dto.BoardDTO;
+import com.example.board.dto.BoardRequestDTO;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public interface BoardService {
-    public Board insertBoard(BoardDTO boardDTO) throws SQLException;
+    public Board insertBoard(BoardRequestDTO boardRequestDTO) throws SQLException;
     public List<Board> getAllBoards() throws SQLException;
     public Board getBoardByBoardId(Integer boardId) throws SQLException;
     public List<Board> getLatestBoards() throws SQLException;

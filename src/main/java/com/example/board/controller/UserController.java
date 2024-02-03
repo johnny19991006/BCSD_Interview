@@ -2,12 +2,16 @@ package com.example.board.controller;
 
 import com.example.board.domain.User;
 import com.example.board.dto.LoginRequestDTO;
-import com.example.board.dto.UserDTO;
+import com.example.board.dto.UserRequestDTO;
+import com.example.board.dto.UserResponseDTO;
+import com.example.board.dto.UserResponseSimpleDTO;
+import com.example.board.exception.NotFoundException;
 import com.example.board.security.AuthorizeUser;
 import com.example.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -22,23 +26,56 @@ public class UserController {
         this.userService = userService;
     }
     @PostMapping
-    public User insertUser(@RequestBody User user) throws SQLException {
-        return userService.insertUser(user);
+    public ResponseEntity<UserResponseDTO> insertUser(@RequestBody UserRequestDTO userRequestDTO) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(userService.insertUser(userRequestDTO));
+        }
+        catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
     @GetMapping
-    public List<User> getAllUsers() throws SQLException {
-        return userService.getAllUsers();
+    public ResponseEntity<List<UserResponseDTO>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAllUsers());
     }
     @GetMapping("/{userId}/admin")
-    public User getUserByUserId(@PathVariable Integer userId) throws SQLException {
-        return userService.getUserByUserId(userId);
+    public ResponseEntity<UserResponseDTO> getUserByUserId(@PathVariable Integer userId) {
+        try {
+            return ResponseEntity.ok().body(userService.getUserByUserId(userId));
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @GetMapping("/{userId}/general")
-    public UserDTO getUserSimpleInfoByUserId(@PathVariable Integer userId) throws SQLException {
-        return userService.getUserSimpleInfoByUserId(userId);
+    public ResponseEntity<UserResponseSimpleDTO> getUserSimpleInfoByUserId(@PathVariable Integer userId) {
+        try {
+            return ResponseEntity.ok().body(userService.getUserSimpleInfoByUserId(userId));
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    @GetMapping("/usertype/{userTypeId}")
+    public ResponseEntity<List<UserResponseDTO>> getUsersByUserType(@PathVariable int userTypeId) {
+        try {
+            return ResponseEntity.ok().body(userService.getUsersByUserType(userTypeId));
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+    @PutMapping("/{userId}/type")
+    public ResponseEntity<UserResponseDTO> updateUsertype(@PathVariable Integer userId, @RequestBody Integer newTypeNum) {
+        try {
+            return ResponseEntity.ok().body(userService.updateUsertype(userId, newTypeNum));
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @AuthorizeUser
-    @PutMapping("/{userId}/password") //DTO 사용하는 방식도 있음
+    @PutMapping("/{userId}/password")
     public void updateUserPw(@PathVariable Integer userId, @RequestBody String newPw) throws SQLException {
         userService.updateUserPw(userId, newPw);
     }
@@ -47,18 +84,10 @@ public class UserController {
     public void updateUserNn(@PathVariable Integer userId, @RequestBody String newNn) throws SQLException {
         userService.updateUserNn(userId, newNn);
     }
-    @PutMapping("/{userId}/type")
-    public void updateUsertype(@PathVariable Integer userId, @RequestBody Integer newTypeNum) throws SQLException {
-        userService.updateUsertype(userId, newTypeNum);
-    }
     @AuthorizeUser
     @DeleteMapping("/{userId}")
     public void deleteUser(@PathVariable Integer userId) throws SQLException {
         userService.deleteUser(userId);
-    }
-    @GetMapping("/usertype/{userTypeId}")
-    public List<User> getUsersByUserType(@PathVariable int userTypeId) throws SQLException {
-        return userService.getUsersByUserType(userTypeId);
     }
     @PostMapping("/login")
     public String login(@RequestBody LoginRequestDTO loginRequestDTO) throws SQLException {

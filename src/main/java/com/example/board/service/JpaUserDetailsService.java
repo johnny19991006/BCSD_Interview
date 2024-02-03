@@ -1,7 +1,8 @@
-package com.example.board.security;
+package com.example.board.service;
 
 import com.example.board.domain.User;
 import com.example.board.repository.UserRepository;
+import com.example.board.security.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

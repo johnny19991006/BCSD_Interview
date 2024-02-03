@@ -1,7 +1,7 @@
 package com.example.board.service;
 
 import com.example.board.domain.*;
-import com.example.board.dto.BoardDTO;
+import com.example.board.dto.BoardRequestDTO;
 import com.example.board.exception.UnauthorizedException;
 import com.example.board.repository.*;
 import com.example.board.security.CustomUserDetails;
@@ -35,23 +35,23 @@ public class BoardServiceImpl implements BoardService {
     }
     @Override
     @Transactional
-    public Board insertBoard(BoardDTO boardDTO) throws SQLException {
+    public Board insertBoard(BoardRequestDTO boardRequestDTO) throws SQLException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
-        if(userDetails.getUser().getUserId() == boardDTO.getUserId()) {
-            User user = userRepository.findById(boardDTO.getUserId()).orElse(null);
-            Category category = categoryRepository.findById(boardDTO.getCategoryId()).orElse(null);
+        if(userDetails.getUser().getUserId() == boardRequestDTO.getUserId()) {
+            User user = userRepository.findById(boardRequestDTO.getUserId()).orElse(null);
+            Category category = categoryRepository.findById(boardRequestDTO.getCategoryId()).orElse(null);
 
             Board board = new Board();
             board.setUser(user);
             board.setCategory(category);
-            board.setBoardTitle(boardDTO.getBoardTitle());
-            board.setBoardPrice(boardDTO.getBoardPrice());
-            board.setBoardContent(boardDTO.getBoardContent());
-            board.setBoardstatus(boardDTO.getBoardStatus());
+            board.setBoardTitle(boardRequestDTO.getBoardTitle());
+            board.setBoardPrice(boardRequestDTO.getBoardPrice());
+            board.setBoardContent(boardRequestDTO.getBoardContent());
+            board.setBoardstatus(boardRequestDTO.getBoardStatus());
 
-            List<Integer> hashtagIds = boardDTO.getHashtagIds();
+            List<Integer> hashtagIds = boardRequestDTO.getHashtagIds();
 
             List<BoardHasHashtag> boardHasHashtags = new ArrayList<>();
 
