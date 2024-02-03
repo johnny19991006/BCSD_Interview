@@ -4,7 +4,7 @@ import io.github.imtotem.shortly.domain.Url;
 import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.domain.UserUrl;
 import io.github.imtotem.shortly.exception.ErrorCode;
-import io.github.imtotem.shortly.exception.UserException;
+import io.github.imtotem.shortly.exception.CustomException;
 import io.github.imtotem.shortly.repository.ShortUrlRepository;
 import io.github.imtotem.shortly.repository.UserRepository;
 import io.github.imtotem.shortly.repository.UserUrlRepository;
@@ -26,13 +26,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findUser(String email) throws RuntimeException {
         return repository.findByEmail(email)
-                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
     }
 
     @Override
     public User updateUser(User request) throws RuntimeException {
         User user = repository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UserException(ErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         return user.update(encoder.encode(request.getPassword()));
     }
@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean deleteUser(User request) throws RuntimeException {
         if (!repository.existsByEmail(request.getEmail())) {
-            throw new UserException(ErrorCode.EMAIL_NOT_FOUND);
+            throw new CustomException(ErrorCode.EMAIL_NOT_FOUND);
         }
 
         userUrlRepository.findAllByUser_EmailAndDeletable(request.getEmail(), true).stream()

@@ -2,7 +2,7 @@ package io.github.imtotem.shortly.service.admin;
 
 import io.github.imtotem.shortly.domain.Url;
 import io.github.imtotem.shortly.exception.ErrorCode;
-import io.github.imtotem.shortly.exception.UserException;
+import io.github.imtotem.shortly.exception.CustomException;
 import io.github.imtotem.shortly.repository.ShortUrlRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,7 +34,7 @@ public class AdminServiceImpl implements AdminService {
             repository.deleteByOriginUrl(url.getOriginUrl());
         }
         else {
-            throw new UserException(ErrorCode.URL_NOT_FOUND);
+            throw new CustomException(ErrorCode.URL_NOT_FOUND);
         }
 
         return true;

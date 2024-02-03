@@ -3,7 +3,7 @@ package io.github.imtotem.shortly.service.user.login;
 import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.dto.JwtToken;
 import io.github.imtotem.shortly.exception.ErrorCode;
-import io.github.imtotem.shortly.exception.UserException;
+import io.github.imtotem.shortly.exception.CustomException;
 import io.github.imtotem.shortly.repository.UserRepository;
 import io.github.imtotem.shortly.security.jwt.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +23,10 @@ public class LoginServiceImpl implements LoginService {
     public JwtToken login(User request) throws RuntimeException {
 
         User user = repository.findByEmail(request.getEmail())
-            .orElseThrow(() -> new UserException(ErrorCode.EMAIL_NOT_FOUND));
+            .orElseThrow(() -> new CustomException(ErrorCode.EMAIL_NOT_FOUND));
 
         if(!encoder.matches(request.getPassword(), user.getPassword())) {
-            throw new UserException(ErrorCode.WRONG_PASSWORD);
+            throw new CustomException(ErrorCode.WRONG_PASSWORD);
         }
 
         return JwtToken.builder()

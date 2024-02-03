@@ -2,7 +2,7 @@ package io.github.imtotem.shortly.service.user.signup;
 
 import io.github.imtotem.shortly.domain.User;
 import io.github.imtotem.shortly.exception.ErrorCode;
-import io.github.imtotem.shortly.exception.UserException;
+import io.github.imtotem.shortly.exception.CustomException;
 import io.github.imtotem.shortly.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -20,7 +20,7 @@ public class SignUpServiceImpl implements SignUpService {
     @Override
     public User createUser(User request) throws RuntimeException {
         if (repository.existsByEmail(request.getEmail())) {
-            throw new UserException(ErrorCode.ALREADY_SAVED_EMAIL);
+            throw new CustomException(ErrorCode.ALREADY_SAVED_EMAIL);
         }
 
         User user = User.builder()

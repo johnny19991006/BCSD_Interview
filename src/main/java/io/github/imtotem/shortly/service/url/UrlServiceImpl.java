@@ -3,7 +3,7 @@ package io.github.imtotem.shortly.service.url;
 import io.github.imtotem.shortly.domain.Url;
 import io.github.imtotem.shortly.domain.UserUrl;
 import io.github.imtotem.shortly.exception.ErrorCode;
-import io.github.imtotem.shortly.exception.UserException;
+import io.github.imtotem.shortly.exception.CustomException;
 import io.github.imtotem.shortly.repository.ShortUrlRepository;
 import io.github.imtotem.shortly.repository.UserUrlRepository;
 import io.github.imtotem.shortly.util.Base62;
@@ -47,7 +47,7 @@ public class UrlServiceImpl implements UrlService {
     public UserUrl updateUrl(UserUrl request) throws RuntimeException {
         UserUrl userUrl = userUrlRepository.findByUser_EmailAndUrl_OriginUrl(
                 request.getUser().getEmail(), request.getUrl().getOriginUrl())
-                .orElseThrow(() -> new UserException(ErrorCode.URL_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.URL_NOT_FOUND));
 
         userUrl.updateDescription(request.getDescription());
         userUrl.updateDeletable(request.isDeletable());
@@ -59,7 +59,7 @@ public class UrlServiceImpl implements UrlService {
     public boolean deleteUrl(UserUrl request) throws RuntimeException {
         UserUrl userUrl = userUrlRepository.findByUser_EmailAndUrl_OriginUrl(
                 request.getUser().getEmail(), request.getUrl().getOriginUrl())
-                .orElseThrow(() -> new UserException(ErrorCode.URL_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.URL_NOT_FOUND));
 
         userUrlRepository.delete(userUrl);
         userUrl.getUrl().decrease();
@@ -73,7 +73,7 @@ public class UrlServiceImpl implements UrlService {
     @Override
     public String restoreUrl(String shortUrl) {
         return shortUrlRepository.findById(base62.decode(shortUrl))
-                .orElseThrow(() -> new UserException(ErrorCode.URL_NOT_FOUND))
+                .orElseThrow(() -> new CustomException(ErrorCode.URL_NOT_FOUND))
                 .getOriginUrl();
     }
 }
