@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,11 @@ public class LikeServiceImpl extends BaseService implements LikeService {
     private final LikeRepository likeRepository;
     private final PostRepository postRepository;
 
+    // transactional
+    // 이 어노테이션이 붙으면 해당 메서드가 실행되는 동안 시작된 모든 데이터 베이스 연산을 하나로 묶어준다
+    // 엔티티의 상태 변화를 자동으로 감지 해 데이터 베이스에 자동으로 반영해준다
+    // 추가로 일관성 보장 및 자동 롤백, 성능 최적화도 해준다
+    @Transactional
     @Override
     public void insertLike(Integer postId) {
         User currentUser = getCurrentAuthenticatedUser();

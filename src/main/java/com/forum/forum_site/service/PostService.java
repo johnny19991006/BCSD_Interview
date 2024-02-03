@@ -8,7 +8,7 @@ import com.forum.forum_site.dto.UpdatePostDto;
 import com.forum.forum_site.searchcond.SearchPostCondition;
 import org.springframework.data.domain.Pageable;
 
-import javax.annotation.processing.FilerException;
+import java.util.List;
 
 public interface PostService {
     // 글 게시
@@ -25,4 +25,6 @@ public interface PostService {
 
     // 게시글 검색
     PostPagingDto getPostList(Pageable pageable, SearchPostCondition searchPostCondition);
+
+    List<PostInfoDto> getHotPosts(Pageable pageable);
 }

@@ -1,5 +1,6 @@
 package com.forum.forum_site.controller;
 
+import com.forum.forum_site.dto.PostInfoDto;
 import com.forum.forum_site.dto.SavePostDto;
 import com.forum.forum_site.dto.UpdatePostDto;
 import com.forum.forum_site.searchcond.SearchPostCondition;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -48,10 +50,16 @@ public class PostController {
         return ResponseEntity.ok(postService.getPostInfo(postId));
     }
 
-    // 글 검색
-    @GetMapping
+    // 글 검색(페이지 처리)
+    @GetMapping("")
     public ResponseEntity search(Pageable pageable,
                                  @ModelAttribute SearchPostCondition searchPostCondition) {
         return ResponseEntity.ok(postService.getPostList(pageable,searchPostCondition));
+    }
+
+    @GetMapping("/hot")
+    public ResponseEntity<List<PostInfoDto>> getHotPosts(Pageable pageable) {
+        List<PostInfoDto> hotPosts = postService.getHotPosts(pageable);
+        return ResponseEntity.ok(hotPosts);
     }
 }

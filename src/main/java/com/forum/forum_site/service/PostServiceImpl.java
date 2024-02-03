@@ -21,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -108,6 +110,13 @@ public class PostServiceImpl extends BaseService implements PostService{
     @Override
     public PostPagingDto getPostList(Pageable pageable, SearchPostCondition searchPostCondition) {
         return new PostPagingDto(postRepository.search(searchPostCondition, pageable));
+    }
+
+    @Override
+    public List<PostInfoDto> getHotPosts(Pageable pageable) {
+        return postRepository.findByIsHotTrue(pageable).stream()
+                .map(PostInfoDto::new)
+                .collect(Collectors.toList());
     }
 
     // 권한 체크하기

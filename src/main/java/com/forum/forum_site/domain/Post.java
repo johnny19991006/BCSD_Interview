@@ -38,12 +38,11 @@ public class Post{
     @JoinColumn(name = "author_id", referencedColumnName = "user_id")
     private User author;
 
-    @ManyToOne
-    @JoinColumn(name = "board_id", referencedColumnName = "board_id")
-    private Board board;
-
     @Column(nullable = false)
-    private Integer likes_count = 0;
+    private Integer likes_count = 9;
+
+    @Column(name = "isHot", nullable = false)
+    private Boolean isHot = false; // Hot 게시물 표시
 
     @Column(nullable = false)
     private LocalDateTime created_at = LocalDateTime.now();
@@ -86,8 +85,23 @@ public class Post{
     // 좋아요 증가
     public void insertLike() {
         this.likes_count += 1;
+
+        // 좋아요 수가 10개가 되면 isHot을 true로 설정
+        if (this.likes_count == 10) {
+            this.isHot = true;
+        }
     }
 
     // 좋아요 감소
-    public void deleteLike() { this.likes_count -= 1; }
+    public void deleteLike() {
+        // 음수가 되지 않도록 체크
+        if (this.likes_count > 0) {
+            this.likes_count -= 1;
+        }
+
+        // 좋아요 10개 미만이면 isHot을 false로 설정
+        if (this.likes_count < 10) {
+            this.isHot = false;
+        }
+    }
 }
