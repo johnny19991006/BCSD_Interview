@@ -1,10 +1,7 @@
 package com.example.board.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,11 +9,10 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Setter
 @Entity
 @Table(name = "comments")
+@Builder
 public class Comment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "comment_id")
@@ -41,9 +37,13 @@ public class Comment {
     protected void onCreate() {
         updatedAt = LocalDateTime.now();
     }
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
+    public Comment updateCommentContent(String newContent) {
+        return Comment.builder()
+                .commentId(this.commentId)
+                .user(this.user)
+                .board(this.board)
+                .updatedAt(LocalDateTime.now())
+                .commentContent(newContent)
+                .build();
     }
-
 }

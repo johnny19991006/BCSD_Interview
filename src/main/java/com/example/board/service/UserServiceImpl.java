@@ -1,5 +1,6 @@
 package com.example.board.service;
 
+import com.example.board.domain.Comment;
 import com.example.board.domain.User;
 import com.example.board.domain.Usertype;
 import com.example.board.dto.LoginRequestDTO;
@@ -107,5 +108,9 @@ public class UserServiceImpl implements UserService {
 
         String jwtToken = jwtTokenProvider.createToken(user.getUserEmail(), user.getUserType());
         return "로그인 성공 " + jwtToken;
+    }
+    @Override
+    public User getUserById(Integer userId) {
+        return userRepository.findById(userId).orElse(null);
     }
 }

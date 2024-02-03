@@ -18,4 +18,5 @@ public interface UserService {
     public void deleteUser(Integer userId) throws SQLException;
     public List<User> getUsersByUserType(int userTypeId) throws SQLException;
     public String login(LoginRequestDTO loginRequestDTO) throws SQLException;
+    public User getUserById(Integer userId);
 }
