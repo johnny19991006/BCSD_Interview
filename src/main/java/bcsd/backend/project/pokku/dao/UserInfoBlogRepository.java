@@ -23,4 +23,8 @@ public interface UserInfoBlogRepository extends JpaRepository<UserInfoBlog, Stri
     @Modifying
     void deleteByUserId(@Param("user_id") UserInfo user);
 
+    @Query("UPDATE UserInfoBlog p SET p.userBlog =:user_blog WHERE p.userInfo = :user_id")
+    @Modifying
+    void updateByUserId(@Param("user_id") UserInfo user, @Param("user_blog") String user_blog);
+
 }

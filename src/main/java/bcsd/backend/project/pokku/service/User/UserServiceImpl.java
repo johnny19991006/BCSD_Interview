@@ -106,11 +106,7 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        UserInfoBlog userInfoBlog = UserInfoBlog.builder()
-                .userBlog(request.getSnsName())
-                .userInfo(UserInfo.builder().userId(userId).build())
-                .build();
-        userInfoBlogRepository.save(userInfoBlog);
+        userInfoBlogRepository.updateByUserId(UserInfo.builder().userId(userId).build(), request.getSnsName());
 
         return true;
     }
@@ -121,11 +117,7 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        UserInfoGithub userInfoGithub = UserInfoGithub.builder()
-                .userGithub(request.getSnsName())
-                .userInfo(UserInfo.builder().userId(userId).build())
-                .build();
-        userInfoGithubRepository.save(userInfoGithub);
+        userInfoGithubRepository.updateByUserId(UserInfo.builder().userId(userId).build(), request.getSnsName());
 
         return true;
     }
@@ -136,11 +128,7 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        UserInfoInstagram userInfoInstagram = UserInfoInstagram.builder()
-                .userInstagram(request.getSnsName())
-                .userInfo(UserInfo.builder().userId(userId).build())
-                .build();
-        userInfoInstagramRepository.save(userInfoInstagram);
+        userInfoInstagramRepository.updateByUserId(UserInfo.builder().userId(userId).build(), request.getSnsName());
 
         return true;
     }
@@ -150,7 +138,7 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        userInfoBlogRepository.deleteById(userId);
+        userInfoBlogRepository.deleteByUserId(UserInfo.builder().userId(userId).build());
 
         return true;
     }
@@ -161,7 +149,7 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        userInfoGithubRepository.deleteById(userId);
+        userInfoGithubRepository.deleteByUserId(UserInfo.builder().userId(userId).build());
 
         return true;
     }
@@ -172,7 +160,7 @@ public class UserServiceImpl implements UserService {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
 
-        userInfoInstagramRepository.deleteById(userId);
+        userInfoInstagramRepository.deleteByUserId(UserInfo.builder().userId(userId).build());
 
         return true;
     }

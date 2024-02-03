@@ -23,4 +23,8 @@ public interface UserInfoGithubRepository extends JpaRepository<UserInfoGithub, 
     @Modifying
     void deleteByUserId(@Param("user_id") UserInfo user);
 
+    @Query("UPDATE UserInfoGithub p SET p.userGithub =:user_github WHERE p.userInfo = :user_id")
+    @Modifying
+    void updateByUserId(@Param("user_id") UserInfo user, @Param("user_github") String user_github);
+
 }

@@ -12,7 +12,6 @@ import bcsd.backend.project.pokku.exception.NullValueException.NullValueExceptio
 import bcsd.backend.project.pokku.exception.NullValueException.NullValueExceptionModel;
 import bcsd.backend.project.pokku.exception.UnknownException.UnknownException;
 import bcsd.backend.project.pokku.exception.UnknownException.UnknownExceptionModel;
-import com.google.protobuf.NullValue;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -76,6 +75,12 @@ public class CustomExceptionInterceptor extends ResponseEntityExceptionHandler {
     @ExceptionHandler(ExpiredJwtException.class)
     public ResponseEntity<Object> handleExpiredJwtException(ExpiredJwtException ex) {
         ExpiredJwtExceptionModel exceptionResponse = new ExpiredJwtExceptionModel(ResCode.EXPIRED.value(), ex.getMessage(), "토큰이 만료되었습니다.");
+        return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NullPointerException.class)
+    public ResponseEntity<Object> handleNullPointerException(NullPointerException ex) {
+        NullValueExceptionModel exceptionResponse = new NullValueExceptionModel(ResCode.NULL_VALUE.value(), ex.getMessage(), "값이 비어있습니다.");
         return new ResponseEntity<>(exceptionResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

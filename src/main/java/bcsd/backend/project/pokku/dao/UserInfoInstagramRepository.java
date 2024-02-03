@@ -23,4 +23,8 @@ public interface UserInfoInstagramRepository extends JpaRepository<UserInfoInsta
     @Modifying
     void deleteByUserId(@Param("user_id") UserInfo user);
 
+    @Query("UPDATE UserInfoInstagram p SET p.userInstagram =:user_instagram WHERE p.userInfo = :user_id")
+    @Modifying
+    void updateByUserId(@Param("user_id") UserInfo user, @Param("user_instagram") String user_instagram);
+
 }
