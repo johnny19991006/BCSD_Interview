@@ -11,12 +11,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-
-    private final TokenAuthenticationFilter tokenAuthenticationFilter;
+    private final JwtExceptionFilter jwtExceptionFilter;
+    private final TokenProvider tokenProvider;
     private final String[] allowedUrls = {"/login", "signup", "/{user_id}/token"};
 
-    public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
-        this.tokenAuthenticationFilter = tokenAuthenticationFilter;
+    public SecurityConfig(JwtExceptionFilter jwtExceptionFilter, TokenProvider tokenProvider) {
+        this.jwtExceptionFilter = jwtExceptionFilter;
+        this.tokenProvider = tokenProvider;
     }
 
     @Bean
@@ -34,12 +35,13 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(allowedUrls).permitAll()
-                                .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtExceptionFilter, TokenAuthenticationFilter.class);
         return http.build();
     }
 

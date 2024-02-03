@@ -1,10 +1,8 @@
 package HSAnimal.demo.configuration;
 
 import HSAnimal.demo.domain.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Header;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,6 +13,7 @@ import java.util.Date;
 import java.util.Set;
 
 @Component
+@Slf4j
 public class TokenProvider {
     private final JwtProperties jwtProperties;
 
@@ -59,21 +58,32 @@ public class TokenProvider {
 
     // JWT 토큰 유효성 검사 메서드
     public boolean validToken(String token){
-        try{
+        try {
             Jwts.parser()
                     .setSigningKey(jwtProperties.getSecretKey())
                     .parseClaimsJws(token);
             return true;
-        } catch (Exception e) {
-            return false;
-        }
+        } catch (SignatureException e) {
+                log.info("SignatureException");
+                throw new JwtException(ErrorCode.WRONG_TYPE_TOKEN.getMessage());
+            } catch (MalformedJwtException e) {
+                log.info("MalformedJwtException");
+                throw new JwtException(ErrorCode.UNSUPPORTED_TOKEN.getMessage());
+            } catch (ExpiredJwtException e) {
+                log.info("ExpiredJwtException");
+                throw new JwtException(ErrorCode.EXPIRED_TOKEN.getMessage());
+            } catch (IllegalArgumentException e) {
+                log.info("IllegalArgumentException");
+                return false;
+//                throw new JwtException(ErrorCode.TOKEN_NOT_FOUND.getMessage());
+            }
     }
 
     // 토큰 기반으로 인증 정보 가져오는 메서드
     public Authentication getAuthentication(String token){
         Claims claims = getClaims(token);
         Set<SimpleGrantedAuthority> authorities = Collections
-                .singleton(new SimpleGrantedAuthority("ROLE_USER"));
+                .singleton(new SimpleGrantedAuthority("USER"));
 
         return new UsernamePasswordAuthenticationToken(new org.springframework.security
                 .core.userdetails.User(claims.getSubject(), "", authorities),
