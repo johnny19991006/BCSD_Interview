@@ -27,13 +27,13 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-@Transactional // 데이터들의 ACID를 보장해줌
 public class PostServiceImpl extends BaseService implements PostService{
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final FileService fileService;
 
+    @Transactional
     @Override
     public void savePost(SavePostDto savePostDto) throws FileException {
         User currentUser = getCurrentAuthenticatedUser();
@@ -56,6 +56,7 @@ public class PostServiceImpl extends BaseService implements PostService{
         postRepository.save(post);
     }
 
+    @Transactional
     @Override
     public void updatePost(Integer id, UpdatePostDto updatePostDto) {
         Post post = postRepository.findById(id).orElseThrow(() ->
@@ -86,6 +87,7 @@ public class PostServiceImpl extends BaseService implements PostService{
 
     }
 
+    @Transactional
     @Override
     public void deletePost(Integer id) {
         Post post = postRepository.findById(id).orElseThrow(() ->

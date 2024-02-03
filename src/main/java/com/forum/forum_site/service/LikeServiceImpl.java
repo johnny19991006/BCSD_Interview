@@ -46,6 +46,7 @@ public class LikeServiceImpl extends BaseService implements LikeService {
         likeRepository.save(like);
     }
 
+    @Transactional
     @Override
     public void deleteLike(Integer postId) {
         User currentUser = getCurrentAuthenticatedUser();
