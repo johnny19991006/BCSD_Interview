@@ -3,6 +3,7 @@ package com.example.board.service;
 import com.example.board.domain.Usertype;
 import com.example.board.repository.UsertypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -16,15 +17,15 @@ public class UsertypeServiceImpl implements UsertypeService{
         this.usertypeRepository = repository;
     }
     @Override
-    public Usertype insertUsertype(Usertype usertype) throws SQLException { // 유저타입 추가
+    public Usertype insertUsertype(Usertype usertype) throws Exception { // 유저타입 추가
         return usertypeRepository.save(usertype);
     }
     @Override
-    public List<Usertype> getAllUsertypes() throws SQLException { // 유저타입 전체조회 (id 오름차순)
+    public List<Usertype> getAllUsertypes() { // 유저타입 전체조회 (id 오름차순)
         return usertypeRepository.findAllByOrderByUserTypeIdAsc();
     }
     @Override
-    public void deleteUsertype(Integer usertypeId) throws SQLException { // 유저타입 삭제
+    public void deleteUsertype(Integer usertypeId) throws EmptyResultDataAccessException { // 유저타입 삭제
         usertypeRepository.deleteById(usertypeId);
     }
 }

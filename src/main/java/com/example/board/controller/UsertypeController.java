@@ -3,6 +3,9 @@ package com.example.board.controller;
 import com.example.board.domain.Usertype;
 import com.example.board.service.UsertypeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -17,15 +20,25 @@ public class UsertypeController {
         this.usertypeService = usertypeService;
     }
     @PostMapping
-    public Usertype insertUsertype(@RequestBody Usertype usertype) throws SQLException {
-        return usertypeService.insertUsertype(usertype);
+    public ResponseEntity<Usertype> insertUsertype(@RequestBody Usertype usertype) {
+        try {
+            return ResponseEntity.status(HttpStatus.CREATED).body(usertypeService.insertUsertype(usertype));
+        }
+        catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
     }
     @GetMapping
-    public List<Usertype> getAllUsertypes() throws SQLException {
-        return usertypeService.getAllUsertypes();
+    public ResponseEntity<List<Usertype>> getAllUsertypes() {
+        return ResponseEntity.ok().body(usertypeService.getAllUsertypes());
     }
     @DeleteMapping("/{usertypeId}")
-    public void deleteUsertype(@PathVariable Integer usertypeId) throws SQLException {
-        usertypeService.deleteUsertype(usertypeId);
+    public ResponseEntity<Void> deleteUsertype(@PathVariable Integer usertypeId) {
+        try {
+            usertypeService.deleteUsertype(usertypeId);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
