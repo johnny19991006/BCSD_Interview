@@ -13,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.NoSuchElementException;
 import java.util.List;
 
@@ -37,12 +38,15 @@ public class StudentService implements StudentServiceInterface{
                 .studentGrade(student.getStudentGrade())
                 .studentSemester(student.getStudentSemester())
                 .studentAttend(student.getStudentAttend())
+                .roles(student.getRoles())
                 .build();
     }
 
     @Override // 학생 정보 생성
     public StudentDTO createStudent(StudentDTO studentDTO)
     {
+        Student student = new Student();
+        student.setRoles(Collections.singletonList("USER"));
         studentRepository.save(studentDTO.toEntity());
         return studentDTO;
     }

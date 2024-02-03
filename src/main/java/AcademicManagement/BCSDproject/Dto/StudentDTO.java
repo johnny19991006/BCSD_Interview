@@ -22,6 +22,7 @@ public class StudentDTO {
     private int studentGrade;
     private int studentSemester;
     private String studentAttend;
+    private List<String> roles;
     private LocalDateTime updateAt;
 
     public Student toEntity()
@@ -34,6 +35,7 @@ public class StudentDTO {
                 .studentGrade(studentGrade)
                 .studentSemester(studentSemester)
                 .studentAttend(studentAttend)
+                .roles(roles)
                 .build();
         return student;
     }
@@ -42,7 +44,7 @@ public class StudentDTO {
     @Builder
     public StudentDTO(String studentId, String studentPw, String studentName,
                       String studentMajor, int studentGrade, int studentSemester,
-                      String studentAttend, LocalDateTime updateAt)
+                      String studentAttend, List<String> roles)
     {
         this.studentId = studentId;
         this.studentPw = studentPw;
@@ -51,6 +53,7 @@ public class StudentDTO {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
+        this.roles = roles;
     }
 
     // findById에서 사용할 studentDTO의 student 생성자
@@ -63,5 +66,6 @@ public class StudentDTO {
         this.studentGrade = student.getStudentGrade();
         this.studentSemester = student.getStudentSemester();
         this.studentAttend = student.getStudentAttend();
+        this.roles = student.getRoles();
     }
 }

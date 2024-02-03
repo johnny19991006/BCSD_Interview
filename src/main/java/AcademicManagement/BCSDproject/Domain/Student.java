@@ -63,13 +63,14 @@ public class Student implements UserDetails {
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
-            name = "student_roles",
+            name = "Student_roles",
             joinColumns = @JoinColumn(name = "student_id")
     )
     @Column(name = "roles")
     private List<String> roles = new ArrayList<>();
 
     @Override // 회원 가입 구현을 위해
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
         return this.roles.stream()
@@ -78,31 +79,37 @@ public class Student implements UserDetails {
     }
 
     @Override
+    @JsonIgnore
     public String getUsername() {
         return studentId;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return studentPw;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isAccountNonLocked() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
     @Override
+    @JsonIgnore
     public boolean isEnabled() {
         return true;
     }
@@ -145,7 +152,7 @@ public class Student implements UserDetails {
         this.studentSemester = studentSemester;
     }
 
-    public void setStudentAttend(String studentAttend) {
-        this.studentAttend = studentAttend;
-    }
+    public void setStudentAttend(String studentAttend) {this.studentAttend = studentAttend;}
+
+    public void setRoles(List<String> roles) {this.roles = roles;}
 }
