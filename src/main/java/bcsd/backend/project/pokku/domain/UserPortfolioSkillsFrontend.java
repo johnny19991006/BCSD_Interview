@@ -2,14 +2,13 @@ package bcsd.backend.project.pokku.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "user_portfolio_skills_frontend")
-@Setter
 @Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserPortfolioSkillsFrontend {
 
@@ -27,5 +26,11 @@ public class UserPortfolioSkillsFrontend {
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private SkillsFrontend skillsFrontend;
+
+    @Builder
+    public UserPortfolioSkillsFrontend(SkillsFrontend skillsFrontend, UserInfo userInfo){
+        this.skillsFrontend = skillsFrontend;
+        this.userInfo = userInfo;
+    }
 
 }

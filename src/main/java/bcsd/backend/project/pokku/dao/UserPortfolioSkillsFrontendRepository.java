@@ -2,7 +2,6 @@ package bcsd.backend.project.pokku.dao;
 
 import bcsd.backend.project.pokku.domain.SkillsFrontend;
 import bcsd.backend.project.pokku.domain.UserInfo;
-import bcsd.backend.project.pokku.domain.UserInfoGithub;
 import bcsd.backend.project.pokku.domain.UserPortfolioSkillsFrontend;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

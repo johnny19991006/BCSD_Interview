@@ -1,14 +1,8 @@
 package bcsd.backend.project.pokku.dto.User;
 
 import bcsd.backend.project.pokku.domain.UserInfo;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserResponse {
 

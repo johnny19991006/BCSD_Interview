@@ -1,6 +1,7 @@
 package bcsd.backend.project.pokku.dao;
 
-import bcsd.backend.project.pokku.domain.*;
+import bcsd.backend.project.pokku.domain.PortfolioProject;
+import bcsd.backend.project.pokku.domain.UserInfo;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

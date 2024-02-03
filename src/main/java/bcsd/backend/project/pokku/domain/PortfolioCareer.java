@@ -2,14 +2,13 @@ package bcsd.backend.project.pokku.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Setter
-@Builder
 @Table(name = "portfolio_career")
-@AllArgsConstructor
 @NoArgsConstructor
 public class PortfolioCareer {
 
@@ -26,5 +25,11 @@ public class PortfolioCareer {
     @JsonIgnore
     private UserInfo userInfo;
 
+    @Builder
+    public PortfolioCareer(Long portfolioCareerId, String careerExplanation, UserInfo userInfo){
+        this.careerExplanation = careerExplanation;
+        this.portfolioCareerId = portfolioCareerId;
+        this.userInfo = userInfo;
+    }
 
 }

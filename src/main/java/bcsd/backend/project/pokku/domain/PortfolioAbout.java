@@ -2,14 +2,13 @@ package bcsd.backend.project.pokku.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "portfolio_about")
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class PortfolioAbout {
 
@@ -34,4 +33,13 @@ public class PortfolioAbout {
     @OneToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private UserInfo userInfo;
+
+    @Builder
+    public PortfolioAbout(Boolean userEducationVisible, Boolean userEmailVisible, Boolean userNameVisible, Boolean userTelVisible, UserInfo userInfo){
+        this.userEducationVisible = userEducationVisible;
+        this.userNameVisible = userNameVisible;
+        this.userEmailVisible = userEmailVisible;
+        this.userTelVisible = userTelVisible;
+        this.userInfo = userInfo;
+    }
 }

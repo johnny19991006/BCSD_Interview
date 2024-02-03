@@ -1,7 +1,9 @@
 package bcsd.backend.project.pokku.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +11,6 @@ import java.util.List;
 @Entity
 @Table(name = "user_info")
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class UserInfo {
 
@@ -83,6 +82,18 @@ public class UserInfo {
     public void setRoles(List<Authority> role) {
         this.authorities = role;
         role.forEach(o -> o.setUsers(this));
+    }
+
+    @Builder
+    public UserInfo(String userBirth, String userEducation, String userEmail, String userId, String userName, String userNickname, String userPassword, String userTel){
+        this.userBirth = userBirth;
+        this.userEducation = userEducation;
+        this.userEmail = userEmail;
+        this.userId = userId;
+        this.userNickname = userNickname;
+        this.userName = userName;
+        this.userPassword = userPassword;
+        this.userTel = userTel;
     }
 
 }

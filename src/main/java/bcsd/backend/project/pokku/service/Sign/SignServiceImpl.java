@@ -17,8 +17,6 @@ import bcsd.backend.project.pokku.exception.ResCode;
 import bcsd.backend.project.pokku.security.JwtProvider;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -70,13 +68,13 @@ public class SignServiceImpl implements SignService{
 
         userInfo.setRoles(Collections.singletonList(Authority.builder()
 //                    .AuthName("ROLE_User")
-                .AuthName("ROLE_Admin")
+                .authName("ROLE_Admin")
                 .build()));
 
         userInfoRepository.save(userInfo);
         authorityRepository.save(Authority.builder()
 //                    .AuthName("ROLE_User")
-                .AuthName("ROLE_Admin")
+                .authName("ROLE_Admin")
                 .userInfo(userInfo)
                 .build());
         portfolioAboutRepository.save(PortfolioAbout.builder()

@@ -1,17 +1,16 @@
 package bcsd.backend.project.pokku.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
 @Getter
-@Setter
 @Table(name = "skills_communication")
-@AllArgsConstructor
 @NoArgsConstructor
 public class SkillsCommunication {
 
@@ -26,5 +25,11 @@ public class SkillsCommunication {
 
     @OneToMany(mappedBy = "skillsCommunication", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<UserPortfolioSkillsCommunication> userPortfolioSkillsCommunicationList = new ArrayList<>();
+
+    @Builder
+    public SkillsCommunication(Long skillsCommunicationId, Image image){
+        this.skillsCommunicationId = skillsCommunicationId;
+        this.image = image;
+    }
 
 }

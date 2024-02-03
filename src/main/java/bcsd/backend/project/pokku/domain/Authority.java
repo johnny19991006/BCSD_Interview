@@ -2,14 +2,13 @@ package bcsd.backend.project.pokku.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "authority")
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class Authority {
     @Id
@@ -28,4 +27,11 @@ public class Authority {
     public void setUsers(UserInfo user){
         this.userInfo = user;
     }
+
+    @Builder
+    public Authority(UserInfo userInfo, String authName){
+        this.userInfo = userInfo;
+        this.AuthName = authName;
+    }
+
 }

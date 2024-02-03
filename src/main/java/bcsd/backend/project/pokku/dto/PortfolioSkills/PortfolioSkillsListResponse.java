@@ -1,13 +1,14 @@
 package bcsd.backend.project.pokku.dto.PortfolioSkills;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.NoArgsConstructor;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@NoArgsConstructor
 public class PortfolioSkillsListResponse {
     private Long skillId;
     private String skillName;
+
+    public PortfolioSkillsListResponse(Long skillId, String skillName){
+        this.skillId = skillId;
+        this.skillName = skillName;
+    }
 }

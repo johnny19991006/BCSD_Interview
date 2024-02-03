@@ -1,14 +1,13 @@
 package bcsd.backend.project.pokku.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "image")
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 public class Image {
 
@@ -39,4 +38,10 @@ public class Image {
 
     @OneToOne(mappedBy = "image", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private SkillsCertification skillsCertification;
+
+    @Builder
+    public Image(String skillName, String imageUrl){
+        this.skillName = skillName;
+        this.imageUrl = imageUrl;
+    }
 }

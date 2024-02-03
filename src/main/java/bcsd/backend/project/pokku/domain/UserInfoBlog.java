@@ -1,13 +1,12 @@
 package bcsd.backend.project.pokku.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "user_info_blog")
 public class UserInfoBlog {
@@ -19,5 +18,11 @@ public class UserInfoBlog {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserInfo userInfo;
+
+    @Builder
+    public UserInfoBlog(String userBlog, UserInfo userInfo){
+        this.userBlog = userBlog;
+        this.userInfo = userInfo;
+    }
 
 }

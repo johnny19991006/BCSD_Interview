@@ -20,7 +20,6 @@ import bcsd.backend.project.pokku.exception.ResCode;
 import bcsd.backend.project.pokku.exception.UnknownException.UnknownException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
 import java.io.File;

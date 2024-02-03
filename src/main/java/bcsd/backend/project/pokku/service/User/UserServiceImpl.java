@@ -17,7 +17,6 @@ import bcsd.backend.project.pokku.exception.NoSuchDataException.NoSuchDataExcept
 import bcsd.backend.project.pokku.exception.ResCode;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

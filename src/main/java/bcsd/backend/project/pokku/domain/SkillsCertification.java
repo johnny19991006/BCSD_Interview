@@ -1,17 +1,16 @@
 package bcsd.backend.project.pokku.domain;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Builder
 @Getter
-@Setter
 @Table(name = "skills_certification")
-@AllArgsConstructor
 @NoArgsConstructor
 public class SkillsCertification {
 
@@ -26,5 +25,11 @@ public class SkillsCertification {
 
     @OneToMany(mappedBy = "skillsCertification", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private List<UserPortfolioSkillsCertification> userPortfolioSkillsCertificationList = new ArrayList<>();
+
+    @Builder
+    public SkillsCertification(Long skillsCertificationId, Image image){
+        this.skillsCertificationId = skillsCertificationId;
+        this.image = image;
+    }
 
 }
