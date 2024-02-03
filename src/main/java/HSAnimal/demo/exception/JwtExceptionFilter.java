@@ -1,11 +1,12 @@
-package HSAnimal.demo.configuration;
+package HSAnimal.demo.exception;
 
+import HSAnimal.demo.enums.ErrorCode;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -14,7 +15,7 @@ import java.io.IOException;
 
 @Slf4j
 @Component
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class JwtExceptionFilter extends OncePerRequestFilter {
 
     @Override
@@ -36,7 +37,7 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
                 setResponse(response, ErrorCode.EXPIRED_TOKEN);
 
             }
-            //지원되지 않는 토큰인 경우
+            //지원 되지 않는 토큰인 경우
             else if(ErrorCode.UNSUPPORTED_TOKEN.getMessage().equals(message)) {
                 setResponse(response, ErrorCode.UNSUPPORTED_TOKEN);
             }

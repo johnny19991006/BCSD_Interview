@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.UserKeywordsDTO;
+import HSAnimal.demo.dto.UserKeywordsDto;
 import HSAnimal.demo.service.SurveyService;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +20,7 @@ public class SurveyController {
     }
 
     @PostMapping("/{user_id}/survey")
-    public String saveOptionList(@RequestBody List<UserKeywordsDTO> userKeywordsList,@PathVariable String user_id) {
+    public String saveOptionList(@RequestBody List<UserKeywordsDto> userKeywordsList, @PathVariable String user_id) {
         surveyService.saveOptions(userKeywordsList, user_id);
         return "키워드가 등록되었습니다.\n/{user_id}/match 링크로 리디랙션";
     }

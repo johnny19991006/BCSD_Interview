@@ -1,4 +1,4 @@
-package HSAnimal.demo.configuration;
+package HSAnimal.demo.enums;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

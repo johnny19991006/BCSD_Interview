@@ -1,16 +1,16 @@
-package HSAnimal.demo.DTO;
+package HSAnimal.demo.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class UpdateUserDTO {
+public class UpdateUserDto {
     private String username;
     private String password;
     private String email;
 
-    public UpdateUserDTO (String username, String password, String email){
+    public UpdateUserDto(String username, String password, String email){
         this.username = username;
         this.password = password;
         this.email = email;

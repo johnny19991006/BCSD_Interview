@@ -1,9 +1,9 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.CreateAccessTokenDTO;
-import HSAnimal.demo.DTO.UpdateUserDTO;
-import HSAnimal.demo.DTO.UserDTO;
-import HSAnimal.demo.DTO.UserKeywordsDTO;
+import HSAnimal.demo.dto.CreateAccessTokenDto;
+import HSAnimal.demo.dto.UpdateUserDto;
+import HSAnimal.demo.dto.UserDto;
+import HSAnimal.demo.dto.UserKeywordsDto;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.UserRepository;
 import HSAnimal.demo.service.MatchService;
@@ -35,13 +35,13 @@ public class UserController {
 
     // 회원가입
     @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody UserDTO request) {
+    public ResponseEntity<String> signup(@RequestBody UserDto request) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body("\"" + userService.signup(request) + "\" 회원가입이 완료되었습니다!");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<CreateAccessTokenDTO> login(@RequestBody UserDTO userDTO) {
+    public ResponseEntity<CreateAccessTokenDto> login(@RequestBody UserDto userDTO) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.login(userDTO));
     }
 
@@ -58,7 +58,7 @@ public class UserController {
     }
 
     @PutMapping("/{user_id}")
-    public ResponseEntity<String> updateUser(@PathVariable String user_id, @RequestBody UpdateUserDTO updatedUserDTO) {
+    public ResponseEntity<String> updateUser(@PathVariable String user_id, @RequestBody UpdateUserDto updatedUserDTO) {
         userService.updateUser(user_id, updatedUserDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body("회원정보가 수정되었습니다.");
     }
@@ -76,7 +76,7 @@ public class UserController {
 
     @DeleteMapping("/{user_id}/keywords")
     public ResponseEntity<Set<Integer>> deleteUserKeywords(@PathVariable String user_id,
-                                                           @RequestBody List<UserKeywordsDTO> userKeywordsList) {
+                                                           @RequestBody List<UserKeywordsDto> userKeywordsList) {
         userService.deleteUserKeywords(user_id, userKeywordsList);
         return ResponseEntity.status(HttpStatus.OK).body(matchService.getMyOptionList(user_id));
     }

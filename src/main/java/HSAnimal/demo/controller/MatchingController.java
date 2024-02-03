@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.myAnimalDTO;
+import HSAnimal.demo.dto.myAnimalDto;
 import HSAnimal.demo.service.MatchService;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +21,7 @@ public class MatchingController {
     }
 
     @PostMapping("/{user_id}/match")
-    public List<myAnimalDTO> matchAnimals(@PathVariable String user_id) {
+    public List<myAnimalDto> matchAnimals(@PathVariable String user_id) {
         return matchService.sumWeights(user_id);
     }
 }

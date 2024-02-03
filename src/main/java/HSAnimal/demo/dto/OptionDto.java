@@ -1,10 +1,10 @@
-package HSAnimal.demo.DTO;
+package HSAnimal.demo.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class OptionDTO {
+public class OptionDto {
     private int optionId;
 }

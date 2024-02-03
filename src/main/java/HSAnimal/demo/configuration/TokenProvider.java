@@ -1,6 +1,7 @@
 package HSAnimal.demo.configuration;
 
 import HSAnimal.demo.domain.User;
+import HSAnimal.demo.enums.ErrorCode;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -83,7 +84,7 @@ public class TokenProvider {
     public Authentication getAuthentication(String token){
         Claims claims = getClaims(token);
         Set<SimpleGrantedAuthority> authorities = Collections
-                .singleton(new SimpleGrantedAuthority("USER"));
+                .singleton(new SimpleGrantedAuthority("ROLE_USER"));
 
         return new UsernamePasswordAuthenticationToken(new org.springframework.security
                 .core.userdetails.User(claims.getSubject(), "", authorities),

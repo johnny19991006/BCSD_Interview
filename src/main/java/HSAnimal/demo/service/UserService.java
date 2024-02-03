@@ -1,6 +1,6 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.DTO.*;
+import HSAnimal.demo.dto.*;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.domain.UserKeywords;
 import HSAnimal.demo.repository.UserKeywordsRepository;
@@ -30,7 +30,7 @@ public class UserService {
         this.tokenService = tokenService;
     }
 
-    public String signup(UserDTO dto) {
+    public String signup(UserDto dto) {
         User user = User.builder()
                 .userId(dto.getUserId())
                 .username(dto.getUsername())
@@ -40,13 +40,13 @@ public class UserService {
         return userRepository.save(user).getUserId();
     }
 
-    public CreateAccessTokenDTO login(UserDTO userDTO){
+    public CreateAccessTokenDto login(UserDto userDTO){
         User user = authenticateUser(userDTO);
         tokenService.saveRefreshToken(user);
         return tokenService.createAccessToken(user);
     }
 
-    public User authenticateUser(UserDTO userDTO){
+    public User authenticateUser(UserDto userDTO){
         User user = userRepository.findByUserId(userDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
         if (bCryptPasswordEncoder.matches(userDTO.getPassword(), user.getPassword())) {
@@ -56,7 +56,7 @@ public class UserService {
         }
     }
 
-    public void updateUser(String userId, UpdateUserDTO updateUserDTO){
+    public void updateUser(String userId, UpdateUserDto updateUserDTO){
         userRepository.findByUserId(userId)
                 .map(user -> {
                     user.changeName(updateUserDTO.getUsername());
@@ -73,8 +73,8 @@ public class UserService {
         userRepository.delete(user);
     }
 
-    public void deleteUserKeywords(String userId, List<UserKeywordsDTO> userKeywordsDTOList) {
-        for (UserKeywordsDTO userKeywordsDTO: userKeywordsDTOList) {
+    public void deleteUserKeywords(String userId, List<UserKeywordsDto> userKeywordsDtoList) {
+        for (UserKeywordsDto userKeywordsDTO: userKeywordsDtoList) {
             int optionId = userKeywordsDTO.getOptionId();
             UserKeywords userKeywords = userKeywordsRepository.findByUserIdAndOptionId(userId, optionId)
                     .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));

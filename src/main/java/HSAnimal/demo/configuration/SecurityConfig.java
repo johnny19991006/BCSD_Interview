@@ -1,5 +1,6 @@
 package HSAnimal.demo.configuration;
 
+import HSAnimal.demo.exception.JwtExceptionFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,12 +12,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 public class SecurityConfig {
-    private final JwtExceptionFilter jwtExceptionFilter;
     private final TokenProvider tokenProvider;
     private final String[] allowedUrls = {"/login", "signup", "/{user_id}/token"};
 
-    public SecurityConfig(JwtExceptionFilter jwtExceptionFilter, TokenProvider tokenProvider) {
-        this.jwtExceptionFilter = jwtExceptionFilter;
+    public SecurityConfig(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
     }
 
@@ -41,7 +40,7 @@ public class SecurityConfig {
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(new TokenAuthenticationFilter(tokenProvider), UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(jwtExceptionFilter, TokenAuthenticationFilter.class);
+                .addFilterBefore(new JwtExceptionFilter(), TokenAuthenticationFilter.class);
         return http.build();
     }
 

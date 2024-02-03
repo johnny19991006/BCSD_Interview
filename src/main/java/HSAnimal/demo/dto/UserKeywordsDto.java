@@ -1,11 +1,11 @@
-package HSAnimal.demo.DTO;
+package HSAnimal.demo.dto;
 
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
 @Builder
-public class UserKeywordsDTO {
+public class UserKeywordsDto {
     private String userId;
     private int optionId;
 }

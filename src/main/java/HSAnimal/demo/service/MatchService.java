@@ -1,6 +1,6 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.DTO.myAnimalDTO;
+import HSAnimal.demo.dto.myAnimalDto;
 import HSAnimal.demo.domain.*;
 import HSAnimal.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,28 +43,28 @@ public class MatchService {
     }
 
     // 사용자와 겹치는 동물 리스트 생성
-    public Set<myAnimalDTO> getMyAnimalDTOList(Set<Integer> optionList){
-        Set<myAnimalDTO> myAnimalDTOList = new HashSet<>();
+    public Set<myAnimalDto> getMyAnimalDTOList(Set<Integer> optionList){
+        Set<myAnimalDto> myAnimalDtoList = new HashSet<>();
         for(int option : optionList){
             List<AnimalKeywords> animalKeywordsList = animalKeywordsRepository.findAllByOptionId(option);
             for (AnimalKeywords animalKeywords : animalKeywordsList) {
                 Optional<Animal> optionalAnimal = animalRepository.findByAnimalId(animalKeywords.getAnimalId());
                 optionalAnimal.ifPresent(animal ->
-                    myAnimalDTOList.add(myAnimalDTO.builder()
+                    myAnimalDtoList.add(myAnimalDto.builder()
                             .animalId(animal.getAnimalId())
                             .animalName(animal.getAnimalName())
                             .build())
                 );
             }
         }
-        return myAnimalDTOList;
+        return myAnimalDtoList;
     }
 
     // 매칭된 동물들 반환
-    public List<myAnimalDTO> sumWeights(String userId){
+    public List<myAnimalDto> sumWeights(String userId){
         Set<Integer> myOptionList = getMyOptionList(userId);
-        Set<myAnimalDTO> myAnimalDTOSet = getMyAnimalDTOList(myOptionList);
-        for(myAnimalDTO myAnimalDTO : myAnimalDTOSet){
+        Set<myAnimalDto> myAnimalDtoSet = getMyAnimalDTOList(myOptionList);
+        for(myAnimalDto myAnimalDTO : myAnimalDtoSet){
             List<Integer> optionIdList = animalKeywordsRepository.findAllByAnimalId(myAnimalDTO.getAnimalId())
                     .stream()
                     .map(AnimalKeywords::getOptionId)
@@ -79,8 +79,8 @@ public class MatchService {
                 myAnimalDTO.setMatchScore(sum);
             }
         }
-        List<myAnimalDTO> myAnimalList = new ArrayList<>(myAnimalDTOSet);
-        Comparator<myAnimalDTO> sumComparator = Comparator.comparingInt(myAnimalDTO::getMatchScore);
+        List<myAnimalDto> myAnimalList = new ArrayList<>(myAnimalDtoSet);
+        Comparator<myAnimalDto> sumComparator = Comparator.comparingInt(myAnimalDto::getMatchScore);
         myAnimalList.sort(sumComparator.reversed());
         return myAnimalList;
     }

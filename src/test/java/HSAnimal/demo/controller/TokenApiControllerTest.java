@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.DTO.CreateAccessTokenRequestDTO;
+import HSAnimal.demo.dto.CreateAccessTokenRequestDTO;
 import HSAnimal.demo.configuration.JwtFactory;
 import HSAnimal.demo.configuration.JwtProperties;
 import HSAnimal.demo.domain.RefreshToken;

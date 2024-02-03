@@ -1,6 +1,6 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.DTO.CreateAccessTokenDTO;
+import HSAnimal.demo.dto.CreateAccessTokenDto;
 import HSAnimal.demo.configuration.JwtProperties;
 import HSAnimal.demo.configuration.TokenProvider;
 import HSAnimal.demo.domain.RefreshToken;
@@ -30,7 +30,7 @@ public class TokenService {
         this.jwtProperties = jwtProperties;
     }
 
-    public CreateAccessTokenDTO recreateAccessToken(String userId) {
+    public CreateAccessTokenDto recreateAccessToken(String userId) {
         Optional<RefreshToken> optionalRefreshToken = refreshTokenRepository.findByUserId(userId);
             String refreshToken = optionalRefreshToken
                     .orElseThrow(() -> new IllegalArgumentException("Unexpected token"))
@@ -44,8 +44,8 @@ public class TokenService {
             }
     }
 
-    public CreateAccessTokenDTO createAccessToken(User user){
-        return new CreateAccessTokenDTO(tokenProvider
+    public CreateAccessTokenDto createAccessToken(User user){
+        return new CreateAccessTokenDto(tokenProvider
                 .generateToken(user, Duration.ofMinutes(jwtProperties.getValidMinutes())));
     }
 
