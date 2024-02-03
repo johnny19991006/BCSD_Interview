@@ -21,6 +21,10 @@ import static jakarta.persistence.CascadeType.ALL;
 @Setter
 @Entity
 @Builder
+
+// UserDetails
+// 로그인/ 로그아웃 관리 및 secured resource에 대한 접근 관리를 spring security가 처리 해줌
+
 public class User implements UserDetails{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer user_id;
@@ -39,6 +43,7 @@ public class User implements UserDetails{
     private Role role;
 
     // 권한 반환
+    // Collection<? extends GrantedAuthority>는  GrantedAuthority 또는 그 하위 타입의 알 수 없는 타입을 의미
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
