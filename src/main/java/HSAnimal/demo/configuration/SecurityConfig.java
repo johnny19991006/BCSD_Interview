@@ -13,7 +13,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
 
     private final TokenAuthenticationFilter tokenAuthenticationFilter;
-
     private final String[] allowedUrls = {"/login", "signup", "/{user_id}/token"};
 
     public SecurityConfig(TokenAuthenticationFilter tokenAuthenticationFilter) {
@@ -35,6 +34,7 @@ public class SecurityConfig {
                 .authorizeRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(allowedUrls).permitAll()
+                                .requestMatchers("/admin/**").hasRole("ROLE_ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .sessionManagement(sessionManagement ->
