@@ -1,9 +1,9 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.dto.CreateAccessTokenDto;
-import HSAnimal.demo.dto.UpdateUserDto;
-import HSAnimal.demo.dto.UserDto;
-import HSAnimal.demo.dto.UserKeywordsDto;
+import HSAnimal.demo.DTO.CreateAccessTokenDto;
+import HSAnimal.demo.DTO.UpdateUserDto;
+import HSAnimal.demo.DTO.UserDto;
+import HSAnimal.demo.DTO.UserKeywordsDto;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.repository.UserRepository;
 import HSAnimal.demo.service.MatchService;

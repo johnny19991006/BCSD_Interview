@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.dto.myAnimalDto;
+import HSAnimal.demo.DTO.myAnimalDto;
 import HSAnimal.demo.service.MatchService;
 import org.springframework.web.bind.annotation.*;
 

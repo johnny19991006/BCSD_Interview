@@ -1,6 +1,6 @@
 package HSAnimal.demo.controller;
 
-import HSAnimal.demo.dto.UserKeywordsDto;
+import HSAnimal.demo.DTO.UserKeywordsDto;
 import HSAnimal.demo.service.SurveyService;
 import org.springframework.web.bind.annotation.*;
 

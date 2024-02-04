@@ -1,4 +1,4 @@
-package HSAnimal.demo.dto;
+package HSAnimal.demo.DTO;
 
 public record CreateAccessTokenDto(String accessToken) {
 }

@@ -1,6 +1,6 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.dto.UserKeywordsDto;
+import HSAnimal.demo.DTO.UserKeywordsDto;
 import HSAnimal.demo.domain.Questions;
 import HSAnimal.demo.domain.UserKeywords;
 import HSAnimal.demo.repository.QuestionsRepository;

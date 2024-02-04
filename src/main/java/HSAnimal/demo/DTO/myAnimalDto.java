@@ -1,4 +1,4 @@
-package HSAnimal.demo.dto;
+package HSAnimal.demo.DTO;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package HSAnimal.demo.controller;
 
 
-import HSAnimal.demo.dto.CreateAccessTokenDto;
+import HSAnimal.demo.DTO.CreateAccessTokenDto;
 import HSAnimal.demo.service.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,6 +1,6 @@
 package HSAnimal.demo.service;
 
-import HSAnimal.demo.dto.myAnimalDto;
+import HSAnimal.demo.DTO.myAnimalDto;
 import HSAnimal.demo.domain.*;
 import HSAnimal.demo.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
