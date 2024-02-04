@@ -8,6 +8,7 @@ import bcsd.backend.project.pokku.service.Image.ImageServiceImpl;
 import bcsd.backend.project.pokku.service.User.UserServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,8 +39,8 @@ public class AdminController {
         return new ResponseEntity<>(userService.DeleteUsers(userId), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/image")
-    public ResponseEntity<Boolean> uploadImage(ImageUploadRequest request) throws RuntimeException{
+    @PostMapping(value = "/image", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Boolean> uploadImage(@ModelAttribute ImageUploadRequest request) throws RuntimeException{
         if (request.getCategory() == null || request.getCategory().equals("")){
             throw new NullValueException("category값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
         }
