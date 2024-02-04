@@ -20,18 +20,18 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
-                .httpBasic().disable()
+                .httpBasic().disable() // 더 이상 사용되지 않으며 제거용으로 표시되어 있는데 제거 해도 되는지
                 .csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/Student/signin").permitAll()
-                .requestMatchers("/Student/**").hasAuthority("USER")
-                .requestMatchers("/Semester/**").permitAll()
-                .requestMatchers("/Score/**").permitAll()
-                .requestMatchers("/Subject/**").permitAll()
-                .requestMatchers("/Student/test").hasRole("USER")
-                .anyRequest().authenticated()
+                .requestMatchers("/Student/signin").permitAll() // 로그인에 대한 권한은 다 부여
+                .requestMatchers("/Student/**").hasAuthority("USER") // 아래에 대한 권한들은 1차적으로 USER에게 부여
+                .requestMatchers("/Semester/**").hasAuthority("USER")
+                .requestMatchers("/Score/**").hasAuthority("USER")
+                .requestMatchers("/Subject/**").hasAuthority("USER")
+                .requestMatchers("/Student/test").hasAuthority("USER")
+                .anyRequest().hasRole("USER")
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -35,6 +35,7 @@ public class StudentDTO {
                 .studentGrade(studentGrade)
                 .studentSemester(studentSemester)
                 .studentAttend(studentAttend)
+                .updateAt(updateAt)
                 .roles(roles)
                 .build();
         return student;
@@ -44,7 +45,7 @@ public class StudentDTO {
     @Builder
     public StudentDTO(String studentId, String studentPw, String studentName,
                       String studentMajor, int studentGrade, int studentSemester,
-                      String studentAttend, List<String> roles)
+                      String studentAttend, LocalDateTime updateAt, List<String> roles)
     {
         this.studentId = studentId;
         this.studentPw = studentPw;
@@ -53,6 +54,7 @@ public class StudentDTO {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
+        this.updateAt = updateAt;
         this.roles = roles;
     }
 
@@ -66,6 +68,7 @@ public class StudentDTO {
         this.studentGrade = student.getStudentGrade();
         this.studentSemester = student.getStudentSemester();
         this.studentAttend = student.getStudentAttend();
+        this.updateAt = student.getUpdateAt();
         this.roles = student.getRoles();
     }
 }

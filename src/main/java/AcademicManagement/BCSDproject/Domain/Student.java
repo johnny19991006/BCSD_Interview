@@ -61,6 +61,9 @@ public class Student implements UserDetails {
     @Column(name = "student_attend", length = 10, nullable = false) // 학적 상황
     private String studentAttend;
 
+    @Column(name = "update_at")
+    private LocalDateTime updateAt;
+
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "Student_roles",
@@ -114,15 +117,13 @@ public class Student implements UserDetails {
         return true;
     }
 
-    //@Column(name = "update_at") // 업데이트 시간
-    //private LocalDateTime updateAt;
-
     //@OneToMany(mappedBy = "student") // 학생은 여러 학기를 가질 수 있음, 외래키
     //private List<Semester> studentSemesterAll;
 
     @Builder
     public Student(String studentId, String studentPw, String studentName, String studentMajor,
-                   int studentGrade, int studentSemester, String studentAttend, List<String> roles) {
+                   int studentGrade, int studentSemester, String studentAttend,
+                   LocalDateTime updateAt, List<String> roles) {
         this.studentId = studentId;
         this.studentPw = studentPw;
         this.studentName = studentName;
@@ -130,6 +131,7 @@ public class Student implements UserDetails {
         this.studentGrade = studentGrade;
         this.studentSemester = studentSemester;
         this.studentAttend = studentAttend;
+        this.updateAt = updateAt;
         this.roles = roles;
     }
     public void setStudentPw(String studentPw) {
@@ -153,6 +155,8 @@ public class Student implements UserDetails {
     }
 
     public void setStudentAttend(String studentAttend) {this.studentAttend = studentAttend;}
+
+    public void setUpdateAt(LocalDateTime updateAt) {this.updateAt = updateAt;}
 
     public void setRoles(List<String> roles) {this.roles = roles;}
 }

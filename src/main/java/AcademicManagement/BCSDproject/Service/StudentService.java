@@ -38,6 +38,8 @@ public class StudentService implements StudentServiceInterface{
                 .studentGrade(student.getStudentGrade())
                 .studentSemester(student.getStudentSemester())
                 .studentAttend(student.getStudentAttend())
+                .updateAt(student.getUpdateAt()
+                )
                 .roles(student.getRoles())
                 .build();
     }
