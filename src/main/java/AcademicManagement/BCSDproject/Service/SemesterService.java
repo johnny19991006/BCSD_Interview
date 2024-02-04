@@ -45,14 +45,14 @@ public class SemesterService implements SemesterServiceInterface{
     public Semester findSemester(int semesterId)
     {
         return semesterRepository.findById(semesterId)
-                .orElseThrow(() -> new NoSuchElementException("Can't find"));
+                .orElseThrow(() -> new NoSuchElementException("Can't find Semester"));
     }
 
     @Override
     public Semester updateSemester(Semester semester, int semesterId)
     {
         Semester changeSemester = semesterRepository.findById(semesterId)
-                .orElseThrow(() -> new NoSuchElementException("Can't find"));
+                .orElseThrow(() -> new NoSuchElementException("Can't find Semester"));
 
         if(semester.getSemesterYear() != null) {
             changeSemester.setSemesterYear(semester.getSemesterYear());

@@ -27,7 +27,7 @@ public class CustomStudentDetailsService implements UserDetailsService {
     {
         return studentRepository.findByStudentId(studentId)
                 .map(this::createUserDetails)
-                .orElseThrow(() -> new UsernameNotFoundException("해당하는 유저를 찾을 수 없습니다."));
+                .orElseThrow(() -> new UsernameNotFoundException("Can't find User"));
     }
 
     private UserDetails createUserDetails(Student student)

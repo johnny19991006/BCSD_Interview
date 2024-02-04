@@ -13,5 +13,5 @@ public interface SemesterServiceInterface {
     public void deleteSemester(int semesterId);
     public List<Semester> studentSemester(String studentId);
     public void updateSemesterCredit(String studentId, SemesterGradeEnum semesterGradeEnum,
-                                     SemesterEnum semesterEnum);
+                                     SemesterEnum semesterEnum); // 학기와 학년을 이용하여 성적 계산하는 메소드
 }
