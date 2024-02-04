@@ -11,4 +11,5 @@ public interface StudentGradeInformationServiceInterface {
     public StudentGradeInformation findStudentGradeInformation(String StudentId);
     public StudentGradeInformation updateStudentGradeInformation(StudentGradeInformation studentGradeInformation, String StudentId);
     public void deleteStudentGradeInformation(String studentId);
+    public void updateStudentGradeInformation(String studentId);
 }
