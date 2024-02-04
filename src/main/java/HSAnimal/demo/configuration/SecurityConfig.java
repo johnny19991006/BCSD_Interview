@@ -13,7 +13,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
-    private final String[] allowedUrls = {"/login", "signup", "/{user_id}/token"};
+    private final String[] allowedUrls = {"/login", "signup", "/user/{user_id}/token"};
     // 스웨거 URI "/swagger-ui/**", "/", "/swagger-resources/**", "/v3/api-docs/**"
 
     public SecurityConfig(TokenProvider tokenProvider) {

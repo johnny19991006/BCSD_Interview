@@ -7,7 +7,9 @@ import HSAnimal.demo.exception.AccountAlreadyExistsException;
 import HSAnimal.demo.exception.EmailAlreadyExistsException;
 import HSAnimal.demo.repository.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class SignService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final TokenService tokenService;

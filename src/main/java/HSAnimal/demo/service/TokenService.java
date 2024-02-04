@@ -49,12 +49,14 @@ public class TokenService {
     }
 
     public void saveRefreshToken(User user){
+        Optional<RefreshToken> token = refreshTokenRepository.findByUserId(user.getUserId());
+        if (token.isPresent()){
+            RefreshToken existToken = token.get();
+            refreshTokenRepository.delete(existToken);
+        }
+
         String refreshToken = tokenProvider.generateRefreshToken(Duration.ofHours(jwtProperties.getRefreshValidHours()));
-        refreshTokenRepository.findByUserId(user.getUserId())
-                .ifPresentOrElse(
-                        it -> it.updateRefreshToken(refreshToken),
-                        () -> refreshTokenRepository.save(new RefreshToken(user.getUserId(), refreshToken))
-                );
+        refreshTokenRepository.save(new RefreshToken(user.getUserId(), refreshToken));
     }
     public void deleteRefreshToken(String userId) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
