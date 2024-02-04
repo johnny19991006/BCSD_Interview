@@ -6,7 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.List;
 
 public interface UsertypeService {
-    public Usertype insertUsertype(Usertype usertype) throws Exception;
+    public Usertype insertUsertype(Usertype usertype);
     public List<Usertype> getAllUsertypes();
     public void deleteUsertype(Integer usertypeId) throws EmptyResultDataAccessException;
 }

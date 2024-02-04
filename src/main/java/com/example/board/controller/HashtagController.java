@@ -21,12 +21,7 @@ public class HashtagController {
     }
     @PostMapping
     public ResponseEntity<Hashtag> insertHashtag(@RequestBody Hashtag hashtag) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(hashtagService.insertHashtag(hashtag));
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(hashtagService.insertHashtag(hashtag));
     }
     @GetMapping
     public ResponseEntity<List<Hashtag>> getAllHashtags() {
@@ -38,12 +33,7 @@ public class HashtagController {
     }
     @DeleteMapping("/{hashtagId}")
     public ResponseEntity<Void> deleteHashtag(@PathVariable Integer hashtagId) {
-        try {
-            hashtagService.deleteHashtag(hashtagId);
-            return ResponseEntity.noContent().build();
-        }
-        catch (EmptyResultDataAccessException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        hashtagService.deleteHashtag(hashtagId);
+        return ResponseEntity.noContent().build();
     }
 }

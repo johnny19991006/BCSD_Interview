@@ -23,52 +23,20 @@ public class CommentController {
 
     @PostMapping
     public ResponseEntity<CommentResponseDTO> insertComment(@RequestBody CommentRequestDTO commentRequestDTO) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(commentService.insertComment(commentRequestDTO));
-        }
-        catch (ClassCastException | UnauthorizedException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(commentService.insertComment(commentRequestDTO));
     }
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentResponseDTO> updateCommentContent(@PathVariable Integer commentId, @RequestBody String newContent) {
-        try {
-            return ResponseEntity.ok(commentService.updateCommentContent(commentId, newContent));
-        }
-        catch (UnauthorizedException | ClassCastException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return ResponseEntity.ok(commentService.updateCommentContent(commentId, newContent));
     }
 
     @DeleteMapping("/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Integer commentId) {
-        try {
-            commentService.deleteComment(commentId);
-            return ResponseEntity.noContent().build();
-        }
-        catch (UnauthorizedException | ClassCastException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        commentService.deleteComment(commentId);
+        return ResponseEntity.noContent().build();
     }
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<CommentResponseDTO>> getCommentByUserId(@PathVariable int userId) {
-        try {
-            return ResponseEntity.ok().body(commentService.getCommentByUserId(userId));
-        }
-        catch (UnauthorizedException | ClassCastException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-        catch (NotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        return ResponseEntity.ok().body(commentService.getCommentByUserId(userId));
     }
 }

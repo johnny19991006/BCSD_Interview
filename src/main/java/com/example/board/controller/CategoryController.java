@@ -20,12 +20,7 @@ public class CategoryController {
     }
     @PostMapping
     public ResponseEntity<Category> insertCategory(@RequestBody Category category) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.insertCategory(category));
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(categoryService.insertCategory(category));
     }
     @GetMapping
     public ResponseEntity<List<Category>> getAllCategories() {
@@ -33,11 +28,7 @@ public class CategoryController {
     }
     @DeleteMapping("/{categoryId}")
     public ResponseEntity<Void> deleteCategory(@PathVariable Integer categoryId) {
-        try {
-            categoryService.deleteCategory(categoryId);
-            return ResponseEntity.noContent().build();
-        } catch (EmptyResultDataAccessException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        categoryService.deleteCategory(categoryId);
+        return ResponseEntity.noContent().build();
     }
 }

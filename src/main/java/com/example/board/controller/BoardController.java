@@ -21,87 +21,87 @@ public class BoardController {
         this.boardService = boardService;
     }
     @PostMapping
-    public Board insertBoard(@RequestBody BoardRequestDTO boardRequestDTO) throws SQLException {
+    public Board insertBoard(@RequestBody BoardRequestDTO boardRequestDTO){
         return boardService.insertBoard(boardRequestDTO);
     }
     @GetMapping
-    public List<Board> getAllBoards() throws SQLException {
+    public List<Board> getAllBoards() {
         return boardService.getAllBoards();
     }
     @GetMapping("/{boardId}")
-    public Board getBoardByBoardId(@PathVariable Integer boardId) throws SQLException {
+    public Board getBoardByBoardId(@PathVariable Integer boardId) {
         return boardService.getBoardByBoardId(boardId);
     }
     @GetMapping("/latest")
-    public List<Board> getLatestBoards() throws SQLException {
+    public List<Board> getLatestBoards() {
         return boardService.getLatestBoards();
     }
     @GetMapping("/popular")
-    public List<Board> getPopularBoards() throws SQLException {
+    public List<Board> getPopularBoards() {
         return boardService.getPopularBoards();
     }
     @GetMapping(params = "title")
-    public List<Board> getBoardsByTitleContaining(@RequestParam String title) throws SQLException{
+    public List<Board> getBoardsByTitleContaining(@RequestParam String title) {
         return boardService.getBoardsByTitleContaining(title);
     }
     @AuthorizeUser
     @GetMapping("/user/{userId}")
-    public List<Board> getBoardByUserId(@PathVariable int userId) throws SQLException {
+    public List<Board> getBoardByUserId(@PathVariable int userId) {
         return boardService.getBoardByUserId(userId);
     }
     @GetMapping("/category/{categoryId}")
-    public List<Board> getBoardByCategoryId(@PathVariable int categoryId) throws SQLException {
+    public List<Board> getBoardByCategoryId(@PathVariable int categoryId)  {
         return boardService.getBoardByCategoryId(categoryId);
     }
     @PutMapping("/{boardId}/title")
     @AuthorizeBoard
-    public void updateBoardTitle(@PathVariable Integer boardId, @RequestBody String newTitle) throws SQLException {
+    public void updateBoardTitle(@PathVariable Integer boardId, @RequestBody String newTitle) {
         boardService.updateBoardTitle(boardId, newTitle);
     }
 
     @PutMapping("/{boardId}/price")
     @AuthorizeBoard
-    public void updateBoardPrice(@PathVariable Integer boardId, @RequestBody String newPrice) throws SQLException {
+    public void updateBoardPrice(@PathVariable Integer boardId, @RequestBody String newPrice) {
         boardService.updateBoardPrice(boardId, newPrice);
     }
 
     @PutMapping("/{boardId}/content")
     @AuthorizeBoard
-    public void updateBoardContent(@PathVariable Integer boardId, @RequestBody String newContent) throws SQLException {
+    public void updateBoardContent(@PathVariable Integer boardId, @RequestBody String newContent) {
         boardService.updateBoardContent(boardId, newContent);
     }
 
     @PutMapping("/{boardId}/status")
     @AuthorizeBoard
-    public void updateBoardStatus(@PathVariable Integer boardId, @RequestBody String newStatus) throws SQLException {
+    public void updateBoardStatus(@PathVariable Integer boardId, @RequestBody String newStatus) {
         boardService.updateBoardStatus(boardId, newStatus);
     }
 
     @PutMapping("/{boardId}/category")
     @AuthorizeBoard
-    public void updateBoardCategory(@PathVariable Integer boardId, @RequestBody Integer newCgNum) throws SQLException {
+    public void updateBoardCategory(@PathVariable Integer boardId, @RequestBody Integer newCgNum) {
         boardService.updateBoardCategory(boardId, newCgNum);
     }
 
     @DeleteMapping("/{boardId}")
     @AuthorizeBoard
-    public void deleteBoard(@PathVariable Integer boardId) throws SQLException {
+    public void deleteBoard(@PathVariable Integer boardId)  {
         boardService.deleteBoard(boardId);
     }
     @PostMapping("/{boardId}/hashtag/{hashtagId}")
     @AuthorizeBoard
-    public void addHashtagToBoard(@PathVariable int boardId, @PathVariable int hashtagId) throws SQLException {
+    public void addHashtagToBoard(@PathVariable int boardId, @PathVariable int hashtagId) {
         boardService.addHashtagToBoard(boardId, hashtagId);
     }
 
     @DeleteMapping("/{boardId}/hashtag/{hashtagId}")
     @AuthorizeBoard
-    public void removeHashtagFromBoard(@PathVariable int boardId, @PathVariable int hashtagId) throws SQLException {
+    public void removeHashtagFromBoard(@PathVariable int boardId, @PathVariable int hashtagId) {
         boardService.removeHashtagFromBoard(boardId, hashtagId);
     }
 
     @GetMapping("/{boardId}/hashtags")
-    public List<Hashtag> getHashtagsForBoard(@PathVariable int boardId) throws SQLException{
+    public List<Hashtag> getHashtagsForBoard(@PathVariable int boardId) {
         return boardService.getHashtagsForBoard(boardId);
     }
 }

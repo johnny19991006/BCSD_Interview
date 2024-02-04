@@ -35,7 +35,7 @@ public class BoardServiceImpl implements BoardService {
     }
     @Override
     @Transactional
-    public Board insertBoard(BoardRequestDTO boardRequestDTO) throws SQLException {
+    public Board insertBoard(BoardRequestDTO boardRequestDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 
@@ -74,7 +74,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public List<Board> getAllBoards() throws SQLException {
+    public List<Board> getAllBoards() {
         List<Board> boards = boardRepository.findAllByOrderByBoardIdAsc();
         for (Board board : boards) {
             board.setBoardViews(board.getBoardViews() + 1);
@@ -83,7 +83,7 @@ public class BoardServiceImpl implements BoardService {
         return boards;
     }
     @Override
-    public Board getBoardByBoardId(Integer boardId) throws SQLException {
+    public Board getBoardByBoardId(Integer boardId) {
         Board board = boardRepository.findById(boardId).orElse(null);
         if (board != null) {
             board.setBoardViews(board.getBoardViews() + 1);
@@ -102,7 +102,7 @@ public class BoardServiceImpl implements BoardService {
         return boards;
     }
     @Override
-    public List<Board> getPopularBoards() throws SQLException {
+    public List<Board> getPopularBoards() {
         Pageable pageable = PageRequest.of(0, 5);
         List<Board> boards = boardRepository.findTop5ByOrderByBoardViewsDesc(pageable);
         for (Board board : boards) {
@@ -112,7 +112,7 @@ public class BoardServiceImpl implements BoardService {
         return boards;
     }
     @Override
-    public List<Board> getBoardsByTitleContaining(String title) throws SQLException {
+    public List<Board> getBoardsByTitleContaining(String title)  {
         List<Board> boards = boardRepository.findByBoardTitleContaining(title);
         for (Board board : boards) {
             board.setBoardViews(board.getBoardViews() + 1);
@@ -121,12 +121,12 @@ public class BoardServiceImpl implements BoardService {
         return boards;
     }
     @Override
-    public List<Board> getBoardByUserId(int userId) throws SQLException {
+    public List<Board> getBoardByUserId(int userId) {
         return boardRepository.findByUserUserId(userId);
     }
 
     @Override
-    public void updateBoardTitle(Integer boardId, String newTitle) throws SQLException{
+    public void updateBoardTitle(Integer boardId, String newTitle) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
             boardInf.setBoardTitle(newTitle);
@@ -134,7 +134,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public void updateBoardPrice(Integer boardId, String newPrice) throws SQLException{
+    public void updateBoardPrice(Integer boardId, String newPrice) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
             boardInf.setBoardPrice(newPrice);
@@ -142,7 +142,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public void updateBoardContent(Integer boardId, String newContent) throws SQLException{
+    public void updateBoardContent(Integer boardId, String newContent) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
             boardInf.setBoardContent(newContent);
@@ -150,7 +150,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public void updateBoardStatus(Integer boardId, String newStatus) throws SQLException{
+    public void updateBoardStatus(Integer boardId, String newStatus) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
             BoardStatus status = BoardStatus.valueOf(newStatus);
@@ -159,7 +159,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public void updateBoardCategory(Integer boardId, Integer newCgNum) throws SQLException{
+    public void updateBoardCategory(Integer boardId, Integer newCgNum) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         Category newCategory = categoryRepository.findById(newCgNum).orElse(null);
         if(boardInf != null && newCategory != null) {
@@ -168,15 +168,15 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
-    public void deleteBoard(Integer boardId) throws SQLException { // 게시글 삭제
+    public void deleteBoard(Integer boardId)  { // 게시글 삭제
         boardRepository.deleteById(boardId);
     }
     @Override
-    public List<Board> getBoardByCategoryId(int categoryId) throws SQLException {
+    public List<Board> getBoardByCategoryId(int categoryId) {
         return boardRepository.findByCategoryCategoryId(categoryId);
     }
     @Override
-    public void addHashtagToBoard(int boardId, int hashtagId) throws SQLException {
+    public void addHashtagToBoard(int boardId, int hashtagId) {
         Board board = boardRepository.findById(boardId).orElse(null);
         Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
 
@@ -190,7 +190,7 @@ public class BoardServiceImpl implements BoardService {
     }
     @Override
     @Transactional
-    public void removeHashtagFromBoard(int boardId, int hashtagId) throws SQLException {
+    public void removeHashtagFromBoard(int boardId, int hashtagId) {
         Board board = boardRepository.findById(boardId).orElse(null);
         Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
 

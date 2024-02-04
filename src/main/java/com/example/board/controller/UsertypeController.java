@@ -20,12 +20,7 @@ public class UsertypeController {
     }
     @PostMapping
     public ResponseEntity<Usertype> insertUsertype(@RequestBody Usertype usertype) {
-        try {
-            return ResponseEntity.status(HttpStatus.CREATED).body(usertypeService.insertUsertype(usertype));
-        }
-        catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(usertypeService.insertUsertype(usertype));
     }
     @GetMapping
     public ResponseEntity<List<Usertype>> getAllUsertypes() {
@@ -33,12 +28,7 @@ public class UsertypeController {
     }
     @DeleteMapping("/{usertypeId}")
     public ResponseEntity<Void> deleteUsertype(@PathVariable Integer usertypeId) {
-        try {
-            usertypeService.deleteUsertype(usertypeId);
-            return ResponseEntity.noContent().build();
-        }
-        catch (EmptyResultDataAccessException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+        usertypeService.deleteUsertype(usertypeId);
+        return ResponseEntity.noContent().build();
     }
 }

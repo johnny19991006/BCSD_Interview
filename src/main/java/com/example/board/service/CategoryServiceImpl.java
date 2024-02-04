@@ -15,7 +15,7 @@ public class CategoryServiceImpl implements CategoryService {
         this.categoryRepository = repository;
     }
     @Override
-    public Category insertCategory(Category category) throws Exception { // 카테고리 추가
+    public Category insertCategory(Category category) { // 카테고리 추가
         return categoryRepository.save(category);
     }
     @Override

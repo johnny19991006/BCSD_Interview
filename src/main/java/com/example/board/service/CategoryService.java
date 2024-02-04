@@ -6,7 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import java.util.List;
 
 public interface CategoryService {
-    public Category insertCategory(Category category) throws Exception;
+    public Category insertCategory(Category category);
     public List<Category> getAllCategories();
     public void deleteCategory(Integer categoryId) throws EmptyResultDataAccessException;
 }

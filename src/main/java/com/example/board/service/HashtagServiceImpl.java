@@ -16,7 +16,7 @@ public class HashtagServiceImpl implements HashtagService{
         this.hashtagRepository = repository;
     }
     @Override
-    public Hashtag insertHashtag(Hashtag hashtag) throws Exception { // 해시태그 추가
+    public Hashtag insertHashtag(Hashtag hashtag) { // 해시태그 추가
         return hashtagRepository.save(hashtag);
     }
     @Override

@@ -16,7 +16,7 @@ public class UsertypeServiceImpl implements UsertypeService{
         this.usertypeRepository = repository;
     }
     @Override
-    public Usertype insertUsertype(Usertype usertype) throws Exception { // 유저타입 추가
+    public Usertype insertUsertype(Usertype usertype) { // 유저타입 추가
         return usertypeRepository.save(usertype);
     }
     @Override
