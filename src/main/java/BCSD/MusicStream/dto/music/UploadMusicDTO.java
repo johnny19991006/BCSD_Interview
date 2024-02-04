@@ -27,7 +27,7 @@ public class UploadMusicDTO {
     @NotBlank(message = "Lyrics cannot be blank")
     private String lyrics;
 
-    @Pattern(regexp = "^([01]?\\d|2[0-3]):[0-5]\\d:[0-5]\\d$", message = "Duration must be in the format HH:mm:ss")
+    @NotNull(message = "Duration cannot be null")
     private Time duration;
 
     @NotNull(message = "Image file cannot be null")

@@ -76,8 +76,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MEMBER_NOT_FOUND));
         Authority authority = authorityRepository.findById(modifyMemberInfoDTO.getAuthorityId()).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.AUTHORITY_NOT_FOUND));
         if(modifyMemberInfoDTO.getBirthDate().isAfter(LocalDate.now())) throw new CustomErrorCodeException(ErrorCode.INVALID_BIRTH_DATE);
-        Optional<Member> isSameEmail = memberRepository.findByEmail(modifyMemberInfoDTO.getEmail());
-        if(isSameEmail.isPresent()) throw new CustomErrorCodeException(ErrorCode.INVALID_MEMBER_EMAIL);
         member.setName(modifyMemberInfoDTO.getName());
         member.setAuthority(authority);
         member.setEmail(modifyMemberInfoDTO.getEmail());

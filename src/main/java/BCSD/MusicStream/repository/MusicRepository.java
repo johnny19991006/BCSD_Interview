@@ -40,9 +40,9 @@ public interface MusicRepository extends JpaRepository<Music, Integer> {
             nativeQuery = true)
     List<Music> findMusicWithWeight(@Param("memberId") Integer memberId, Pageable pageable);
 
-    @Query(value = "SELECT m.*, ( (select if(count(*) > 0, 3, 0) from member_like l where l.music_id = m.id and l.is_like = 1 and l.member_id = :=memberId) +\n" +
+    @Query(value = "SELECT m.*, ( (select if(count(*) > 0, 3, 0) from member_like l where l.music_id = m.id and l.is_like = 1 and l.member_id = :memberId) +\n" +
             "        \n" +
-            "\t\t(select if(count(*) > 0, -100, 0) from member_like l where l.music_id = m.id and l.is_like = 0 and l.member_id = :=memberId) +\n" +
+            "\t\t(select if(count(*) > 0, -100, 0) from member_like l where l.music_id = m.id and l.is_like = 0 and l.member_id = :memberId) +\n" +
             "        \n" +
             "\t\t((select count(*) from member_like l join music on music.id = l.music_id where singer_name = m.singer_name and is_like = true and music.member_id = :memberId) * 2) -\n" +
             "        \n" +

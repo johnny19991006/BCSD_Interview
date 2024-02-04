@@ -15,8 +15,11 @@ public class WebConfig implements WebMvcConfigurer {
                 .addResourceLocations("classpath:/static/musicMP3/");
         registry.addResourceHandler("/music/musicIcon/**")
                 .addResourceLocations("classpath:/static/musicIcon/");
+        registry.addResourceHandler("/musicImage/**")
+                .addResourceLocations("file:src/main/resources/static/musicImage/");
+        registry.addResourceHandler("/musicSound/**")
+                .addResourceLocations("file:src/main/resources/static/musicSound/");
     }
-
     public static Integer getMemberIdByRequest(HttpServletRequest request) {
         Claims cLaims = JwtTokenProvider.parseClaims(JwtTokenProvider.extractJwtFromRequest(request));
         return (Integer) cLaims.get("memberId");

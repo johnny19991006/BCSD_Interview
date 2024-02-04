@@ -1,10 +1,7 @@
 package BCSD.MusicStream.service;
 
 import BCSD.MusicStream.domain.*;
-import BCSD.MusicStream.dto.music.ModifyMusicDTO;
-import BCSD.MusicStream.dto.music.ResponseMusicDTO;
-import BCSD.MusicStream.dto.music.ResponsePlayMusicDTO;
-import BCSD.MusicStream.dto.music.UploadMusicDTO;
+import BCSD.MusicStream.dto.music.*;
 import BCSD.MusicStream.exception.CustomErrorCodeException;
 import BCSD.MusicStream.exception.ErrorCode;
 import BCSD.MusicStream.repository.*;
@@ -52,8 +49,8 @@ public class MusicServiceImpl implements MusicService{
                         .name(music.getName())
                         .singerName(music.getSingerName())
                         .duration(music.getDuration())
-                        .imageFilePath(musicImageDir + music.getImageFileName())
-                        .soundFilePath(musicSoundDir + music.getSoundFileName())
+                        .imageFilePath("/musicImage/" + music.getImageFileName())
+                        .soundFilePath("/musicSound/" + music.getSoundFileName())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -114,8 +111,9 @@ public class MusicServiceImpl implements MusicService{
 
     @Transactional
     @Override
-    public ResponseMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO) {
+    public ResponseMusicDTO modifyMusic(ModifyMusicDTO modifyMusicDTO, Integer memberId) {
         Music music = musicRepository.findById(modifyMusicDTO.getId()).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MUSIC_NOT_FOUND));
+        if(music.getMember().getId() != memberId) throw new CustomErrorCodeException(ErrorCode.PERMISSION_DENIED_MEMBER);
         Lyrics lyrics = lyricsRepository.findById(modifyMusicDTO.getId()).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.LYRICS_NOT_FOUND));
         Category category = categoryRepository.findById(modifyMusicDTO.getCategoryId()).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.CATEGORY_NOT_FOUND));
         Weather weather = weatherRepository.findById(modifyMusicDTO.getWeatherId()).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.WEATHER_NOT_FOUND));
@@ -150,6 +148,24 @@ public class MusicServiceImpl implements MusicService{
                 .build();
     }
 
+    @Override
+    public MusicInfoDTO getMusicInfo(Integer musicId, Integer memberId) {
+        Music music = musicRepository.findById(musicId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MUSIC_NOT_FOUND));
+        if(music.getMember().getId() != memberId) throw new CustomErrorCodeException(ErrorCode.PERMISSION_DENIED_MEMBER);
+        Lyrics lyrics = lyricsRepository.findById(musicId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.LYRICS_NOT_FOUND));
+        return MusicInfoDTO.builder()
+                .id(music.getId())
+                .categoryId(music.getCategory().getId())
+                .imageFilePath(musicImageDir + music.getImageFileName())
+                .soundFilePath(musicSoundDir + music.getSoundFileName())
+                .lyrics(lyrics.getContents())
+                .weatherId(music.getWeather().getId())
+                .singerName(music.getSingerName())
+                .duration(String.valueOf(music.getDuration()))
+                .name(music.getName())
+                .build();
+    }
+
     @Transactional
     @Override
     public void deleteMusic(Integer musicId, Integer memberId) {
@@ -173,8 +189,8 @@ public class MusicServiceImpl implements MusicService{
                         .name(music.getName())
                         .singerName(music.getSingerName())
                         .duration(music.getDuration())
-                        .imageFilePath(musicImageDir + music.getImageFileName())
-                        .soundFilePath(musicSoundDir + music.getSoundFileName())
+                        .imageFilePath("/musicImage/" + music.getImageFileName())
+                        .soundFilePath("/musicSound/" + music.getSoundFileName())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -188,8 +204,8 @@ public class MusicServiceImpl implements MusicService{
                         .name(music.getName())
                         .singerName(music.getSingerName())
                         .duration(music.getDuration())
-                        .imageFilePath(musicImageDir + music.getImageFileName())
-                        .soundFilePath(musicSoundDir + music.getSoundFileName())
+                        .imageFilePath("/musicImage/" + music.getImageFileName())
+                        .soundFilePath("/musicSound/" + music.getSoundFileName())
                         .build())
                 .collect(Collectors.toList());
     }

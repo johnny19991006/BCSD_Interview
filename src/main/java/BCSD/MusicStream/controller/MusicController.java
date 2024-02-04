@@ -3,10 +3,7 @@ package BCSD.MusicStream.controller;
 import BCSD.MusicStream.api.OpenWeather;
 import BCSD.MusicStream.api.WeatherAPI;
 import BCSD.MusicStream.config.WebConfig;
-import BCSD.MusicStream.dto.music.ModifyMusicDTO;
-import BCSD.MusicStream.dto.music.ResponseMusicDTO;
-import BCSD.MusicStream.dto.music.ResponsePlayMusicDTO;
-import BCSD.MusicStream.dto.music.UploadMusicDTO;
+import BCSD.MusicStream.dto.music.*;
 import BCSD.MusicStream.exception.CustomErrorCodeException;
 import BCSD.MusicStream.exception.CustomException;
 import BCSD.MusicStream.exception.ErrorCode;
@@ -46,6 +43,11 @@ public class MusicController {
         return ResponseEntity.ok(musicService.getMusicByMusicNameOrSingerName(targetText, PageRequest.of(page, 10)));
     }
 
+    @GetMapping("/info/{musicId}")
+    public ResponseEntity<MusicInfoDTO> getMusicByMusicNameOrSingerName(@PathVariable Integer musicId, HttpServletRequest request) {
+        return ResponseEntity.ok(musicService.getMusicInfo(musicId, WebConfig.getMemberIdByRequest(request)));
+    }
+
     @GetMapping("/weather")
     public ResponseEntity<List<ResponseMusicDTO>> getMusicByWeather(HttpServletRequest request, @RequestParam(defaultValue = "0") int page) {
         try {
@@ -69,8 +71,8 @@ public class MusicController {
         return ResponseEntity.status(HttpStatus.CREATED).body(musicService.addMusic(uploadMusicDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @PutMapping("/modify")
-    public ResponseEntity<ResponseMusicDTO> modifyMusic(@Valid @ModelAttribute ModifyMusicDTO modifyMusicDTO) {
-        return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO));
+    public ResponseEntity<ResponseMusicDTO> modifyMusic(@Valid @ModelAttribute ModifyMusicDTO modifyMusicDTO, HttpServletRequest request) {
+        return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @DeleteMapping("/delete/{musicId}")
     public ResponseEntity<Void> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) throws IOException {

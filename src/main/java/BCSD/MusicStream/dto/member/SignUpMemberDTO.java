@@ -19,7 +19,7 @@ public class SignUpMemberDTO {
     @NotBlank(message = "Password cannot be blank")
     private String password;
 
-    @Pattern(regexp = "^\\d{4}-\\d{2}-\\d{2}$", message = "BirthDate must be in the format yyyy-MM-dd")
+    @NotNull(message = "BirthDate cannot be null")
     private LocalDate birthDate;
 
     @NotNull(message = "AuthorityID cannot be null")

@@ -2,6 +2,7 @@ package BCSD.MusicStream.dto.member;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -16,7 +17,7 @@ public class ModifyMemberInfoDTO {
     @NotBlank(message = "Email cannot be blank")
     private String email;
 
-    @NotBlank(message = "BrithDate cannot be blank")
+    @NotNull(message = "BirthDate cannot be null")
     private LocalDate birthDate;
 
     @NotNull(message = "AuthorityID cannot be null")
