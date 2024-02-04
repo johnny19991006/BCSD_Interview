@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@RequestMapping("/user")
 public class UserController {
 
     private final UserRepository userRepository;
@@ -32,18 +33,6 @@ public class UserController {
         this.userService = userService;
         this.tokenService = tokenService;
         this.matchService = matchService;
-    }
-
-    // 회원가입
-    @PostMapping("/signup")
-    public ResponseEntity<String> signup(@RequestBody UserDto request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body("\"" + userService.signup(request) + "\" 회원가입이 완료되었습니다!");
-    }
-
-    @PostMapping("/login")
-    public ResponseEntity<CreateAccessTokenDto> login(@RequestBody UserDto userDTO) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.login(userDTO));
     }
 
     @PostMapping("/{user_id}/logout")

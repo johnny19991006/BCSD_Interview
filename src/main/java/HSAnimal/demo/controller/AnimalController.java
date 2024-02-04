@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+// 코드 미완성(사용X)
+// 동물 정보 페이지 관리 클래스
 @RestController
 @RequestMapping("/animals")
 public class AnimalController {
