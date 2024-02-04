@@ -100,30 +100,14 @@ public class SemesterService implements SemesterServiceInterface{
 
         int totalCreditSum = 0; // 전체 학점
         float totalScoreSum = 0; // 전체 성적
-        int totalMajorCreditSum = 0; // 전공 학점
-        float totalMajorScoreSum = 0; // 전공 성적
-        int totalGeneralCreditSum = 0; // 교양 학점
-        float totalGeneralScoreSum = 0; // 교양 성적
 
         for (SubjectScore subjectScore : subjectScores) {
             totalScoreSum += subjectScore.getSubject().getCredit() * subjectScore.getSubjectScore();
             totalCreditSum += subjectScore.getSubject().getCredit();
 
-            if(subjectScore.getSubject().getCategoryEnum() == CategoryEnum.MAJOR)
-            {
-                totalMajorCreditSum += subjectScore.getSubject().getCredit();
-                totalMajorScoreSum += subjectScore.getSubjectScore() * subjectScore.getSubject().getCredit();
-            }
-            else
-            {
-                totalGeneralCreditSum += subjectScore.getSubject().getCredit();
-                totalGeneralScoreSum += subjectScore.getSubjectScore() * subjectScore.getSubject().getCredit();
-            }
         }
         // 전체 성적 계산
-        float semesterScore = totalScoreSum / totalCreditSum;
-        float semesterMajorScore = totalMajorScoreSum / totalMajorCreditSum;
-        float semesterGeneralScore = totalGeneralScoreSum / totalGeneralCreditSum;
+        float semesterScore = totalCreditSum != 0 ? totalScoreSum / totalCreditSum : 0;
 
         // 스트림을 이용하여 리스트의 값에 있는 크레딧 값을 가져오고, 이를 합하도록 함(이때 subjectRepository의 크레딧을 가져옴)
 
@@ -133,10 +117,6 @@ public class SemesterService implements SemesterServiceInterface{
 
         semesterEntity.setSemesterCredit(totalCredit);
         semesterEntity.setSemesterScore(semesterScore);
-        semesterEntity.setSemesterMajorCredit(totalMajorCreditSum);
-        semesterEntity.setSemesterMajorScore(semesterMajorScore);
-        semesterEntity.setSemesterGeneralCredit(totalGeneralCreditSum);
-        semesterEntity.setSemesterGeneralScore(semesterGeneralScore);
 
         semesterRepository.save(semesterEntity);
     }

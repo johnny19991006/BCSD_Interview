@@ -80,9 +80,9 @@
         {
             SubjectScore subjectScore = subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
                             .orElseThrow(() -> new NoSuchElementException("Can't find"));
+            subjectScoreRepository.delete(subjectScore);
             semesterService.updateSemesterCredit(subjectScore.getStudentId(), subjectScore.getSemesterGradeEnum(),
                     subjectScore.getSemesterEnum());
-            subjectScoreRepository.delete(subjectScore);
         }
 
         @Override
