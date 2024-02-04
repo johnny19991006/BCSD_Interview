@@ -1,17 +1,14 @@
 package com.example.board.controller;
 
-import com.example.board.domain.User;
-import com.example.board.dto.LoginRequestDTO;
-import com.example.board.dto.UserRequestDTO;
-import com.example.board.dto.UserResponseDTO;
-import com.example.board.dto.UserResponseSimpleDTO;
+import com.example.board.dto.*;
 import com.example.board.exception.NotFoundException;
-import com.example.board.security.AuthorizeUser;
+import com.example.board.exception.UnauthorizedException;
 import com.example.board.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.SQLException;
@@ -74,23 +71,54 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-    @AuthorizeUser
     @PutMapping("/{userId}/password")
-    public void updateUserPw(@PathVariable Integer userId, @RequestBody String newPw) throws SQLException {
-        userService.updateUserPw(userId, newPw);
+    public ResponseEntity<String> updateUserPw(@PathVariable Integer userId, @RequestBody String newPw) throws SQLException {
+        try {
+            userService.updateUserPw(userId, newPw);
+            return ResponseEntity.ok("비밀번호가 성공적으로 변경되었습니다");
+        }
+        catch (UnauthorizedException | ClassCastException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("권한이 없습니다");
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다");
+        }
     }
-    @AuthorizeUser
     @PutMapping("/{userId}/nickname")
-    public void updateUserNn(@PathVariable Integer userId, @RequestBody String newNn) throws SQLException {
-        userService.updateUserNn(userId, newNn);
+    public ResponseEntity<UserResponseDTO> updateUserNn(@PathVariable Integer userId, @RequestBody String newNn) {
+        try {
+            return ResponseEntity.ok().body(userService.updateUserNn(userId, newNn));
+        }
+        catch (UnauthorizedException | ClassCastException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        catch (DataIntegrityViolationException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
     }
-    @AuthorizeUser
     @DeleteMapping("/{userId}")
-    public void deleteUser(@PathVariable Integer userId) throws SQLException {
-        userService.deleteUser(userId);
+    public ResponseEntity<Void> deleteUser(@PathVariable Integer userId) {
+        try {
+            userService.deleteUser(userId);
+            return ResponseEntity.noContent().build();
+        }
+        catch (UnauthorizedException | ClassCastException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        catch (NotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequestDTO loginRequestDTO) throws SQLException {
-        return userService.login(loginRequestDTO);
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody LoginRequestDTO loginRequestDTO) {
+        try {
+            return ResponseEntity.ok().body(userService.login(loginRequestDTO));
+        }
+        catch (BadCredentialsException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
     }
 }

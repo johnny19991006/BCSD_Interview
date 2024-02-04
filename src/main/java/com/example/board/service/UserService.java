@@ -1,12 +1,9 @@
 package com.example.board.service;
 
 import com.example.board.domain.User;
-import com.example.board.dto.LoginRequestDTO;
-import com.example.board.dto.UserRequestDTO;
-import com.example.board.dto.UserResponseDTO;
-import com.example.board.dto.UserResponseSimpleDTO;
+import com.example.board.dto.*;
+import org.springframework.security.authentication.BadCredentialsException;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface UserService {
@@ -14,11 +11,11 @@ public interface UserService {
     public List<UserResponseDTO> getAllUsers();
     public UserResponseDTO getUserByUserId(Integer userId);
     public UserResponseSimpleDTO getUserSimpleInfoByUserId(Integer userId);
-    public void updateUserPw(Integer userId, String newPw) throws SQLException;
-    public void updateUserNn(Integer userId, String newNn) throws SQLException;
+    public void updateUserPw(Integer userId, String newPw);
+    public UserResponseDTO updateUserNn(Integer userId, String newNn);
     public UserResponseDTO updateUsertype(Integer userId, Integer newTypeNum);
-    public void deleteUser(Integer userId) throws SQLException;
+    public void deleteUser(Integer userId);
     public List<UserResponseDTO> getUsersByUserType(int userTypeId);
-    public String login(LoginRequestDTO loginRequestDTO) throws SQLException;
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) throws BadCredentialsException;
     public User getUserById(Integer userId);
 }

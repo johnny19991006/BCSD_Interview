@@ -2,13 +2,11 @@ package com.example.board.service;
 
 import com.example.board.domain.User;
 import com.example.board.domain.Usertype;
-import com.example.board.dto.LoginRequestDTO;
-import com.example.board.dto.UserRequestDTO;
-import com.example.board.dto.UserResponseDTO;
-import com.example.board.dto.UserResponseSimpleDTO;
+import com.example.board.dto.*;
 import com.example.board.exception.NotFoundException;
 import com.example.board.repository.UserRepository;
 import com.example.board.repository.UsertypeRepository;
+import com.example.board.security.AuthorizeUser;
 import com.example.board.security.JwtTokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -17,7 +15,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,7 +83,8 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserResponseDTO getUserByUserId(Integer userId) { // 특정조회 (userid기준, admin용)
-        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException(""));
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new NotFoundException(""));
         return UserResponseDTO.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
@@ -98,7 +96,8 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserResponseSimpleDTO getUserSimpleInfoByUserId(Integer userId) {
-        User user = userRepository.findById(userId).orElseThrow(()-> new NotFoundException(""));
+        User user = userRepository.findById(userId)
+                .orElseThrow(()-> new NotFoundException(""));
         return UserResponseSimpleDTO.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
@@ -109,8 +108,10 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     public UserResponseDTO updateUsertype(Integer userId, Integer newTypeNum) {
-        User userInf = userRepository.findById(userId).orElseThrow(()-> new NotFoundException(""));
-        Usertype newUsertype = usertypeRepository.findById(newTypeNum).orElseThrow(()-> new NotFoundException(""));
+        User userInf = userRepository.findById(userId)
+                .orElseThrow(()-> new NotFoundException(""));
+        Usertype newUsertype = usertypeRepository.findById(newTypeNum)
+                .orElseThrow(()-> new NotFoundException(""));
 
         User updatedUser = User.builder()
                 .userId(userInf.getUserId())
@@ -133,24 +134,58 @@ public class UserServiceImpl implements UserService {
                 .userType(updatedUser.getUserType())
                 .build();
     }
+    @AuthorizeUser
     @Override
-    public void updateUserPw(Integer userId, String newPw) throws SQLException { // 비밀번호수정
-        User userInf = userRepository.findById(userId).orElse(null);
-        if(userInf != null) {
-            userInf.setUserPw(newPw);
-            userRepository.save(userInf);
-        }
+    public void updateUserPw(Integer userId, String newPw) { // 비밀번호수정
+        User userInf = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(""));
+
+        String encodedPassword = bCryptPasswordEncoder.encode(newPw);
+
+        User updatedUser = User.builder()
+                .userId(userInf.getUserId())
+                .userName(userInf.getUserName())
+                .userEmail(userInf.getUserEmail())
+                .userPw(encodedPassword)
+                .userNickname(userInf.getUserNickname())
+                .createdAt(userInf.getCreatedAt())
+                .userType(userInf.getUserType())
+                .build();
+
+        userRepository.save(updatedUser);
+    }
+    @AuthorizeUser
+    @Override
+    public UserResponseDTO updateUserNn(Integer userId, String newNn) { // 닉네임수정
+        User userInf = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(""));
+
+        User updatedUser = User.builder()
+                .userId(userInf.getUserId())
+                .userName(userInf.getUserName())
+                .userEmail(userInf.getUserEmail())
+                .userPw(userInf.getUserPw())
+                .userNickname(newNn)
+                .createdAt(userInf.getCreatedAt())
+                .userType(userInf.getUserType())
+                .build();
+
+        userRepository.save(updatedUser);
+
+        return UserResponseDTO.builder()
+                .userId(updatedUser.getUserId())
+                .userName(updatedUser.getUserName())
+                .userEmail(updatedUser.getUserEmail())
+                .userNickname(updatedUser.getUserNickname())
+                .createdAt(updatedUser.getCreatedAt())
+                .userType(updatedUser.getUserType())
+                .build();
     }
     @Override
-    public void updateUserNn(Integer userId, String newNn) throws SQLException { // 닉네임수정
-        User userInf = userRepository.findById(userId).orElse(null);
-        if(userInf != null) {
-            userInf.setUserNickname(newNn);
-            userRepository.save(userInf);
-        }
-    }
-    @Override
-    public void deleteUser(Integer userId) throws SQLException { // 회원삭제
+    @AuthorizeUser
+    public void deleteUser(Integer userId) { // 회원삭제
+        User userInf = userRepository.findById(userId)
+                .orElseThrow(() -> new NotFoundException(""));
         userRepository.deleteById(userId);
     }
     @Override
@@ -176,15 +211,15 @@ public class UserServiceImpl implements UserService {
         return userResponseDTOs;
     }
     @Override
-    public String login(LoginRequestDTO loginRequestDTO) throws SQLException {
+    public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) throws BadCredentialsException {
         User user = userRepository.findByUserEmail(loginRequestDTO.getEmail()).orElseThrow(()
-                -> new BadCredentialsException("잘못된 계정정보입니다."));
+                -> new BadCredentialsException(""));
         if (!passwordEncoder.matches(loginRequestDTO.getPassword(), user.getUserPw())) {
-            throw new BadCredentialsException("잘못된 계정정보입니다.");
+            throw new BadCredentialsException("");
         }
 
         String jwtToken = jwtTokenProvider.createToken(user.getUserEmail(), user.getUserType());
-        return "로그인 성공 " + jwtToken;
+        return new LoginResponseDTO(user.getUserNickname(), user.getUserType().getTypeName(), jwtToken, "로그인에 성공했습니다");
     }
     @Override
     public User getUserById(Integer userId) {

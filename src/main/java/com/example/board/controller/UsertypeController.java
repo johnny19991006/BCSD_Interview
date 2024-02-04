@@ -36,7 +36,8 @@ public class UsertypeController {
         try {
             usertypeService.deleteUsertype(usertypeId);
             return ResponseEntity.noContent().build();
-        } catch (EmptyResultDataAccessException e) {
+        }
+        catch (EmptyResultDataAccessException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }

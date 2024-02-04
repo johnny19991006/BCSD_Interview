@@ -1,6 +1,5 @@
 package com.example.board.security;
 
-
 import com.example.board.domain.Usertype;
 import com.example.board.service.JpaUserDetailsService;
 import io.jsonwebtoken.*;
