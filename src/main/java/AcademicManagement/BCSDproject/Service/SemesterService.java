@@ -52,11 +52,21 @@ public class SemesterService implements SemesterServiceInterface{
         Semester changeSemester = semesterRepository.findById(semesterId)
                 .orElseThrow(() -> new NoSuchElementException("Can't find"));
 
-        changeSemester.setSemesterYear(semester.getSemesterYear());
-        changeSemester.setSemesterGradeEnum(semester.getSemesterGradeEnum());
-        changeSemester.setSemesterEnum(semester.getSemesterEnum());
-        changeSemester.setSemesterScore(semester.getSemesterScore());
-        changeSemester.setSemesterCredit(semester.getSemesterCredit());
+        if(semester.getSemesterYear() != null) {
+            changeSemester.setSemesterYear(semester.getSemesterYear());
+        }
+        if(semester.getSemesterGradeEnum() != null) {
+            changeSemester.setSemesterGradeEnum(semester.getSemesterGradeEnum());
+        }
+        if(semester.getSemesterEnum() != null) {
+            changeSemester.setSemesterEnum(semester.getSemesterEnum());
+        }
+        if(semester.getSemesterScore() != null) {
+            changeSemester.setSemesterScore(semester.getSemesterScore());
+        }
+        if(semester.getSemesterCredit() != null) {
+            changeSemester.setSemesterCredit(semester.getSemesterCredit());
+        }
 
         semesterRepository.save(changeSemester);
 

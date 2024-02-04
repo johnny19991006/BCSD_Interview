@@ -2,6 +2,7 @@ package AcademicManagement.BCSDproject.Dto;
 
 import AcademicManagement.BCSDproject.Domain.Semester;
 import AcademicManagement.BCSDproject.Domain.Student;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,8 @@ public class StudentDTO {
     private String studentPw;
     private String studentName;
     private String studentMajor;
-    private int studentGrade;
-    private int studentSemester;
+    private Integer studentGrade;
+    private Integer studentSemester;
     private String studentAttend;
     private List<String> roles;
     private LocalDateTime updateAt;
@@ -44,7 +45,7 @@ public class StudentDTO {
 
     @Builder
     public StudentDTO(String studentId, String studentPw, String studentName,
-                      String studentMajor, int studentGrade, int studentSemester,
+                      String studentMajor, Integer studentGrade, Integer studentSemester,
                       String studentAttend, LocalDateTime updateAt, List<String> roles)
     {
         this.studentId = studentId;

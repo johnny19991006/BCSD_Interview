@@ -36,13 +36,13 @@ public class Subject {
     private CategoryEnum categoryEnum;
 
     @Column(name = "credit", nullable = false)
-    private int credit;
+    private Integer credit;
 
     // @OneToMany(mappedBy = "subject") // 과목에서 성적을 참조할 것? -> 할 수 있으면 좋겠음
     // private List<SubjectScore> subjectScores = new ArrayList<>();
 
     @Builder
-    public Subject(String subjectName, String professorName, CategoryEnum categoryEnum, int credit)
+    public Subject(String subjectName, String professorName, CategoryEnum categoryEnum, Integer credit)
     {
         this.subjectName = subjectName;
         this.professorName = professorName;

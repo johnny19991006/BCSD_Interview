@@ -40,10 +40,18 @@ public class SubjectService implements SubjectServiceInterface{
         Subject changeSubject = subjectRepository.findBySubjectName(subjectName)
                 .orElseThrow(() -> new NoSuchElementException("Can't find"));
 
-        changeSubject.setSubjectName(subject.getSubjectName());
-        changeSubject.setProfessorName(subject.getProfessorName());
-        changeSubject.setCategoryEnum(subject.getCategoryEnum());
-        changeSubject.setCredit(subject.getCredit());
+        if(subject.getSubjectName() != null) {
+            changeSubject.setSubjectName(subject.getSubjectName());
+        }
+        if(subject.getProfessorName() != null) {
+            changeSubject.setProfessorName(subject.getProfessorName());
+        }
+        if(subject.getCategoryEnum() != null) {
+            changeSubject.setCategoryEnum(subject.getCategoryEnum());
+        }
+        if(subject.getCredit() != null) {
+            changeSubject.setCredit(subject.getCredit());
+        }
 
         subjectRepository.save(changeSubject);
 

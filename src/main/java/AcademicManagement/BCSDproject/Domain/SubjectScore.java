@@ -52,7 +52,7 @@ public class SubjectScore {
     private SubjectScoreEnum subjectScoreEnum;
 
     @Column(name = "subject_score", nullable = false)
-    private float subjectScore;
+    private Float subjectScore;
 
     @Column(name = "subject_retake", nullable = false)
     private String subjectRetake;
@@ -76,7 +76,7 @@ public class SubjectScore {
 
     @Builder
     public SubjectScore(String studentId, String subjectName, SubjectScoreEnum subjectScoreEnum,
-                        float subjectScore, String subjectRetake, SemesterGradeEnum semesterGradeEnum,
+                        Float subjectScore, String subjectRetake, SemesterGradeEnum semesterGradeEnum,
                         SemesterEnum semesterEnum)
     {
         this.studentId = studentId;

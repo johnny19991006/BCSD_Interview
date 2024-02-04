@@ -42,13 +42,27 @@ public class StudentGradeInformationService implements StudentGradeInformationSe
         StudentGradeInformation changeGradeInformation = studentGradeInfoRepository.findById(studentId)
                 .orElseThrow(() -> new NoSuchElementException("Can't find StudentId"));
 
-        changeGradeInformation.setTotalCredit(studentGradeInformation.getTotalCredit());
-        changeGradeInformation.setTotalMajorCredit(studentGradeInformation.getTotalMajorCredit());
-        changeGradeInformation.setAvgMajorScore(studentGradeInformation.getAvgMajorScore());
-        changeGradeInformation.setTotalMajorCredit(studentGradeInformation.getTotalMajorCredit());
-        changeGradeInformation.setAvgGeneralScore(studentGradeInformation.getAvgGeneralScore());
-        changeGradeInformation.setTotalAllCredit(studentGradeInformation.getTotalAllCredit());
-        changeGradeInformation.setAvgAllScore(studentGradeInformation.getAvgAllScore());
+        if(studentGradeInformation.getTotalCredit() != null) {
+            changeGradeInformation.setTotalCredit(studentGradeInformation.getTotalCredit());
+        }
+        if(studentGradeInformation.getTotalMajorCredit() != null) {
+            changeGradeInformation.setTotalMajorCredit(studentGradeInformation.getTotalMajorCredit());
+        }
+        if(studentGradeInformation.getAvgMajorScore() != null) {
+            changeGradeInformation.setAvgMajorScore(studentGradeInformation.getAvgMajorScore());
+        }
+        if(studentGradeInformation.getTotalMajorCredit() != null) {
+            changeGradeInformation.setTotalMajorCredit(studentGradeInformation.getTotalMajorCredit());
+        }
+        if(studentGradeInformation.getAvgGeneralScore() != null) {
+            changeGradeInformation.setAvgGeneralScore(studentGradeInformation.getAvgGeneralScore());
+        }
+        if(studentGradeInformation.getTotalAllCredit() != null) {
+            changeGradeInformation.setTotalAllCredit(studentGradeInformation.getTotalAllCredit());
+        }
+        if(studentGradeInformation.getAvgAllScore() != null) {
+            changeGradeInformation.setAvgAllScore(studentGradeInformation.getAvgAllScore());
+        }
 
         studentGradeInfoRepository.save(changeGradeInformation);
         return changeGradeInformation;

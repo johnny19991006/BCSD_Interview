@@ -75,12 +75,24 @@ public class StudentService implements StudentServiceInterface{
         Student student = studentRepository.findById(studentId)
                 .orElseThrow(() -> new NoSuchElementException("Can't Find."));
 
-        student.setStudentPw(studentDTO.getStudentPw());
-        student.setStudentName(studentDTO.getStudentName());
-        student.setStudentMajor(studentDTO.getStudentMajor());
-        student.setStudentGrade(studentDTO.getStudentGrade());
-        student.setStudentSemester(studentDTO.getStudentSemester());
-        student.setStudentAttend(studentDTO.getStudentAttend());
+        if(studentDTO.getStudentPw() != null) {
+            student.setStudentPw(studentDTO.getStudentPw());
+        }
+        if(studentDTO.getStudentName() != null) {
+            student.setStudentName(studentDTO.getStudentName());
+        }
+        if(studentDTO.getStudentMajor() != null) {
+            student.setStudentMajor(studentDTO.getStudentMajor());
+        }
+        if(studentDTO.getStudentGrade() != null) {
+            student.setStudentGrade(studentDTO.getStudentGrade());
+        }
+        if(studentDTO.getStudentSemester() != null) {
+            student.setStudentSemester(studentDTO.getStudentSemester());
+        }
+        if(studentDTO.getStudentAttend() != null) {
+            student.setStudentAttend(studentDTO.getStudentAttend());
+        }
 
         studentRepository.save(student); // Id를 제외한 정보는 수정하여 저장 가능
 

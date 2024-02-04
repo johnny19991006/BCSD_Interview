@@ -41,7 +41,7 @@ public class Semester {
     private String studentId;
 
     @Column(name = "semester_year", nullable = false)
-    private int semesterYear;
+    private Integer semesterYear;
 
     @Enumerated(EnumType.STRING) // enum을 DB 내부에 어떤 형태로 저장할지? -> String
     @Column(name = "semester_grade", nullable = false)
@@ -52,22 +52,22 @@ public class Semester {
     private SemesterEnum semesterEnum;
 
     @Column(name = "semester_credit")
-    private int semesterCredit;
+    private Integer semesterCredit;
 
     @Column(name = "semester_score")
-    private float semesterScore;
+    private Float semesterScore;
 
     @Column(name = "semester_major_credit")
-    private int semesterMajorCredit;
+    private Integer semesterMajorCredit;
 
     @Column(name = "semester_major_score")
-    private float semesterMajorScore;
+    private Float semesterMajorScore;
 
     @Column(name = "semester_general_credit")
-    private int semesterGeneralCredit;
+    private Integer semesterGeneralCredit;
 
     @Column(name = "semester_general_score")
-    private float semesterGeneralScore;
+    private Float semesterGeneralScore;
 
     @ManyToOne
     @JoinColumn(name = "student_id")
@@ -75,10 +75,10 @@ public class Semester {
     private Student student;
 
     @Builder
-    public Semester(int semesterId, String studentId, int semesterYear,
+    public Semester(int semesterId, String studentId, Integer semesterYear,
                     SemesterGradeEnum semesterGradeEnum, SemesterEnum semesterEnum,
-                    int semesterCredit, float semesterScore, int semesterMajorCredit,
-                    float semesterMajorScore, int semesterGeneralCredit, float semesterGeneralScore)
+                    Integer semesterCredit, Float semesterScore, Integer semesterMajorCredit,
+                    Float semesterMajorScore, Integer semesterGeneralCredit, Float semesterGeneralScore)
     {
         this.semesterId = semesterId;
         this.studentId = studentId;

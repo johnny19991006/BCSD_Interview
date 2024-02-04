@@ -52,11 +52,21 @@
             SubjectScore changeScore = subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
                     .orElseThrow(() -> new NoSuchElementException("Can't find"));
 
-            changeScore.setSubjectScoreEnum(subjectScore.getSubjectScoreEnum());
-            changeScore.setSubjectScore(subjectScore.getSubjectScore());
-            changeScore.setSubjectRetake(subjectScore.getSubjectRetake());
-            changeScore.setSemesterGradeEnum(subjectScore.getSemesterGradeEnum());
-            changeScore.setSemesterEnum(subjectScore.getSemesterEnum());
+            if(subjectScore.getSubjectScoreEnum() != null) {
+                changeScore.setSubjectScoreEnum(subjectScore.getSubjectScoreEnum());
+            }
+            if(subjectScore.getSubjectScore() != null) {
+                changeScore.setSubjectScore(subjectScore.getSubjectScore());
+            }
+            if(subjectScore.getSubjectRetake() != null) {
+                changeScore.setSubjectRetake(subjectScore.getSubjectRetake());
+            }
+            if(subjectScore.getSemesterGradeEnum() != null) {
+                changeScore.setSemesterGradeEnum(subjectScore.getSemesterGradeEnum());
+            }
+            if(subjectScore.getSemesterEnum() != null) {
+                changeScore.setSemesterEnum(subjectScore.getSemesterEnum());
+            }
 
             subjectScoreRepository.save(changeScore);
             semesterService.updateSemesterCredit(subjectScore.getStudentId(), subjectScore.getSemesterGradeEnum(),

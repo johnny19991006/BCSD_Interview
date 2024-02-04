@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.awt.datatransfer.FlavorEvent;
+
 /*
 Create Table Student_Grade_Information
 (
@@ -33,25 +35,25 @@ public class StudentGradeInformation {
     private String studentId;
 
     @Column(name = "total_credit", nullable = false)
-    private int totalCredit;
+    private Integer totalCredit;
 
     @Column(name = "total_major_credit", nullable = false)
-    private int totalMajorCredit;
+    private Integer totalMajorCredit;
 
     @Column(name = "avg_major_score", nullable = false)
-    private float avgMajorScore;
+    private Float avgMajorScore;
 
     @Column(name = "total_general_credit", nullable = false)
-    private int totalGeneralCredit;
+    private Integer totalGeneralCredit;
 
     @Column(name = "avg_general_score", nullable = false)
-    private float avgGeneralScore;
+    private Float avgGeneralScore;
 
     @Column(name = "total_all_credit", nullable = false)
-    private int totalAllCredit;
+    private Integer totalAllCredit;
 
     @Column(name = "avg_all_score", nullable = false)
-    private float avgAllScore;
+    private Float avgAllScore;
 
     @ManyToOne
     @JoinColumn(name = "student_id", insertable = false, updatable = false)
@@ -59,9 +61,9 @@ public class StudentGradeInformation {
     private Student student;
 
     @Builder
-    public StudentGradeInformation(String studentId, int totalCredit, int totalMajorCredit,
-                                   float avgMajorScore, int totalGeneralCredit, float avgGeneralScore,
-                                   int totalAllCredit, float avgAllScore)
+    public StudentGradeInformation(String studentId, Integer totalCredit, Integer totalMajorCredit,
+                                   Float avgMajorScore, Integer totalGeneralCredit, Float avgGeneralScore,
+                                   Integer totalAllCredit, Float avgAllScore)
     {
         this.studentId = studentId;
         this.totalCredit = totalCredit;
