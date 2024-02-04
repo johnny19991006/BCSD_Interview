@@ -20,7 +20,7 @@ public interface UserPortfolioSkillsBackendRepository extends JpaRepository<User
     @Query("SELECT p FROM UserPortfolioSkillsBackend p WHERE p.userInfo = :user_id and p.skillsBackend = :skills_backend_id")
     Optional<UserPortfolioSkillsBackend> findEntity(@Param("user_id") UserInfo user, @Param("skills_backend_id") SkillsBackend skillsBackend);
 
-    @Query("SELECT p.skillsBackend.skillsBackendId FROM UserPortfolioSkillsBackend p WHERE p.userInfo = :user_id")
-    List<Long> findByUserId(@Param("user_id") UserInfo user);
+    @Query("SELECT p FROM UserPortfolioSkillsBackend p WHERE p.userInfo = :user_id")
+    List<UserPortfolioSkillsBackend> findByUserId(@Param("user_id") UserInfo user);
 
 }

@@ -25,10 +25,7 @@ import org.springframework.stereotype.Service;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Base64;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @Transactional
@@ -99,14 +96,57 @@ public class PortfolioServiceImpl implements PortfolioService {
     public PortfolioSkillsResponse findSkills(String userId) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+
         PortfolioSkillsResponse response = new PortfolioSkillsResponse();
-        response.setSkillsFrontendIdList(userPortfolioSkillsFrontendRepository.findByUserId(UserInfo.builder().userId(userId).build()));
-        response.setSkillsBackendIdList(userPortfolioSkillsBackendRepository.findByUserId(UserInfo.builder().userId(userId).build()));
-        response.setSkillsMobileappIdList(userPortfolioSkillsMobileappRepository.findByUserId(UserInfo.builder().userId(userId).build()));
-        response.setSkillsDeploymentIdList(userPortfolioSkillsDeploymentRepository.findByUserId(UserInfo.builder().userId(userId).build()));
-        response.setSkillsVersioncontrolIdList(userPortfolioSkillsVersioncontrolRepository.findByUserId(UserInfo.builder().userId(userId).build()));
-        response.setSkillsCommunicationIdList(userPortfolioSkillsCommunicationRepository.findByUserId(UserInfo.builder().userId(userId).build()));
-        response.setSkillsCertificationIdList(userPortfolioSkillsCertificationRepository.findByUserId(UserInfo.builder().userId(userId).build()));
+
+        List<UserPortfolioSkillsFrontend> userPortfolioSkillsFrontendList = userPortfolioSkillsFrontendRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsFrontendResult = new HashMap<>();
+        for (UserPortfolioSkillsFrontend u: userPortfolioSkillsFrontendList){
+            userPortfolioSkillsFrontendResult.put(u.getUserPortfolioSkillsFrontendId(), u.getSkillsFrontend().getImage().getSkillName());
+        }
+        response.setSkillsFrontendIdList(userPortfolioSkillsFrontendResult);
+
+        List<UserPortfolioSkillsBackend> userPortfolioSkillsBackendListList = userPortfolioSkillsBackendRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsBackendResult = new HashMap<>();
+        for (UserPortfolioSkillsBackend u: userPortfolioSkillsBackendListList){
+            userPortfolioSkillsBackendResult.put(u.getUserPortfolioSkillsBackendId(), u.getSkillsBackend().getImage().getSkillName());
+        }
+        response.setSkillsBackendIdList(userPortfolioSkillsBackendResult);
+
+        List<UserPortfolioSkillsMobileapp> userPortfolioSkillsMobileappList = userPortfolioSkillsMobileappRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsMobileappResult = new HashMap<>();
+        for (UserPortfolioSkillsMobileapp u: userPortfolioSkillsMobileappList){
+            userPortfolioSkillsMobileappResult.put(u.getUserPortfolioSkillsMobileappId(), u.getSkillsMobileapp().getImage().getSkillName());
+        }
+        response.setSkillsMobileappIdList(userPortfolioSkillsMobileappResult);
+
+        List<UserPortfolioSkillsDeployment> userPortfolioSkillsDeploymentList = userPortfolioSkillsDeploymentRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsDeploymentResult = new HashMap<>();
+        for (UserPortfolioSkillsDeployment u: userPortfolioSkillsDeploymentList){
+            userPortfolioSkillsDeploymentResult.put(u.getUserPortfolioSkillsDeploymentId(), u.getSkillsDeployment().getImage().getSkillName());
+        }
+        response.setSkillsDeploymentIdList(userPortfolioSkillsDeploymentResult);
+
+        List<UserPortfolioSkillsVersioncontrol> userPortfolioSkillsVersioncontrolList = userPortfolioSkillsVersioncontrolRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsVersioncontrolResult = new HashMap<>();
+        for (UserPortfolioSkillsVersioncontrol u: userPortfolioSkillsVersioncontrolList){
+            userPortfolioSkillsVersioncontrolResult.put(u.getUserPortfolioSkillsVersioncontrolId(), u.getSkillsVersioncontrol().getImage().getSkillName());
+        }
+        response.setSkillsVersioncontrolIdList(userPortfolioSkillsVersioncontrolResult);
+
+        List<UserPortfolioSkillsCommunication> userPortfolioSkillsCommunicationList = userPortfolioSkillsCommunicationRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsCommunicationResult = new HashMap<>();
+        for (UserPortfolioSkillsCommunication u: userPortfolioSkillsCommunicationList){
+            userPortfolioSkillsCommunicationResult.put(u.getUserPortfolioSkillsCommunicationId(), u.getSkillsCommunication().getImage().getSkillName());
+        }
+        response.setSkillsCommunicationIdList(userPortfolioSkillsCommunicationResult);
+
+        List<UserPortfolioSkillsCertification> userPortfolioSkillsCertificationList = userPortfolioSkillsCertificationRepository.findByUserId(UserInfo.builder().userId(userId).build());
+        HashMap<Long, String> userPortfolioSkillsCertificationResult = new HashMap<>();
+        for (UserPortfolioSkillsCertification u: userPortfolioSkillsCertificationList){
+            userPortfolioSkillsCertificationResult.put(u.getUserPortfolioSkillsCertificationId(), u.getSkillsCertification().getImage().getSkillName());
+        }
+        response.setSkillsCertificationIdList(userPortfolioSkillsCertificationResult);
         return response;
     }
 

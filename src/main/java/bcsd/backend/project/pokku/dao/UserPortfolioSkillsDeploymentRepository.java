@@ -19,6 +19,6 @@ public interface UserPortfolioSkillsDeploymentRepository extends JpaRepository<U
     @Query("SELECT p FROM UserPortfolioSkillsDeployment p WHERE p.userInfo = :user_id and p.skillsDeployment = :skills_deployment_id")
     Optional<UserPortfolioSkillsDeployment> findEntity(@Param("user_id") UserInfo user, @Param("skills_deployment_id") SkillsDeployment skillsDeployment);
 
-    @Query("SELECT p.skillsDeployment.skillsDeploymentId FROM UserPortfolioSkillsDeployment p WHERE p.userInfo = :user_id")
-    List<Long> findByUserId(@Param("user_id") UserInfo user);
+    @Query("SELECT p FROM UserPortfolioSkillsDeployment p WHERE p.userInfo = :user_id")
+    List<UserPortfolioSkillsDeployment> findByUserId(@Param("user_id") UserInfo user);
 }

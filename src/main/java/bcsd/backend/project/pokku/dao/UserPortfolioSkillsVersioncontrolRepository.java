@@ -20,7 +20,7 @@ public interface UserPortfolioSkillsVersioncontrolRepository extends JpaReposito
     @Query("SELECT p FROM UserPortfolioSkillsVersioncontrol p WHERE p.userInfo = :user_id and p.skillsVersioncontrol = :skills_versioncontrol_id")
     Optional<UserPortfolioSkillsVersioncontrol> findEntity(@Param("user_id") UserInfo user, @Param("skills_versioncontrol_id") SkillsVersioncontrol skillsVersioncontrol);
 
-    @Query("SELECT p.skillsVersioncontrol.skillsVersioncontrolId FROM UserPortfolioSkillsVersioncontrol p WHERE p.userInfo = :user_id")
-    List<Long> findByUserId(@Param("user_id") UserInfo user);
+    @Query("SELECT p FROM UserPortfolioSkillsVersioncontrol p WHERE p.userInfo = :user_id")
+    List<UserPortfolioSkillsVersioncontrol> findByUserId(@Param("user_id") UserInfo user);
 
 }

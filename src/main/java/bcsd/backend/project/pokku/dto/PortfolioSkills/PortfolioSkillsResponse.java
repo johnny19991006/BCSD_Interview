@@ -5,18 +5,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PortfolioSkillsResponse {
-    private List<Long> skillsFrontendIdList;
-    private List<Long> skillsBackendIdList;
-    private List<Long> skillsMobileappIdList;
-    private List<Long> skillsDeploymentIdList;
-    private List<Long> skillsVersioncontrolIdList;
-    private List<Long> skillsCertificationIdList;
-    private List<Long> skillsCommunicationIdList;
+    private HashMap<Long, String> skillsFrontendIdList;
+    private HashMap<Long, String> skillsBackendIdList;
+    private HashMap<Long, String> skillsMobileappIdList;
+    private HashMap<Long, String> skillsDeploymentIdList;
+    private HashMap<Long, String> skillsVersioncontrolIdList;
+    private HashMap<Long, String> skillsCertificationIdList;
+    private HashMap<Long, String> skillsCommunicationIdList;
 }
