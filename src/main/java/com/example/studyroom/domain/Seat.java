@@ -10,7 +10,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Builder
 @Table(name = "seats")
 @Getter
 public class Seat {
@@ -54,6 +53,7 @@ public class Seat {
         this.seatId = seatId;
     }
 
+    @Builder
     public Seat(Integer seatId, Integer seatNum, Boolean isUsed, LocalDateTime startTime, LocalDateTime endTime,
                 Room room, User user) {
         this.seatId = seatId;

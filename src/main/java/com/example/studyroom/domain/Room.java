@@ -1,6 +1,5 @@
 package com.example.studyroom.domain;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -32,7 +31,6 @@ public class Room {
     @Builder.Default
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "room_id")
-    @JsonManagedReference
     private List<Seat> seatList = new ArrayList<>();
 
     @Builder
