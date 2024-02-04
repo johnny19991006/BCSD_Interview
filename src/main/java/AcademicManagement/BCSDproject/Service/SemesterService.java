@@ -22,17 +22,19 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SemesterService {
+public class SemesterService implements SemesterServiceInterface{
     private final SemesterRepository semesterRepository;
     private final SubjectScoreRepository subjectScoreRepository;
     private final SubjectRepository subjectRepository;
 
+    @Override
     public Semester createSemester(Semester semester)
     {
         semesterRepository.save(semester);
         return semester;
     }
 
+    @Override
     public List<Semester> findAllSemester()
     {
         return semesterRepository.findAll();
@@ -44,6 +46,7 @@ public class SemesterService {
                 .orElseThrow(() -> new NoSuchElementException("Can't find"));
     }
 
+    @Override
     public Semester updateSemester(Semester semester, int semesterId)
     {
         Semester changeSemester = semesterRepository.findById(semesterId)
@@ -60,17 +63,20 @@ public class SemesterService {
         return new Semester(semester);
     }
 
+    @Override
     public void deleteSemester(int semesterId)
     {
         semesterRepository.deleteById(semesterId);
     }
 
+    @Override
     public List<Semester> studentSemester(String studentId)
     {
         return semesterRepository.findByStudentId(studentId);
     }
 
 
+    @Override
     public void updateSemesterCredit(String studentId, SemesterGradeEnum semesterGradeEnum,
                                      SemesterEnum semesterEnum)
     {

@@ -1,12 +1,7 @@
     package AcademicManagement.BCSDproject.Service;
 
-    import AcademicManagement.BCSDproject.Domain.Semester;
-    import AcademicManagement.BCSDproject.Domain.Student;
     import AcademicManagement.BCSDproject.Domain.Subject;
     import AcademicManagement.BCSDproject.Domain.SubjectScore;
-    import AcademicManagement.BCSDproject.Enum.SemesterEnum;
-    import AcademicManagement.BCSDproject.Enum.SemesterGradeEnum;
-    import AcademicManagement.BCSDproject.Repository.SemesterRepository;
     import AcademicManagement.BCSDproject.Repository.SubjectRepository;
     import AcademicManagement.BCSDproject.Repository.SubjectScoreRepository;
 
@@ -21,10 +16,12 @@
     @Service
     @Transactional
     @RequiredArgsConstructor
-    public class SubjectScoreService {
+    public class SubjectScoreService implements SubjectScoreServiceInterface{
         private final SubjectScoreRepository subjectScoreRepository;
         private final SubjectRepository subjectRepository;
         private final SemesterService semesterService;
+
+        @Override
         public SubjectScore createSubjectScore(SubjectScore subjectScore, String subjectName)
         {
             Subject subject = subjectRepository.findBySubjectName(subjectName)
@@ -36,17 +33,20 @@
             return subjectScore;
         }
 
+        @Override
         public List<SubjectScore> findAllSubjectScore()
         {
             return subjectScoreRepository.findAll();
         }
 
+        @Override
         public SubjectScore findSubjectScore(String subjectName, String studentId)
         {
             return subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
                     .orElseThrow(() -> new NoSuchElementException("Can't find"));
         }
 
+        @Override
         public SubjectScore updateSubjectScore(SubjectScore subjectScore, String subjectName, String studentId)
         {
             SubjectScore changeScore = subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
@@ -65,6 +65,7 @@
             return changeScore;
         }
 
+        @Override
         public void deleteSubjectScore(String subjectName, String studentId)
         {
             SubjectScore subjectScore = subjectScoreRepository.findBySubjectNameAndStudentId(subjectName, studentId)
@@ -74,6 +75,7 @@
             subjectScoreRepository.delete(subjectScore);
         }
 
+        @Override
         public List<SubjectScore> findStudentScoreByStudentId(String studentId)
         {
             return subjectScoreRepository.findByStudentId(studentId);
