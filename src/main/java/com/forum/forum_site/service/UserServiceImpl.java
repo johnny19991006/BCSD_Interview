@@ -2,7 +2,7 @@ package com.forum.forum_site.service;
 
 import com.forum.forum_site.domain.Role;
 import com.forum.forum_site.domain.User;
-import com.forum.forum_site.dto.ScrapPostDto;
+import com.forum.forum_site.dto.SimplePostInfo;
 import com.forum.forum_site.repository.RoleRepository;
 import com.forum.forum_site.repository.ScrapRepository;
 import com.forum.forum_site.repository.UserRepository;
@@ -97,17 +97,12 @@ public class UserServiceImpl extends BaseService implements UserService {
 
     @Transactional(readOnly = true)
     @Override
-    public List<ScrapPostDto> getUserScrapList() {
+    public List<SimplePostInfo> getUserScrapList() {
         User currentUser = getCurrentAuthenticatedUser();
         // 스크랩된 포스트를 ScrapPostDto 리스트로 변환
         return scrapRepository.findAllByAuthor(currentUser).stream()
-                .map(scrap -> new ScrapPostDto(
-                        scrap.getPost().getId(),
-                        scrap.getPost().getTitle(),
-                        scrap.getPost().getContent(),
-                        scrap.getPost().getCreated_at(),
-                        scrap.getPost().getLikes_count()
-                        // 필요한 경우 추가 필드 매핑
+                .map(scrap -> new SimplePostInfo(
+                        scrap.getPost()
                 ))
                 .collect(Collectors.toList());
     }

@@ -1,6 +1,6 @@
 package com.forum.forum_site.controller;
 
-import com.forum.forum_site.dto.ScrapPostDto;
+import com.forum.forum_site.dto.SimplePostInfo;
 import com.forum.forum_site.service.ScrapService;
 import com.forum.forum_site.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class ScrapController {
     }
 
     @GetMapping("/myScraps")
-    public ResponseEntity<List<ScrapPostDto>> getUserScraps() {
+    public ResponseEntity<List<SimplePostInfo>> getUserScraps() {
         return ResponseEntity.ok(userService.getUserScrapList());
     }
 }

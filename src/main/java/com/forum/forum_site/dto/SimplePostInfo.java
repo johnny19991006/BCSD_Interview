@@ -10,6 +10,7 @@ public class SimplePostInfo {
     private String content;
     private String writerName;
     private String createdDate;
+    private Integer likes_count;
 
     public SimplePostInfo(Post post) {
         this.postId = post.getId();
@@ -17,6 +18,7 @@ public class SimplePostInfo {
         this.content = post.getContent();
         this.writerName = post.getAuthor().getUsername();
         this.createdDate = post.getCreated_at().toString();
+        this.likes_count = post.getLikes_count();
     }
 
 }
