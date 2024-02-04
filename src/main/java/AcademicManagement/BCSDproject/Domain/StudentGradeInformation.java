@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /*
 Create Table Student_Grade_Information
@@ -23,6 +24,7 @@ Create Table Student_Grade_Information
 */
 
 @NoArgsConstructor // AllArgsConstructor
+@Setter
 @Getter // 도메인 내 Setter 사용 지양
 @Entity
 @Table(name = "Student_Grade_Information")

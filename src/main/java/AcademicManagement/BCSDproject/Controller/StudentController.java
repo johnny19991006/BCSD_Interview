@@ -36,7 +36,6 @@
             return service.findAllStudent();
         }
 
-        @PreAuthorize("hasRole('USER')")
         @GetMapping("/{studentId}")
         public StudentDTO findById(@PathVariable String studentId)
         {

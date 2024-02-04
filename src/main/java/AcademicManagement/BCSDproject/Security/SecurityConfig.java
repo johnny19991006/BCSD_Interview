@@ -30,6 +30,7 @@ public class SecurityConfig {
                 .requestMatchers("/Semester/**").hasAuthority("USER")
                 .requestMatchers("/Score/**").hasAuthority("USER")
                 .requestMatchers("/Subject/**").hasAuthority("USER")
+                .requestMatchers("/GradeInformation/**").hasAuthority("USER")
                 .requestMatchers("/Student/test").hasAuthority("USER")
                 .anyRequest().hasRole("USER")
                 .and()
