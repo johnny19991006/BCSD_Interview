@@ -27,7 +27,7 @@ out/
 !**/src/test/**/out/
 application-secret.properties
 build.gradle
-static/
+/src/main/resources/static/
 
 ### NetBeans ###
 /nbproject/private/
