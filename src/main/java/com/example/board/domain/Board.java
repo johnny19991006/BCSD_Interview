@@ -62,7 +62,7 @@ public class Board {
         this.updatedAt = LocalDateTime.now();
     }
 
-    @OneToMany(mappedBy = "board")
+    @OneToMany(mappedBy = "board", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<Comment> comments;
 

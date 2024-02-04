@@ -178,8 +178,15 @@ public class BoardServiceImpl implements BoardService {
         boardRepository.save(boardInf);
     }
     @Override
+    @Transactional
     @AuthorizeBoard
     public void deleteBoard(Integer boardId)  { // 게시글 삭제
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new NotFoundException("게시물을 찾을 수 없습니다"));
+
+        List<BoardHasHashtag> boardHasHashtags = boardHasHashtagRepository.findByBoardId(boardId);
+        boardHasHashtagRepository.deleteAll(boardHasHashtags);
+
         boardRepository.deleteById(boardId);
     }
     @Override
