@@ -2,8 +2,6 @@ package com.example.board.controller;
 
 import com.example.board.dto.CommentRequestDTO;
 import com.example.board.dto.CommentResponseDTO;
-import com.example.board.exception.NotFoundException;
-import com.example.board.exception.UnauthorizedException;
 import com.example.board.service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

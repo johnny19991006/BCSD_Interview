@@ -28,11 +28,11 @@ public class AuthorizationAspectUser {
         if(user != null) {
             Integer loggedInUserId = userDetails.getUser().getUserId();
             if (!loggedInUserId.equals(userId)) {
-                throw new UnauthorizedException("Unauthorized access");
+                throw new UnauthorizedException("사용자 접근 권한이 없습니다");
             }
         }
         else {
-            throw new NotFoundException("Board not found");
+            throw new NotFoundException("유저를 찾을 수 없습니다");
         }
     }
 

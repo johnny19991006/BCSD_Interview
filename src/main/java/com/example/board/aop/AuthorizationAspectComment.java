@@ -31,11 +31,11 @@ public class AuthorizationAspectComment {
             Integer commentUserId = comment.getUser().getUserId();
 
             if (!loggedInUserId.equals(commentUserId)) {
-                throw new UnauthorizedException("Unauthorized access");
+                throw new UnauthorizedException("댓글에 접근 권한이 없습니다");
             }
         }
         else {
-            throw new NotFoundException("Comment not found");
+            throw new NotFoundException("댓글을 찾을 수 없습니다");
         }
     }
 

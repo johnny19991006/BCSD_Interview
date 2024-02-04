@@ -4,7 +4,6 @@ import com.example.board.domain.Board;
 import com.example.board.domain.Hashtag;
 import com.example.board.dto.BoardRequestDTO;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface BoardService {

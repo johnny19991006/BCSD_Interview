@@ -24,7 +24,7 @@ public class UsertypeServiceImpl implements UsertypeService{
         return usertypeRepository.findAllByOrderByUserTypeIdAsc();
     }
     @Override
-    public void deleteUsertype(Integer usertypeId) throws EmptyResultDataAccessException { // 유저타입 삭제
+    public void deleteUsertype(Integer usertypeId) throws EmptyResultDataAccessException {
         usertypeRepository.deleteById(usertypeId);
     }
 }

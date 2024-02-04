@@ -35,12 +35,12 @@ public class UserServiceImpl implements UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
     @Override
-    public UserResponseDTO insertUser(UserRequestDTO userRequestDTO) { // 유저등록
+    public UserResponseDTO insertUser(UserRequestDTO userRequestDTO) {
         String rawPassword = userRequestDTO.getUserPassword();
         String encodedPassword = bCryptPasswordEncoder.encode(rawPassword);
 
         Usertype usertype = usertypeRepository.findById(userRequestDTO.getUserTypeId())
-                .orElseThrow(() -> new NotFoundException(""));
+                .orElseThrow(() -> new NotFoundException("유저타입을 찾을 수 없습니다"));
 
         User user = User.builder()
                 .userName(userRequestDTO.getUserName())
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO getUserByUserId(Integer userId) { // 특정조회 (userid기준, admin용)
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new NotFoundException(""));
+                .orElseThrow(()-> new NotFoundException("유저를 찾을 수 없습니다"));
         return UserResponseDTO.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseSimpleDTO getUserSimpleInfoByUserId(Integer userId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(()-> new NotFoundException(""));
+                .orElseThrow(()-> new NotFoundException("유저를 찾을 수 없습니다"));
         return UserResponseSimpleDTO.builder()
                 .userId(user.getUserId())
                 .userName(user.getUserName())
@@ -109,9 +109,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO updateUsertype(Integer userId, Integer newTypeNum) {
         User userInf = userRepository.findById(userId)
-                .orElseThrow(()-> new NotFoundException(""));
+                .orElseThrow(()-> new NotFoundException("유저를 찾을 수 없습니다"));
         Usertype newUsertype = usertypeRepository.findById(newTypeNum)
-                .orElseThrow(()-> new NotFoundException(""));
+                .orElseThrow(()-> new NotFoundException("유저타입을 찾을 수 없습니다"));
 
         User updatedUser = User.builder()
                 .userId(userInf.getUserId())
@@ -138,7 +138,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateUserPw(Integer userId, String newPw) { // 비밀번호수정
         User userInf = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(""));
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다"));
 
         String encodedPassword = bCryptPasswordEncoder.encode(newPw);
 
@@ -158,7 +158,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDTO updateUserNn(Integer userId, String newNn) { // 닉네임수정
         User userInf = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(""));
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다"));
 
         User updatedUser = User.builder()
                 .userId(userInf.getUserId())
@@ -185,12 +185,12 @@ public class UserServiceImpl implements UserService {
     @AuthorizeUser
     public void deleteUser(Integer userId) { // 회원삭제
         User userInf = userRepository.findById(userId)
-                .orElseThrow(() -> new NotFoundException(""));
+                .orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다"));
         userRepository.deleteById(userId);
     }
     @Override
     public List<UserResponseDTO> getUsersByUserType(int userTypeId) {
-        usertypeRepository.findById(userTypeId).orElseThrow(() -> new NotFoundException(""));
+        usertypeRepository.findById(userTypeId).orElseThrow(() -> new NotFoundException("유저를 찾을 수 없습니다"));
 
         List<User> users = userRepository.findByUserTypeUserTypeId(userTypeId);
         List<UserResponseDTO> userResponseDTOs = new ArrayList<>();

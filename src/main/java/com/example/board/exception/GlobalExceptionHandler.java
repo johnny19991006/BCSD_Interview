@@ -10,23 +10,28 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler({NotFoundException.class, EmptyResultDataAccessException.class})
-    public ResponseEntity<String> handleNotFoundException(Exception e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(NotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+    @ExceptionHandler(EmptyResultDataAccessException.class)
+    public ResponseEntity<String> handleEmptyResultDataAccessException(EmptyResultDataAccessException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("요청한 정보를 찾을 수 없습니다");
     }
-
-    @ExceptionHandler({ClassCastException.class, UnauthorizedException.class})
+    @ExceptionHandler(UnauthorizedException.class)
     public ResponseEntity<String> handleUnauthorizedException(Exception e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효한 권한이 아닙니다");
     }
-
+    @ExceptionHandler(ClassCastException.class)
+    public ResponseEntity<String> handleClassCastException(Exception e) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("올바른 형태의 권한이 아닙니다. token을 다시 확인해주세요");
+    }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<String> handleBadCredentialsException(BadCredentialsException e) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인에 실패했습니다");
     }
-
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<String> handleDataIntegrityViolationException(DataIntegrityViolationException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("요청 본문을 다시 확인해주세요.");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("요청 본문을 다시 확인해주세요");
     }
 }

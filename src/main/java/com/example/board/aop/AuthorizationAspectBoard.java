@@ -31,11 +31,11 @@ public class AuthorizationAspectBoard {
             Integer boardUserId = board.getUser().getUserId();
 
             if (!loggedInUserId.equals(boardUserId)) {
-                throw new UnauthorizedException("Unauthorized access");
+                throw new UnauthorizedException("게시글에 접근 권한이 없습니다");
             }
         }
         else {
-            throw new NotFoundException("Board not found");
+            throw new NotFoundException("게시글을 찾을 수 없습니다");
         }
     }
 
