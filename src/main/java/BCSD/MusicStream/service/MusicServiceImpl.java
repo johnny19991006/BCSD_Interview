@@ -171,7 +171,8 @@ public class MusicServiceImpl implements MusicService{
     public void deleteMusic(Integer musicId, Integer memberId) {
         Music music = musicRepository.findById(musicId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MUSIC_NOT_FOUND));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MEMBER_NOT_FOUND));
-        if (!music.getMember().equals(member)) throw new CustomErrorCodeException(ErrorCode.PERMISSION_DENIED_MUSIC);
+        if (music.getMember().getId() != member.getId()) throw new CustomErrorCodeException(ErrorCode.PERMISSION_DENIED_MUSIC);
+
         try {
             deleteFile(musicSoundDir + music.getSoundFileName());
             deleteFile(musicImageDir + music.getImageFileName());

@@ -75,7 +75,8 @@ public class MusicController {
         return ResponseEntity.ok(musicService.modifyMusic(modifyMusicDTO, WebConfig.getMemberIdByRequest(request)));
     }
     @DeleteMapping("/delete/{musicId}")
-    public ResponseEntity<Void> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) throws IOException {
+    public ResponseEntity<Void> deleteMusic(HttpServletRequest request, @PathVariable Integer musicId) {
+        System.out.println("dsa");
         musicService.deleteMusic(musicId, WebConfig.getMemberIdByRequest(request));
         return ResponseEntity.noContent().build();
     }
