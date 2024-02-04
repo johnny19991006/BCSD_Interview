@@ -108,6 +108,8 @@ public class ImageServiceImpl implements ImageService {
                 File destination = new File(absolutePath + File.separator + path + originalFileExtension);
                 request.getImage().transferTo(destination);
 
+            }else{
+                throw new NullValueException("image값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
             }
 
         } catch (IOException e) {
