@@ -3,6 +3,7 @@ package HSAnimal.demo.domain;
 import jakarta.persistence.*;
 import lombok.*;
 
+
 @Builder
 @Entity(name = "users")
 @NoArgsConstructor
