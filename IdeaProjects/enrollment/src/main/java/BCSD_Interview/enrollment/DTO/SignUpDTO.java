@@ -14,7 +14,7 @@ public class SignUpDTO {
     private String username;
     private String password;
     private String department;
-    private Long grade;
+    private Integer grade;
     private String registrable_grade;
     private List<String> roles = new ArrayList<>();
 

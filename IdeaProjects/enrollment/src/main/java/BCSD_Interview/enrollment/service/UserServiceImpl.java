@@ -3,6 +3,7 @@ package BCSD_Interview.enrollment.service;
 import BCSD_Interview.enrollment.DTO.SignUpDTO;
 import BCSD_Interview.enrollment.DTO.UserDTO;
 import BCSD_Interview.enrollment.domain.JwtToken;
+import BCSD_Interview.enrollment.domain.User;
 import BCSD_Interview.enrollment.repository.UserRepository;
 import BCSD_Interview.enrollment.security.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +56,70 @@ public class UserServiceImpl implements UserService {
         JwtToken jwtToken = jwtTokenProvider.generateToken(authentication);
 
         return jwtToken;
+    }
+
+    @Override
+    public User insertUser(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    public User getUserByUserId(Long userId) {
+        return userRepository.findById(userId).orElse(null);
+    }
+
+    @Override
+    public void updateUsername(Long userId, String username) {
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser != null) {
+            existingUser.setUsername(username);
+            userRepository.save(existingUser);
+        }
+    }
+
+    @Override
+    public void updatePassword(Long userId, String password) {
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser != null) {
+            existingUser.setPassword(password);
+            userRepository.save(existingUser);
+        }
+    }
+
+    @Override
+    public void updateDepartment(Long userId, String department) {
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser != null) {
+            existingUser.setDepartment(department);
+            userRepository.save(existingUser);
+        }
+    }
+
+    @Override
+    public void updateGrade(Long userId, Integer grade) {
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser != null) {
+            existingUser.setGrade(grade);
+            userRepository.save(existingUser);
+        }
+    }
+
+    @Override
+    public void updateRegistrable_Grade(Long userId, String registrable_grade) {
+        User existingUser = userRepository.findById(userId).orElse(null);
+        if (existingUser != null) {
+            existingUser.setPassword(registrable_grade);
+            userRepository.save(existingUser);
+        }
+    }
+
+    @Override
+    public void deleteUser(Long userId) {
+        userRepository.deleteById(userId);
     }
 }
