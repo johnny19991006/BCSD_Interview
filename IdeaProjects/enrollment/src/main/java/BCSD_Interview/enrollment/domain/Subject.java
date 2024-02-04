@@ -57,4 +57,60 @@ public class Subject {
 
     @Column(name = "user_id", nullable = false)
     private Long user_id;
+
+    public void setAcademic_Year(Integer academic_year) {
+        this.academic_year = academic_year;
+    }
+
+    public void setSemester(String semester) {
+        this.semester = semester;
+    }
+
+    public void setGrade(Integer grade) {
+        this.grade = grade;
+    }
+
+    public void setSubject_code(String subject_code) {
+        this.semester = subject_code;
+    }
+
+    public void setSubject_name(String subject_name) {
+        this.subject_name = subject_name;
+    }
+
+    public void setClass_num(Integer class_num) {
+        this.class_num = class_num;
+    }
+
+    public void setProfessor(String professor) {
+        this.professor = professor;
+    }
+
+    public void setCompletion_division(String completion_division) {
+        this.completion_division = completion_division;
+    }
+
+    public void setCredit(Integer credit) {
+        this.credit = credit;
+    }
+
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
+    public void setLecture_num(Integer lecture_num) {
+        this.lecture_num = lecture_num;
+    }
+
+    public void setLecture_time(String lecture_time) {
+        this.lecture_time = lecture_time;
+    }
+
+    public void setRepetition(String repetition) {
+        this.repetition = repetition;
+    }
+
+    public void setStudent(Long user_id) {
+        this.user_id = user_id;
+    }
 }

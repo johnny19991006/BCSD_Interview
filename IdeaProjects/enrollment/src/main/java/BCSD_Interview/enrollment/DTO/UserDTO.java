@@ -9,12 +9,32 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class UserDTO {
-    private Long user_id;
+    private Integer user_id;
     private String username;
     private String password;
     private String department;
-    private Long grade;
+    private Integer grade;
     private String registrable_grade;
+
+    public int getGrade() {
+        return grade;
+    }
+
+    public void setGrade(int grade) {
+        this.grade = grade;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public String getRegistrableGrade() {
+        return registrable_grade;
+    }
+
+    public void setRegistrable_grade(String registrable_grade) {
+        this.registrable_grade = registrable_grade;
+    }
 
     static public UserDTO toDTO(User user) {
         return UserDTO.builder()
@@ -26,12 +46,14 @@ public class UserDTO {
     }
 
     public User toEntity() {
-        return User.builder()
+        User user = User.builder()
                 .user_id(user_id)
                 .username(username)
                 .password(password)
                 .department(department)
                 .grade(grade)
-                .registrable_grade(registrable_grade).build();
+                .build();
+        user.settingRegistrable_Grade();
+        return user;
     }
 }
