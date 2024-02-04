@@ -39,7 +39,7 @@ public class AdminController {
         return new ResponseEntity<>(userService.DeleteUsers(userId), HttpStatus.OK);
     }
 
-    @PostMapping(value = "/image", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Boolean> uploadImage(@ModelAttribute ImageUploadRequest request) throws RuntimeException{
         if (request.getCategory() == null || request.getCategory().equals("")){
             throw new NullValueException("category값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
