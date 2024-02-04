@@ -59,7 +59,7 @@ public class CommentServiceImpl implements CommentService {
                     .build();
         }
         else {
-            throw new UnauthorizedException("Unauthorized access");
+            throw new UnauthorizedException("권한이 없습니다");
         }
     }
     @AuthorizeComment
