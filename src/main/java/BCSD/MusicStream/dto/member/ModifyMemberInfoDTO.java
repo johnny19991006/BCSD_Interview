@@ -19,7 +19,4 @@ public class ModifyMemberInfoDTO {
 
     @NotNull(message = "BirthDate cannot be null")
     private LocalDate birthDate;
-
-    @NotNull(message = "AuthorityID cannot be null")
-    private Integer authorityId;
 }

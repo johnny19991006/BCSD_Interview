@@ -74,17 +74,15 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public ResponseMemberDTO modifyMember(ModifyMemberInfoDTO modifyMemberInfoDTO, Integer memberId) {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MEMBER_NOT_FOUND));
-        Authority authority = authorityRepository.findById(modifyMemberInfoDTO.getAuthorityId()).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.AUTHORITY_NOT_FOUND));
         if(modifyMemberInfoDTO.getBirthDate().isAfter(LocalDate.now())) throw new CustomErrorCodeException(ErrorCode.INVALID_BIRTH_DATE);
         member.setName(modifyMemberInfoDTO.getName());
-        member.setAuthority(authority);
         member.setEmail(modifyMemberInfoDTO.getEmail());
         member.setBirthDate(modifyMemberInfoDTO.getBirthDate());
         return ResponseMemberDTO.builder()
                 .id(memberId)
                 .name(modifyMemberInfoDTO.getName())
                 .email(modifyMemberInfoDTO.getEmail())
-                .authorityId(authority.getId())
+                .authorityId(member.getAuthority().getId())
                 .birthDate(modifyMemberInfoDTO.getBirthDate())
                 .build();
     }
@@ -107,7 +105,6 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new CustomErrorCodeException(ErrorCode.MEMBER_NOT_FOUND));
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(member.getEmail(), modifyMemberPasswordDTO.getOrigin());
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
-//        if(!member.getPassword().equals(passwordEncoder.encode(modifyMemberPasswordDTO.getOrigin()))) throw new CustomErrorCodeException(ErrorCode.INVALID_PASSWORD);
         member.setPassword(passwordEncoder.encode(modifyMemberPasswordDTO.getChange()));
         return true;
     }
