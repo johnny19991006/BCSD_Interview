@@ -4,6 +4,8 @@ import com.example.board.domain.*;
 import com.example.board.dto.BoardRequestDTO;
 import com.example.board.exception.UnauthorizedException;
 import com.example.board.repository.*;
+import com.example.board.security.AuthorizeBoard;
+import com.example.board.security.AuthorizeUser;
 import com.example.board.security.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -120,11 +122,13 @@ public class BoardServiceImpl implements BoardService {
         return boards;
     }
     @Override
+    @AuthorizeUser
     public List<Board> getBoardByUserId(int userId) {
         return boardRepository.findByUserUserId(userId);
     }
 
     @Override
+    @AuthorizeBoard
     public void updateBoardTitle(Integer boardId, String newTitle) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
@@ -133,6 +137,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
+    @AuthorizeBoard
     public void updateBoardPrice(Integer boardId, String newPrice) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
@@ -141,6 +146,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
+    @AuthorizeBoard
     public void updateBoardContent(Integer boardId, String newContent) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
@@ -149,6 +155,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
+    @AuthorizeBoard
     public void updateBoardStatus(Integer boardId, String newStatus) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         if(boardInf != null) {
@@ -158,6 +165,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
+    @AuthorizeBoard
     public void updateBoardCategory(Integer boardId, Integer newCgNum) {
         Board boardInf = boardRepository.findById(boardId).orElse(null);
         Category newCategory = categoryRepository.findById(newCgNum).orElse(null);
@@ -167,6 +175,7 @@ public class BoardServiceImpl implements BoardService {
         }
     }
     @Override
+    @AuthorizeBoard
     public void deleteBoard(Integer boardId)  { // 게시글 삭제
         boardRepository.deleteById(boardId);
     }
@@ -175,6 +184,7 @@ public class BoardServiceImpl implements BoardService {
         return boardRepository.findByCategoryCategoryId(categoryId);
     }
     @Override
+    @AuthorizeBoard
     public void addHashtagToBoard(int boardId, int hashtagId) {
         Board board = boardRepository.findById(boardId).orElse(null);
         Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);
@@ -189,6 +199,7 @@ public class BoardServiceImpl implements BoardService {
     }
     @Override
     @Transactional
+    @AuthorizeBoard
     public void removeHashtagFromBoard(int boardId, int hashtagId) {
         Board board = boardRepository.findById(boardId).orElse(null);
         Hashtag hashtag = hashtagRepository.findById(hashtagId).orElse(null);

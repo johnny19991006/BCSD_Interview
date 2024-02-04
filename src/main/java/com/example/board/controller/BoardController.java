@@ -7,6 +7,8 @@ import com.example.board.security.AuthorizeBoard;
 import com.example.board.security.AuthorizeUser;
 import com.example.board.service.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,87 +22,86 @@ public class BoardController {
         this.boardService = boardService;
     }
     @PostMapping
-    public Board insertBoard(@RequestBody BoardRequestDTO boardRequestDTO){
-        return boardService.insertBoard(boardRequestDTO);
+    public ResponseEntity<Board> insertBoard(@RequestBody BoardRequestDTO boardRequestDTO){
+        return ResponseEntity.status(HttpStatus.CREATED).body(boardService.insertBoard(boardRequestDTO));
     }
     @GetMapping
-    public List<Board> getAllBoards() {
-        return boardService.getAllBoards();
+    public ResponseEntity<List<Board>> getAllBoards() {
+        return ResponseEntity.ok().body(boardService.getAllBoards());
     }
     @GetMapping("/{boardId}")
-    public Board getBoardByBoardId(@PathVariable Integer boardId) {
-        return boardService.getBoardByBoardId(boardId);
+    public ResponseEntity<Board> getBoardByBoardId(@PathVariable Integer boardId) {
+        return ResponseEntity.ok().body(boardService.getBoardByBoardId(boardId));
     }
     @GetMapping("/latest")
-    public List<Board> getLatestBoards() {
-        return boardService.getLatestBoards();
+    public ResponseEntity<List<Board>> getLatestBoards() {
+        return ResponseEntity.ok().body(boardService.getLatestBoards());
     }
     @GetMapping("/popular")
-    public List<Board> getPopularBoards() {
-        return boardService.getPopularBoards();
+    public ResponseEntity<List<Board>> getPopularBoards() {
+        return ResponseEntity.ok().body(boardService.getPopularBoards());
     }
     @GetMapping(params = "title")
-    public List<Board> getBoardsByTitleContaining(@RequestParam String title) {
-        return boardService.getBoardsByTitleContaining(title);
+    public ResponseEntity<List<Board>> getBoardsByTitleContaining(@RequestParam String title) {
+        return ResponseEntity.ok().body(boardService.getBoardsByTitleContaining(title));
     }
-    @AuthorizeUser
     @GetMapping("/user/{userId}")
-    public List<Board> getBoardByUserId(@PathVariable int userId) {
-        return boardService.getBoardByUserId(userId);
+    public ResponseEntity<List<Board>> getBoardByUserId(@PathVariable int userId) {
+        return ResponseEntity.ok().body(boardService.getBoardByUserId(userId));
     }
     @GetMapping("/category/{categoryId}")
-    public List<Board> getBoardByCategoryId(@PathVariable int categoryId)  {
-        return boardService.getBoardByCategoryId(categoryId);
+    public ResponseEntity<List<Board>> getBoardByCategoryId(@PathVariable int categoryId)  {
+        return ResponseEntity.ok().body(boardService.getBoardByCategoryId(categoryId));
     }
     @PutMapping("/{boardId}/title")
-    @AuthorizeBoard
-    public void updateBoardTitle(@PathVariable Integer boardId, @RequestBody String newTitle) {
+    public ResponseEntity<Void> updateBoardTitle(@PathVariable Integer boardId, @RequestBody String newTitle) {
         boardService.updateBoardTitle(boardId, newTitle);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{boardId}/price")
-    @AuthorizeBoard
-    public void updateBoardPrice(@PathVariable Integer boardId, @RequestBody String newPrice) {
+    public ResponseEntity<Void> updateBoardPrice(@PathVariable Integer boardId, @RequestBody String newPrice) {
         boardService.updateBoardPrice(boardId, newPrice);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{boardId}/content")
-    @AuthorizeBoard
-    public void updateBoardContent(@PathVariable Integer boardId, @RequestBody String newContent) {
+    public ResponseEntity<Void> updateBoardContent(@PathVariable Integer boardId, @RequestBody String newContent) {
         boardService.updateBoardContent(boardId, newContent);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{boardId}/status")
-    @AuthorizeBoard
-    public void updateBoardStatus(@PathVariable Integer boardId, @RequestBody String newStatus) {
+    public ResponseEntity<Void> updateBoardStatus(@PathVariable Integer boardId, @RequestBody String newStatus) {
         boardService.updateBoardStatus(boardId, newStatus);
+        return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{boardId}/category")
-    @AuthorizeBoard
-    public void updateBoardCategory(@PathVariable Integer boardId, @RequestBody Integer newCgNum) {
+    public ResponseEntity<Void> updateBoardCategory(@PathVariable Integer boardId, @RequestBody Integer newCgNum) {
         boardService.updateBoardCategory(boardId, newCgNum);
+        return ResponseEntity.ok().build();
     }
 
     @DeleteMapping("/{boardId}")
-    @AuthorizeBoard
-    public void deleteBoard(@PathVariable Integer boardId)  {
+    public ResponseEntity<Void> deleteBoard(@PathVariable Integer boardId)  {
         boardService.deleteBoard(boardId);
+        return ResponseEntity.noContent().build();
     }
     @PostMapping("/{boardId}/hashtag/{hashtagId}")
-    @AuthorizeBoard
-    public void addHashtagToBoard(@PathVariable int boardId, @PathVariable int hashtagId) {
+    public ResponseEntity<Void> addHashtagToBoard(@PathVariable int boardId, @PathVariable int hashtagId) {
         boardService.addHashtagToBoard(boardId, hashtagId);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @DeleteMapping("/{boardId}/hashtag/{hashtagId}")
-    @AuthorizeBoard
-    public void removeHashtagFromBoard(@PathVariable int boardId, @PathVariable int hashtagId) {
+    public ResponseEntity<Void> removeHashtagFromBoard(@PathVariable int boardId, @PathVariable int hashtagId) {
         boardService.removeHashtagFromBoard(boardId, hashtagId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{boardId}/hashtags")
-    public List<Hashtag> getHashtagsForBoard(@PathVariable int boardId) {
-        return boardService.getHashtagsForBoard(boardId);
+    public ResponseEntity<List<Hashtag>> getHashtagsForBoard(@PathVariable int boardId) {
+        return ResponseEntity.ok().body(boardService.getHashtagsForBoard(boardId));
     }
 }
