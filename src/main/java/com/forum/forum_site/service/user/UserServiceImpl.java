@@ -1,12 +1,13 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.user;
 
 import com.forum.forum_site.domain.Role;
 import com.forum.forum_site.domain.User;
-import com.forum.forum_site.dto.SimplePostInfo;
+import com.forum.forum_site.dto.post.SimplePostInfo;
 import com.forum.forum_site.repository.RoleRepository;
 import com.forum.forum_site.repository.ScrapRepository;
 import com.forum.forum_site.repository.UserRepository;
 import com.forum.forum_site.security.JwtTokenProvider;
+import com.forum.forum_site.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

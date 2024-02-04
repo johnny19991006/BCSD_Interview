@@ -1,4 +1,4 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.file;
 
 import com.forum.forum_site.exception.FileException;
 import org.springframework.beans.factory.annotation.Value;

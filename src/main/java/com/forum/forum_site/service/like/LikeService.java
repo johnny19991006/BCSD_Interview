@@ -1,4 +1,4 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.like;
 
 public interface LikeService {
     void insertLike(Integer postId);

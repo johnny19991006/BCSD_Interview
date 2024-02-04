@@ -1,19 +1,15 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.comment;
 
 import com.forum.forum_site.domain.Comment;
-import com.forum.forum_site.domain.Post;
 import com.forum.forum_site.domain.User;
-import com.forum.forum_site.dto.SaveCommentDto;
-import com.forum.forum_site.dto.UpdateCommentDto;
+import com.forum.forum_site.dto.comment.SaveCommentDto;
+import com.forum.forum_site.dto.comment.UpdateCommentDto;
 import com.forum.forum_site.exception.CommentException;
 import com.forum.forum_site.exception.PostException;
-import com.forum.forum_site.exception.UserException;
 import com.forum.forum_site.repository.CommentRepository;
 import com.forum.forum_site.repository.PostRepository;
-import com.forum.forum_site.repository.UserRepository;
+import com.forum.forum_site.service.BaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

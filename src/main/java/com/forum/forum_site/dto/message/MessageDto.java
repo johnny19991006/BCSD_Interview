@@ -1,4 +1,4 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.message;
 
 import com.forum.forum_site.domain.Message;
 import com.forum.forum_site.domain.User;

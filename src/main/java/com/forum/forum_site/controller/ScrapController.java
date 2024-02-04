@@ -1,8 +1,8 @@
 package com.forum.forum_site.controller;
 
-import com.forum.forum_site.dto.SimplePostInfo;
-import com.forum.forum_site.service.ScrapService;
-import com.forum.forum_site.service.UserService;
+import com.forum.forum_site.dto.post.SimplePostInfo;
+import com.forum.forum_site.service.scrap.ScrapService;
+import com.forum.forum_site.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

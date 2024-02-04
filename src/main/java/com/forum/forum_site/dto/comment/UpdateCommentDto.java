@@ -1,4 +1,4 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.comment;
 
 import java.util.Optional;
 

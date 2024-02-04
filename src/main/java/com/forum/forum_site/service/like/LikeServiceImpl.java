@@ -1,16 +1,14 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.like;
 
 import com.forum.forum_site.domain.Likes;
 import com.forum.forum_site.domain.Post;
 import com.forum.forum_site.domain.User;
 import com.forum.forum_site.exception.LikeException;
 import com.forum.forum_site.exception.PostException;
-import com.forum.forum_site.exception.UserException;
 import com.forum.forum_site.repository.LikeRepository;
 import com.forum.forum_site.repository.PostRepository;
+import com.forum.forum_site.service.BaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

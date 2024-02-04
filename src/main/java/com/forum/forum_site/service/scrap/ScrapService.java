@@ -1,4 +1,4 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.scrap;
 
 public interface ScrapService {
     void insertScrap(Integer postId);

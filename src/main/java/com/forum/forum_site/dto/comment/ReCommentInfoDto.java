@@ -1,6 +1,7 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.comment;
 
 import com.forum.forum_site.domain.Comment;
+import com.forum.forum_site.dto.user.UserInfoDto;
 import lombok.Getter;
 
 @Getter

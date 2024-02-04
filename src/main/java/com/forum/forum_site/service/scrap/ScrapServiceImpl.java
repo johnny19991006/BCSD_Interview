@@ -1,17 +1,14 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.scrap;
 
 import com.forum.forum_site.domain.Post;
 import com.forum.forum_site.domain.Scrap;
 import com.forum.forum_site.domain.User;
-import com.forum.forum_site.exception.LikeException;
 import com.forum.forum_site.exception.PostException;
 import com.forum.forum_site.exception.ScrapException;
-import com.forum.forum_site.exception.UserException;
 import com.forum.forum_site.repository.PostRepository;
 import com.forum.forum_site.repository.ScrapRepository;
+import com.forum.forum_site.service.BaseService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service

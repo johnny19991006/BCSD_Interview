@@ -1,11 +1,8 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.message;
 
-import com.forum.forum_site.domain.Message;
-import com.forum.forum_site.domain.User;
-import com.forum.forum_site.dto.MessageDto;
+import com.forum.forum_site.dto.message.MessageDto;
 
 import java.util.List;
-import java.util.Objects;
 
 public interface MessageService {
 

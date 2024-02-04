@@ -1,16 +1,16 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.message;
 
 import com.forum.forum_site.domain.*;
-import com.forum.forum_site.dto.MessageDto;
+import com.forum.forum_site.dto.message.MessageDto;
 import com.forum.forum_site.exception.MessageException;
 import com.forum.forum_site.repository.MessageRepository;
 import com.forum.forum_site.repository.UserRepository;
 
+import com.forum.forum_site.service.BaseService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 

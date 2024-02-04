@@ -1,9 +1,7 @@
 package com.forum.forum_site.controller;
 
-import com.forum.forum_site.domain.Post;
-import com.forum.forum_site.service.UserService;
+import com.forum.forum_site.service.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.forum.forum_site.domain.User;

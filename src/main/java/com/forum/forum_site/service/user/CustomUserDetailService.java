@@ -1,4 +1,4 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.user;
 
 import com.forum.forum_site.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

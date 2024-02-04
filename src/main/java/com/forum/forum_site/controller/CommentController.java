@@ -1,8 +1,8 @@
 package com.forum.forum_site.controller;
 
-import com.forum.forum_site.dto.SaveCommentDto;
-import com.forum.forum_site.dto.UpdateCommentDto;
-import com.forum.forum_site.service.CommentService;
+import com.forum.forum_site.dto.comment.SaveCommentDto;
+import com.forum.forum_site.dto.comment.UpdateCommentDto;
+import com.forum.forum_site.service.comment.CommentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;

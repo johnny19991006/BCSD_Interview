@@ -1,4 +1,4 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.post;
 
 import com.forum.forum_site.domain.Post;
 import org.springframework.web.multipart.MultipartFile;

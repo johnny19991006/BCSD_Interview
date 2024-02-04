@@ -1,10 +1,7 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.comment;
 
-import com.forum.forum_site.domain.Comment;
-import com.forum.forum_site.dto.SaveCommentDto;
-import com.forum.forum_site.dto.UpdateCommentDto;
-
-import java.util.List;
+import com.forum.forum_site.dto.comment.SaveCommentDto;
+import com.forum.forum_site.dto.comment.UpdateCommentDto;
 
 public interface CommentService {
     void saveComment(Integer postId, SaveCommentDto saveCommentDto);

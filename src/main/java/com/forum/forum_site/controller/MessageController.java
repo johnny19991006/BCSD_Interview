@@ -1,9 +1,8 @@
 package com.forum.forum_site.controller;
 
-import com.forum.forum_site.dto.MessageDto;
-import com.forum.forum_site.service.MessageService;
+import com.forum.forum_site.dto.message.MessageDto;
+import com.forum.forum_site.service.message.MessageService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.connector.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

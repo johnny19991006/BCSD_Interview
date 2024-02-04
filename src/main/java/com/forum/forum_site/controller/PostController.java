@@ -1,15 +1,14 @@
 package com.forum.forum_site.controller;
 
-import com.forum.forum_site.dto.PostInfoDto;
-import com.forum.forum_site.dto.SavePostDto;
-import com.forum.forum_site.dto.UpdatePostDto;
+import com.forum.forum_site.dto.post.PostInfoDto;
+import com.forum.forum_site.dto.post.SavePostDto;
+import com.forum.forum_site.dto.post.UpdatePostDto;
 import com.forum.forum_site.searchcond.SearchPostCondition;
-import com.forum.forum_site.service.PostService;
+import com.forum.forum_site.service.post.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;

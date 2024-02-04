@@ -1,4 +1,4 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.comment;
 
 import com.forum.forum_site.domain.Comment;
 

@@ -1,7 +1,9 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.post;
 
 import com.forum.forum_site.domain.Comment;
 import com.forum.forum_site.domain.Post;
+import com.forum.forum_site.dto.user.UserInfoDto;
+import com.forum.forum_site.dto.comment.CommentInfoDto;
 import lombok.Getter;
 
 import java.util.List;

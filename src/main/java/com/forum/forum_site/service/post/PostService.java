@@ -1,10 +1,9 @@
-package com.forum.forum_site.service;
+package com.forum.forum_site.service.post;
 
-import com.forum.forum_site.domain.Post;
-import com.forum.forum_site.dto.PostInfoDto;
-import com.forum.forum_site.dto.PostPagingDto;
-import com.forum.forum_site.dto.SavePostDto;
-import com.forum.forum_site.dto.UpdatePostDto;
+import com.forum.forum_site.dto.post.PostInfoDto;
+import com.forum.forum_site.dto.post.PostPagingDto;
+import com.forum.forum_site.dto.post.SavePostDto;
+import com.forum.forum_site.dto.post.UpdatePostDto;
 import com.forum.forum_site.searchcond.SearchPostCondition;
 import org.springframework.data.domain.Pageable;
 

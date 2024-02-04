@@ -1,6 +1,6 @@
 package com.forum.forum_site;
 
-import com.forum.forum_site.service.FileService;
+import com.forum.forum_site.service.file.FileService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

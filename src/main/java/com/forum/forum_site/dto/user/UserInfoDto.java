@@ -1,4 +1,4 @@
-package com.forum.forum_site.dto;
+package com.forum.forum_site.dto.user;
 
 import com.forum.forum_site.domain.User;
 import lombok.Builder;
