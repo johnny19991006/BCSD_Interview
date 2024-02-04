@@ -20,7 +20,7 @@ Create Table Student_Grade_Information
     avg_general_score FLOAT NOT NULL,
     total_all_credit INT NOT NULL,
     avg_all_score FLOAT NOT NULL,
-    FOREIGN KEY (student_id) references Student(student_id),
+    FOREIGN KEY (student_id) references Student(student_id) // 학기 정보 삭제했음
 );
 */
 

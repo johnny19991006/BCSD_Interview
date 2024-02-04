@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
     student_semester INT(2) NOT NULL,
     student_attend VARCHAR(10) NOT NULL,
     update_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    roles VARCAHR(10) NOT NULL // 역할은 따로 Student_roles 테이블 생성
 );
 update_at은 현재 빼두고, 추후에 수정시 추가
 */
