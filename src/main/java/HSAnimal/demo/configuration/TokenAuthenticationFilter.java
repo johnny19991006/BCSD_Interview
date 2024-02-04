@@ -31,6 +31,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String token = getAccessToken(authorizationHeader);
 
         if (tokenProvider.validToken(token)) {
+            // UserDetails 미완성으로 "hyunn815"에게 "ROLE_ADMIN" 임시 부여
             if (request.getRequestURI().startsWith("/admin/**") && !tokenProvider.getUserId(token).equals("hyunn815")){
                 throw new NotAllowedAuthorityException("Not allowed authority.");
             }

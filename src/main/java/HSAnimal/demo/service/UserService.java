@@ -3,22 +3,17 @@ package HSAnimal.demo.service;
 import HSAnimal.demo.DTO.*;
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.domain.UserKeywords;
-import HSAnimal.demo.enums.ErrorCode;
 import HSAnimal.demo.exception.AccountAlreadyExistsException;
 import HSAnimal.demo.exception.AccountNotFoundException;
 import HSAnimal.demo.exception.EmailAlreadyExistsException;
 import HSAnimal.demo.exception.WrongPasswordException;
 import HSAnimal.demo.repository.UserKeywordsRepository;
 import HSAnimal.demo.repository.UserRepository;
-import io.jsonwebtoken.JwtException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
-import javax.security.auth.login.LoginException;
 import java.util.List;
 
 @Slf4j
@@ -72,7 +67,6 @@ public class UserService {
             throw new WrongPasswordException("Wrong password");
         }
     }
-
     public void updateUser(String userId, UpdateUserDto updateUserDTO){
         userRepository.findByUserId(userId)
                 .map(user -> {

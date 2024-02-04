@@ -8,9 +8,7 @@ import HSAnimal.demo.domain.User;
 import HSAnimal.demo.exception.AccountNotFoundException;
 import HSAnimal.demo.repository.RefreshTokenRepository;
 import HSAnimal.demo.repository.UserRepository;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.time.Duration;
 import java.util.Optional;
@@ -58,7 +56,6 @@ public class TokenService {
                         () -> refreshTokenRepository.save(new RefreshToken(user.getUserId(), refreshToken))
                 );
     }
-
     public void deleteRefreshToken(String userId) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
                 .orElseThrow(() -> new AccountNotFoundException("User not found"));

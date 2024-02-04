@@ -76,19 +76,20 @@ public class TokenProvider {
             } catch (IllegalArgumentException e) {
                 log.info("IllegalArgumentException");
                 return false;
-//                throw new JwtException(ErrorCode.TOKEN_NOT_FOUND.getMessage());
             }
     }
 
     // 토큰 기반으로 인증 정보 가져오는 메서드
     public Authentication getAuthentication(String token){
-        //Collection<SimpleGrantedAuthority> auth = getAuth(token);
-        //authorities.add(new SimpleGrantedAuthority(auth.toString()));
+        // Collection<SimpleGrantedAuthority> auth = getAuth(token);
+        // authorities.add(new SimpleGrantedAuthority(auth.toString()));
 
         Claims claims = getClaims(token);
-        String userId = getUserId(token);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         authorities.add(new SimpleGrantedAuthority(UserRole.USER.getRole()));
+
+        // UserDetails 미완성으로 "hyunn815"에게 "ROLE_ADMIN" 임시 부여
+        String userId = getUserId(token);
         if (userId.equals("hyunn815")){
             authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getRole()));
         }
@@ -98,12 +99,12 @@ public class TokenProvider {
                 token, authorities);
     }
 
-    // 토큰 기반으로 사용자 ID를 가져오는 메서드
     public String getUserId(String token){
         Claims claims = getClaims(token);
         return claims.get("userId", String.class);
     }
 
+    // 토큰에 권한정보 포함 기능 미완성
     public String getAuth(String token){
         Claims claims = getClaims(token);
         return claims.get("auth", String.class);

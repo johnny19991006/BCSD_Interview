@@ -5,6 +5,7 @@ import HSAnimal.demo.DTO.UpdateUserDto;
 import HSAnimal.demo.DTO.UserDto;
 import HSAnimal.demo.DTO.UserKeywordsDto;
 import HSAnimal.demo.domain.User;
+import HSAnimal.demo.exception.AccountNotFoundException;
 import HSAnimal.demo.repository.UserRepository;
 import HSAnimal.demo.service.MatchService;
 import HSAnimal.demo.service.TokenService;
@@ -54,7 +55,7 @@ public class UserController {
     @GetMapping("/{user_id}")
     public User readUser(@PathVariable String user_id) {
         return userRepository.findByUserId(user_id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new AccountNotFoundException("User not found"));
     }
 
     @PutMapping("/{user_id}")

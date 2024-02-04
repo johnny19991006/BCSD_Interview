@@ -10,6 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 
+// 코드 미완성(사용X)
+// 사용자의 권한 관리 클래스
 public class CustomUserDetails implements UserDetails {
     private final User user;
     private final AdminRepository adminRepository;

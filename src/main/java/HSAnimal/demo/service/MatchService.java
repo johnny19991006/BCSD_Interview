@@ -42,7 +42,6 @@ public class MatchService {
         return optionsList;
     }
 
-    // 사용자와 겹치는 동물 리스트 생성
     public Set<myAnimalDto> getMyAnimalDTOList(Set<Integer> optionList){
         Set<myAnimalDto> myAnimalDtoList = new HashSet<>();
         for(int option : optionList){
@@ -60,7 +59,6 @@ public class MatchService {
         return myAnimalDtoList;
     }
 
-    // 매칭된 동물들 반환
     public List<myAnimalDto> sumWeights(String userId){
         Set<Integer> myOptionList = getMyOptionList(userId);
         Set<myAnimalDto> myAnimalDtoSet = getMyAnimalDTOList(myOptionList);

@@ -26,8 +26,6 @@ public class SurveyService {
                 .map(Questions::getContent)
                 .collect(Collectors.toList());
     }
-
-    // 사용자의 키워드 저장하기
     public void saveOptions(List<UserKeywordsDto> userKeywordsList, String user_id) {
         for (UserKeywordsDto userKeywordsDTO : userKeywordsList) {
             UserKeywords userKeywords = UserKeywords.builder()

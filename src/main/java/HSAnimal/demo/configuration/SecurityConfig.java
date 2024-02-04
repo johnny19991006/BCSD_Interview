@@ -14,6 +14,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final TokenProvider tokenProvider;
     private final String[] allowedUrls = {"/login", "signup", "/{user_id}/token"};
+    // 스웨거 URI "/swagger-ui/**", "/", "/swagger-resources/**", "/v3/api-docs/**"
 
     public SecurityConfig(TokenProvider tokenProvider) {
         this.tokenProvider = tokenProvider;
@@ -44,7 +45,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // 패스워드 인코더로 사용할 빈 등록
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();

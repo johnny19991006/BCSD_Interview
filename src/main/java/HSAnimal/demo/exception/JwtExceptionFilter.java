@@ -28,15 +28,12 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             if(ErrorCode.TOKEN_NOT_FOUND.getMessage().equals(message)) {
                 setResponse(response, ErrorCode.TOKEN_NOT_FOUND);
             }
-            //잘못된 타입의 토큰인 경우
             else if(ErrorCode.WRONG_TYPE_TOKEN.getMessage().equals(message)) {
                 setResponse(response, ErrorCode.WRONG_TYPE_TOKEN);
             }
-            //토큰 만료된 경우
             else if(ErrorCode.EXPIRED_TOKEN.getMessage().equals(message)) {
                 setResponse(response, ErrorCode.EXPIRED_TOKEN);
             }
-            //지원 되지 않는 토큰인 경우
             else if(ErrorCode.UNSUPPORTED_TOKEN.getMessage().equals(message)) {
                 setResponse(response, ErrorCode.UNSUPPORTED_TOKEN);
             }

@@ -2,6 +2,8 @@ package HSAnimal.demo.controller;
 
 import HSAnimal.demo.DTO.UserKeywordsDto;
 import HSAnimal.demo.service.SurveyService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,8 +22,8 @@ public class SurveyController {
     }
 
     @PostMapping("/{user_id}/survey")
-    public String saveOptionList(@RequestBody List<UserKeywordsDto> userKeywordsList, @PathVariable String user_id) {
+    public ResponseEntity<String> saveOptionList(@RequestBody List<UserKeywordsDto> userKeywordsList, @PathVariable String user_id) {
         surveyService.saveOptions(userKeywordsList, user_id);
-        return "키워드가 등록되었습니다.\n/{user_id}/match 링크로 리디랙션";
+        return ResponseEntity.status(HttpStatus.OK).body("키워드가 등록되었습니다");
     }
 }
