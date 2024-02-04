@@ -20,7 +20,7 @@ public interface UserPortfolioSkillsMobileappRepository extends JpaRepository<Us
     @Query("SELECT p FROM UserPortfolioSkillsMobileapp p WHERE p.userInfo = :user_id and p.skillsMobileapp = :skills_mobileapp_id")
     Optional<UserPortfolioSkillsMobileapp> findEntity(@Param("user_id") UserInfo user, @Param("skills_mobileapp_id") SkillsMobileapp skillsMobileapp);
 
-    @Query("SELECT p.skillsMobileapp FROM UserPortfolioSkillsMobileapp p WHERE p.userInfo = :user_id")
+    @Query("SELECT p.skillsMobileapp.skillsMobileappId FROM UserPortfolioSkillsMobileapp p WHERE p.userInfo = :user_id")
     List<Long> findByUserId(@Param("user_id") UserInfo user);
 
 }

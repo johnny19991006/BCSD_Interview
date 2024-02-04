@@ -370,8 +370,8 @@ public class PortfolioServiceImpl implements PortfolioService {
     public Boolean updateArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioArchivingRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioArchivingRepository.findById(request.getPortfolioArchivingId())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", request.getPortfolioArchivingId().toString(), ResCode.NO_SUCH_DATA.value()));
         portfolioArchivingRepository.save(PortfolioArchiving.builder()
                 .portfolioArchivingId(request.getPortfolioArchivingId())
                 .archivingExplanation(request.getArchivingExplanation())
@@ -385,11 +385,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     public Boolean deleteArchiving(String userId, PortfolioArchivingRequest request) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioArchivingRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioArchivingRepository.deleteByUserIdAndName(
-                UserInfo.builder().userId(userId).build(),
-                request.getArchivingName());
+        portfolioArchivingRepository.findById(request.getPortfolioArchivingId())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", request.getPortfolioArchivingId().toString(), ResCode.NO_SUCH_DATA.value()));
+        portfolioArchivingRepository.deleteById(request.getPortfolioArchivingId());
         return true;
     }
 
@@ -422,8 +420,8 @@ public class PortfolioServiceImpl implements PortfolioService {
     public Boolean updateCareer(String userId, PortfolioCareerRequest request) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioCareerRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioCareerRepository.findById(request.getPortfolioCareerId())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", request.getCareerExplanation().toString(), ResCode.NO_SUCH_DATA.value()));
         portfolioCareerRepository.save(PortfolioCareer.builder()
                 .portfolioCareerId(request.getPortfolioCareerId())
                 .careerExplanation(request.getCareerExplanation())
@@ -436,11 +434,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     public Boolean deleteCareer(String userId, PortfolioCareerRequest request) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioCareerRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioCareerRepository.deleteByUserIdAndExplanation(
-                UserInfo.builder().userId(userId).build(),
-                request.getCareerExplanation());
+        portfolioCareerRepository.findById(request.getPortfolioCareerId())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", request.getCareerExplanation().toString(), ResCode.NO_SUCH_DATA.value()));
+        portfolioCareerRepository.deleteById(request.getPortfolioCareerId());
 
         return true;
 
@@ -476,8 +472,8 @@ public class PortfolioServiceImpl implements PortfolioService {
     public Boolean updateProject(String userId, PortfolioProjectRequest request) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioProjectRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
+        portfolioProjectRepository.findById(request.getPortfolioProjectId())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", request.getPortfolioProjectId().toString(), ResCode.NO_SUCH_DATA.value()));
         portfolioProjectRepository.save(PortfolioProject.builder()
                 .portfolioProjectId(request.getPortfolioProjectId())
                 .projectExplanation(request.getProjectExplanation())
@@ -491,11 +487,9 @@ public class PortfolioServiceImpl implements PortfolioService {
     public Boolean deleteProject(String userId, PortfolioProjectRequest request) throws RuntimeException {
         userInfoRepository.findById(userId)
                 .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioProjectRepository.findByUserId(UserInfo.builder().userId(userId).build())
-                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", userId, ResCode.NO_SUCH_DATA.value()));
-        portfolioProjectRepository.deleteByUserIdAndName(
-                UserInfo.builder().userId(userId).build(),
-                request.getProjectName());
+        portfolioProjectRepository.findById(request.getPortfolioProjectId())
+                .orElseThrow(() -> new NoSuchDataException("존재하지 않는 사용자 정보 입니다.", request.getPortfolioProjectId().toString(), ResCode.NO_SUCH_DATA.value()));
+        portfolioProjectRepository.deleteById(request.getPortfolioProjectId());
         return true;
     }
 

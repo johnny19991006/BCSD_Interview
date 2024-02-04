@@ -17,7 +17,7 @@ public interface UserPortfolioSkillsCommunicationRepository extends JpaRepositor
     @Query("SELECT p FROM UserPortfolioSkillsCommunication p WHERE p.userInfo = :user_id and p.skillsCommunication = :skills_communication_id")
     Optional<UserPortfolioSkillsCommunication> findEntity(@Param("user_id") UserInfo user, @Param("skills_communication_id") SkillsCommunication skillsCommunication);
 
-    @Query("SELECT p.skillsCommunication FROM UserPortfolioSkillsCommunication p WHERE p.userInfo = :user_id")
+    @Query("SELECT p.skillsCommunication.skillsCommunicationId FROM UserPortfolioSkillsCommunication p WHERE p.userInfo = :user_id")
     List<Long> findByUserId(@Param("user_id") UserInfo user);
 }
 

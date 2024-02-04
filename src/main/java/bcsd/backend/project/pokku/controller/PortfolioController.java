@@ -105,12 +105,6 @@ public class PortfolioController {
 
     @DeleteMapping(value = "/archiving/{id}")
     public ResponseEntity<Boolean> deleteArchiving(@PathVariable(name = "id") String userId, @RequestBody PortfolioArchivingRequest request) throws RuntimeException{
-        if (request.getArchivingName() == null || request.getArchivingName().equals("")){
-            throw new NullValueException("archivingName값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
-        }
-        if (request.getArchivingExplanation() == null || request.getArchivingExplanation().equals("")){
-            throw new NullValueException("archivingExplanation값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
-        }
         if (request.getPortfolioArchivingId() == null){
             throw new NullValueException("portfolioArchivingId값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
         }
@@ -128,7 +122,7 @@ public class PortfolioController {
         if (request.getPortfolioArchivingId() == null){
             throw new NullValueException("portfolioArchivingId값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
         }
-        return new ResponseEntity<>(portfolioService.deleteArchiving(userId, request), HttpStatus.OK);
+        return new ResponseEntity<>(portfolioService.updateArchiving(userId, request), HttpStatus.OK);
     }
 
     @GetMapping(value = "/project/{id}")
@@ -149,12 +143,6 @@ public class PortfolioController {
 
     @DeleteMapping(value = "/project/{id}")
     public ResponseEntity<Boolean> deleteProject(@PathVariable(name = "id") String userId, @RequestBody PortfolioProjectRequest request) throws RuntimeException{
-        if (request.getProjectName() == null || request.getProjectName().equals("")){
-            throw new NullValueException("projectName값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
-        }
-        if (request.getProjectExplanation() == null || request.getProjectExplanation().equals("")){
-            throw new NullValueException("projectExplanation값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
-        }
         if (request.getPortfolioProjectId() == null){
             throw new NullValueException("portfolioProjectId값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
         }
@@ -190,9 +178,6 @@ public class PortfolioController {
 
     @DeleteMapping(value = "/career/{id}")
     public ResponseEntity<Boolean> deleteCareer(@PathVariable(name = "id") String userId, @RequestBody PortfolioCareerRequest request) throws RuntimeException{
-        if (request.getCareerExplanation() == null || request.getCareerExplanation().equals("")){
-            throw new NullValueException("careerExplanation값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
-        }
         if (request.getPortfolioCareerId() == null || request.getPortfolioCareerId().equals("")){
             throw new NullValueException("portfolioCareerId값이 비어있습니다.", null, ResCode.NULL_VALUE.value());
         }

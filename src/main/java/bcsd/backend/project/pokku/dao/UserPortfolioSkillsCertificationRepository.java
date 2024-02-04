@@ -20,7 +20,7 @@ public interface UserPortfolioSkillsCertificationRepository extends JpaRepositor
     @Query("SELECT p FROM UserPortfolioSkillsCertification p WHERE p.userInfo = :user_id and p.skillsCertification = :skills_certification_id")
     Optional<UserPortfolioSkillsCertification> findEntity(@Param("user_id") UserInfo user, @Param("skills_certification_id") SkillsCertification skillsCertification);
 
-    @Query("SELECT p.skillsCertification FROM UserPortfolioSkillsCertification p WHERE p.userInfo = :user_id")
+    @Query("SELECT p.skillsCertification.skillsCertificationId FROM UserPortfolioSkillsCertification p WHERE p.userInfo = :user_id")
     List<Long> findByUserId(@Param("user_id") UserInfo user);
 
 }
