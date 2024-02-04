@@ -1,16 +1,15 @@
 package bcsd.backend.project.pokku.dto.PortfolioProject;
 
-import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@NoArgsConstructor
+@Getter
+@Setter
+@AllArgsConstructor
 public class PortfolioProjectResponse {
     private Long portfolioProjectId;
     private String projectName;
     private String projectExplanation;
 
-    public PortfolioProjectResponse(Long portfolioProjectId, String projectName, String projectExplanation){
-        this.portfolioProjectId = portfolioProjectId;
-        this.projectName = projectName;
-        this.projectExplanation = projectExplanation;
-    }
 }

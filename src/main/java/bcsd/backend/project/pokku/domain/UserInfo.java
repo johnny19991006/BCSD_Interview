@@ -40,8 +40,7 @@ public class UserInfo {
     private String userEducation;
 
     @OneToMany(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-    @Builder.Default
-    private List<Authority> authorities = new ArrayList();
+    private List<Authority> authorities = new ArrayList<>();
 
     @OneToOne(mappedBy = "userInfo", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     private PortfolioAbout portfolioAbout;
