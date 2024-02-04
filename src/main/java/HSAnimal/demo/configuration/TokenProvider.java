@@ -2,6 +2,7 @@ package HSAnimal.demo.configuration;
 
 import HSAnimal.demo.domain.User;
 import HSAnimal.demo.enums.ErrorCode;
+import HSAnimal.demo.enums.UserRole;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -39,8 +40,8 @@ public class TokenProvider {
                 .setIssuedAt(now)
                 .setExpiration(expiry)
                 .setSubject(user.getEmail())
-                .claim("auth", user)
-                .claim("id", user.getId())
+                //.claim("auth", customDetailUser.getAuthorities())
+                .claim("userId", user.getUserId())
                 .signWith(SignatureAlgorithm.HS256, jwtProperties.getSecretKey())
                 .compact();
     }
@@ -81,9 +82,15 @@ public class TokenProvider {
 
     // 토큰 기반으로 인증 정보 가져오는 메서드
     public Authentication getAuthentication(String token){
+        //Collection<SimpleGrantedAuthority> auth = getAuth(token);
+        //authorities.add(new SimpleGrantedAuthority(auth.toString()));
         Claims claims = getClaims(token);
+        String userId = getUserId(token);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(claims.get("auth").toString()));
+        authorities.add(new SimpleGrantedAuthority(UserRole.USER.getRole()));
+        if (userId.equals("hyunn815")){
+            authorities.add(new SimpleGrantedAuthority(UserRole.ADMIN.getRole()));
+        }
 
         return new UsernamePasswordAuthenticationToken(new org.springframework.security
                 .core.userdetails.User(claims.getSubject(), "", authorities),
@@ -94,6 +101,11 @@ public class TokenProvider {
     public String getUserId(String token){
         Claims claims = getClaims(token);
         return claims.get("userId", String.class);
+    }
+
+    public String getAuth(String token){
+        Claims claims = getClaims(token);
+        return claims.get("auth", String.class);
     }
 
     private Claims getClaims(String token) {
