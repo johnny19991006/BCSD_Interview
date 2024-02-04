@@ -5,6 +5,7 @@ import HSAnimal.demo.configuration.JwtProperties;
 import HSAnimal.demo.configuration.TokenProvider;
 import HSAnimal.demo.domain.RefreshToken;
 import HSAnimal.demo.domain.User;
+import HSAnimal.demo.exception.AccountNotFoundException;
 import HSAnimal.demo.repository.RefreshTokenRepository;
 import HSAnimal.demo.repository.UserRepository;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class TokenService {
                     .getRefreshToken();
             if (tokenProvider.validToken(refreshToken)) {
                 User user = userRepository.findByUserId(userId)
-                        .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+                        .orElseThrow(() -> new AccountNotFoundException("User not found"));
                 return createAccessToken(user);
             } else{
                 throw new IllegalArgumentException("Unexpected token");
@@ -60,7 +61,7 @@ public class TokenService {
 
     public void deleteRefreshToken(String userId) {
         RefreshToken refreshToken = refreshTokenRepository.findByUserId(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."));
+                .orElseThrow(() -> new AccountNotFoundException("User not found"));
         refreshTokenRepository.delete(refreshToken);
     }
 

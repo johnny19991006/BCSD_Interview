@@ -35,7 +35,6 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             //토큰 만료된 경우
             else if(ErrorCode.EXPIRED_TOKEN.getMessage().equals(message)) {
                 setResponse(response, ErrorCode.EXPIRED_TOKEN);
-
             }
             //지원 되지 않는 토큰인 경우
             else if(ErrorCode.UNSUPPORTED_TOKEN.getMessage().equals(message)) {

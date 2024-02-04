@@ -84,6 +84,7 @@ public class TokenProvider {
     public Authentication getAuthentication(String token){
         //Collection<SimpleGrantedAuthority> auth = getAuth(token);
         //authorities.add(new SimpleGrantedAuthority(auth.toString()));
+
         Claims claims = getClaims(token);
         String userId = getUserId(token);
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();

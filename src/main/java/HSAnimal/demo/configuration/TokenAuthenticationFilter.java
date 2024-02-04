@@ -1,5 +1,6 @@
 package HSAnimal.demo.configuration;
 
+import HSAnimal.demo.exception.NotAllowedAuthorityException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,8 +31,12 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         String token = getAccessToken(authorizationHeader);
 
         if (tokenProvider.validToken(token)) {
+            if (request.getRequestURI().startsWith("/admin/**") && !tokenProvider.getUserId(token).equals("hyunn815")){
+                throw new NotAllowedAuthorityException("Not allowed authority.");
+            }
             Authentication authentication = tokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
+
         }
 
         filterChain.doFilter(request, response);
