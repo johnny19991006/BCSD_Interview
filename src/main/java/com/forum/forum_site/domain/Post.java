@@ -56,7 +56,7 @@ public class Post{
 
     // ToDo 이게 과연 좋은 방법이 맞는것 일까? 스크랩 페이지 어떻게 보여줄 것인지 고민하기
     @JsonIgnore
-    @OneToMany(mappedBy = "post", cascade = ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "post", cascade = ALL, orphanRemoval = true)
     private List<Comment> commentList = new ArrayList<>();
 
 

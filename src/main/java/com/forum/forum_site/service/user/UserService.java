@@ -15,10 +15,8 @@ public interface UserService {
     List<User> findAll();
     // 특정 유저 조회
     User findById(Integer id);
-    // 유저 생성
-    User createUser(User newUser, Role role);
     // 유저 수정
-    void updateUsername(Integer id, User user);
+    void updateUsername(Integer id, String newUsername);
     // 유저 삭제
     void deleteUser(Integer id);
 

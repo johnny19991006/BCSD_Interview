@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class UserServiceImpl extends BaseService implements UserService {
     private final UserRepository userRepo;
     private final PasswordEncoder passwordEncoder;
@@ -47,21 +48,10 @@ public class UserServiceImpl extends BaseService implements UserService {
     }
 
     @Override
-    public User createUser(User newUser, Role role) {
-        newUser.setRole(role);
-        return userRepo.save(newUser);
-    }
-
-    @Override
-    public void updateUsername(Integer id, User user) {
-        Optional<User> updateUser = userRepo.findById(id);
-
-        updateUser.ifPresent(selectUser -> {
-            selectUser.setUsername(user.getUsername());
-            selectUser.setPassword(user.getPassword());
-
-            userRepo.save(selectUser);
-        });
+    public void updateUsername(Integer id, String newUsername) {
+        User user = userRepo.findById(id).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+        user.setUsername(newUsername);
+        userRepo.save(user);
     }
 
     @Override

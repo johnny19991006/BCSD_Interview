@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void updateUserName(@RequestParam @PathVariable(name = "id") Integer id, @RequestBody User user) {
-        userService.updateUsername(id, user);
+    public void updateUserName(@PathVariable(name = "id") Integer id, @RequestParam("username") String newUsername) {
+        userService.updateUsername(id, newUsername);
     }
 
     // 회원가입

@@ -102,6 +102,7 @@ public class PostServiceImpl extends BaseService implements PostService{
         postRepository.delete(post);
     }
 
+    @Transactional
     @Override
     public PostInfoDto getPostInfo(Integer id) {
         return new PostInfoDto(postRepository.findWithAuthorById(id)
